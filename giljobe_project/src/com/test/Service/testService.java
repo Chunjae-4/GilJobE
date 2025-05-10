@@ -10,4 +10,7 @@ public class testService {
 	public void test3() {
 		
 	}
+	public void test4()	{
+		
+	}
 }
