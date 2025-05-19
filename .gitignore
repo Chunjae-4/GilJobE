@@ -44,7 +44,10 @@ out/
 *_BASE_*.txt
 *_LOCAL_*.txt
 *_REMOTE_*.txt
-
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
 # ===== Java =====
 *.class
 *.log
