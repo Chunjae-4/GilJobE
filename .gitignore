@@ -1,18 +1,51 @@
-# gitignore
+# ===== Eclipse =====
+.metadata
+.settings/
+.loadpath
+.project
+.classpath
+.factorypath
+.springBeans
+.recommenders/
+.sts4-cache/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
 
-# Compiled class file
+# sbteclipse
+.target
+
+# ===== IntelliJ IDEA / JetBrains IDEs =====
+.idea/
+*.iml
+out/
+
+# Rest Client
+.idea/httpRequests
+
+# Markdown Navigator plugin
+.idea/**/markdown-navigator.xml
+.idea/**/markdown-navigator-enh.xml
+.idea/**/markdown-navigator/
+
+# ===== Git =====
+*.orig
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
+# ===== Java =====
 *.class
-
-# Log file
 *.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
 *.nar
@@ -20,7 +53,13 @@
 *.zip
 *.tar.gz
 *.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# ===== Maven =====
+target/
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
