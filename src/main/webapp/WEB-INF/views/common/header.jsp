@@ -26,10 +26,10 @@
         <%--활성화 "nav-link active"--%>
         <%--현재 페이지 확인 aria-current="page"--%>
         <ul class="nav nav-pills align-items-center">
-            <li class="nav-item"><a href="#" class="nav-link">진로체험리스트</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">지도화면</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">공지사항</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">마이페이지</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>/program/programlist" class="nav-link">진로체험리스트</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>" class="nav-link">공지사항</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>" class="nav-link">마이페이지</a></li>
         </ul>
     </header>
 </div>
