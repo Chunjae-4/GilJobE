@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.giljobe.common.Constants;
+
 
 @WebServlet("/user/enrolluser.do")
 public class EnrollUserServlet extends HttpServlet {
@@ -21,7 +23,7 @@ public class EnrollUserServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		request.getRequestDispatcher("/user/enrollUser.jsp").forward(request, response);
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"user/enrollUser.jsp").forward(request, response);
 	}
 
 	
