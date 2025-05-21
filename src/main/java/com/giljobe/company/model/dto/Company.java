@@ -1,5 +1,9 @@
 package com.giljobe.company.model.dto;
 
+import java.util.List;
+
+import com.giljobe.program.model.dto.Program;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +18,10 @@ public class Company {
 	private String comName;
 	private String comId;
 	private String comPw;
-	private String comPhone;
+	private int comPhone;
 	private String comEmail;
-	private String comBinNo;
+	private int comBinNo;
+	
+//	private List<Chat> chats;
+	private List<Program> programs;
 }

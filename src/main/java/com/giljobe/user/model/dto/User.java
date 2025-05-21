@@ -1,5 +1,9 @@
 package com.giljobe.user.model.dto;
 
+import java.util.List;
+
+import com.giljobe.qna.model.dto.QNA;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +20,15 @@ public class User {
 	private String userId;
 	private String userPw;
 	private String userLike; // Y/N?
-	private String userBirth;
-//	private 프로그램 
+	private int userBirth;
 	private String userEmail;
 	private String userNickName;
 	private String userName;
-		
+	private int userRollNo;
 	
+	private List<QNA> qnas;
+//	private List<Like> likes;
+//	private List<Chat> chats;
+//	private List<Application> application;
+
 }
