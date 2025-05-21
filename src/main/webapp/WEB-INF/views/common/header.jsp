@@ -1,6 +1,7 @@
-<%@page import="com.giljobe.common.Constants"%>
-<%@ page import="oracle.jdbc.driver.Const" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"
+         import="com.giljobe.common.Constants"
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,16 +9,23 @@
     <%-- bootstrap css, js --%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/favicon-32x32.png">
+
 </head>
 
 <body>
-<div class="container">
-    <nav class="navbar fixed-top navbar-light" style="background-color: #e3f2fd;">
-        <div class="container-fluid">
-            mini nav, login, signup
-        </div>
-    </nav>
+<nav class="navbar fixed-top navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <ul class="nav nav-pills align-items-center ms-auto">
+            <%--TODO 알아서 숨기쇼 --%>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>/user/login" class="nav-link">로그인</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>" class="nav-link">로그아웃</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>/user/enrolluser" class="nav-link">회원가입</a></li>
+        </ul>
+    </div>
+</nav>
 
+<div class="container-fluid">
     <header class="d-flex flex-wrap justify-content-center align-items-center py-3 mb-4 border-bottom" style="margin-top: 70px;">
         <a href="<%=request.getContextPath()%>" class="d-flexmb-md align-items-center mb-3 -0 me-md-auto text-dark text-decoration-none">
             <img class="bi me-2" width="70" src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png">
@@ -28,8 +36,8 @@
         <ul class="nav nav-pills align-items-center">
             <li class="nav-item"><a href="<%=request.getContextPath()%>/program/programlist" class="nav-link">진로체험리스트</a></li>
             <li class="nav-item"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>" class="nav-link">공지사항</a></li>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>" class="nav-link">마이페이지</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>/notice/noticelist" class="nav-link">공지사항</a></li>
+            <li class="nav-item"><a href="<%=request.getContextPath()%>/user/mypage" class="nav-link">마이페이지</a></li>
         </ul>
     </header>
 </div>
