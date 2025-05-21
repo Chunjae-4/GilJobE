@@ -1,6 +1,6 @@
 package com.giljobe.common.filter;
 
-import com.giljobe.common.CommonTemplate;
+import com.giljobe.common.Constants;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -23,8 +23,8 @@ public class EncodingFilter extends HttpFilter implements Filter {
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        request.setCharacterEncoding(CommonTemplate.ENCODING);
-        response.setCharacterEncoding(CommonTemplate.ENCODING);
+        request.setCharacterEncoding(Constants.ENCODING);
+        response.setCharacterEncoding(Constants.ENCODING);
         chain.doFilter(request, response);
     }
 
