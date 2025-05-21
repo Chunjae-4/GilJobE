@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QNA {
 
-	private int inqNo;
-	private String inqDetail;
+	private int qnaNo;
+	private String qnaContent;
 	
 	private int userNoRef;
 	private int proNoRef;

@@ -2,6 +2,9 @@ package com.giljobe.user.model.dto;
 
 import java.util.List;
 
+import com.giljobe.application.model.dto.Application;
+import com.giljobe.chat.model.dto.Chat;
+import com.giljobe.like.model.dto.Like;
 import com.giljobe.qna.model.dto.QNA;
 
 import lombok.AllArgsConstructor;
@@ -16,19 +19,18 @@ import lombok.NoArgsConstructor;
 public class User {
 
 	private int userNo;
-	private String userphone;
+	private int userPhone;
 	private String userId;
 	private String userPw;
-	private String userLike; // Y/N?
-	private int userBirth;
+	private int userBirth; // 8자리
 	private String userEmail;
 	private String userNickName;
 	private String userName;
-	private int userRollNo;
+	private int userRoleNo;
 	
 	private List<QNA> qnas;
-//	private List<Like> likes;
-//	private List<Chat> chats;
-//	private List<Application> application;
+	private List<Like> likes;
+	private List<Chat> chats;
+	private List<Application> applications;
 
 }

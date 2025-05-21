@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notice {
-	private int notiNo;
-	private String notiDetail;
-	private Date notiDate;
-	private String notiTitle;
+	private int noticeNo;
+	private String noticeContent;
+	private Date noticeDate;
+	private String noticeTitle;
 }
