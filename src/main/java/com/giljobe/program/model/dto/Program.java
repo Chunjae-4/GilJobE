@@ -2,6 +2,11 @@ package com.giljobe.program.model.dto;
 
 import java.util.List;
 
+import com.giljobe.application.model.dto.Application;
+import com.giljobe.chat.model.dto.Chat;
+import com.giljobe.like.model.dto.Like;
+import com.giljobe.qna.model.dto.QNA;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,8 +32,12 @@ public class Program {
 	private int comNoRef;
 	// 기업번호 참조 - 기업 번호 변수명에다가 Ref 를 붙이는걸로.
 	
-	private List<Round> rounds;
-	// 회차 정보
+	private List<Round> rounds;	// 회차 정보
+	private List<QNA> qnas; // 문의 정보
+	private List<Chat> chats;
+	private List<Like> likes;
+	private List<Application> applications;
+	
 	
 
 }
