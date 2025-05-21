@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.giljobe.user.model.service.UserService;
 
-@WebServlet("/LoginEndServlet")
+
+@WebServlet("/user/loginend.do")
 public class LoginEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

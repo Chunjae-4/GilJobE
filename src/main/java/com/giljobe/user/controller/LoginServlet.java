@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//로그인 화면으로 이동
-		request.getRequestDispatcher(Constants.WEB_VIEWS+"/user/login.jsp");
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"/user/login.jsp").forward(request, response);
 		
 	}
 

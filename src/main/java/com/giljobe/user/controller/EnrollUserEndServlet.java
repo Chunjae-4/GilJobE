@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.giljobe.common.Constants;
 
-@WebServlet("/enrollUserEndServlet")
+
+@WebServlet("/user/enrolluserend.do")
 public class EnrollUserEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -19,8 +21,10 @@ public class EnrollUserEndServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		
+		//완료되면 메인화면으로, 실패하면 분기처리
+		response.sendRedirect(Constants.WEB_VIEWS+"/");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
