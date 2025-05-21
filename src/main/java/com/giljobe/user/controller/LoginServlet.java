@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.giljobe.common.Constants;
 
 
-@WebServlet("/user/login.do")
+@WebServlet("/user/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

@@ -15,9 +15,21 @@ public class UserService {
 	private UserDao userDao = UserDao.userDao();
 	private Connection conn;
 	
-	public void enrollUser(User user) {
+	public int enrollUser(User user) {
 		// TODO Auto-generated method stub
-		UserDao.userDao().enrollUser(conn);
+//		conn=getConnection();
+		int result = UserDao.userDao().enrollUser(conn,user);//근데 로그인 성공 실패를 분기 처리 해야하나
+//		close(conn);
+		if(result>0) {
+			//성공
+//			commit(conn);
+		}else {
+			//실패
+//			rollback(conn);
+//			close(conn);
+		}
+		
+		return result;
 		
 	}
 	

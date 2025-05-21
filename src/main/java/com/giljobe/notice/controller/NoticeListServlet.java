@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.giljobe.common.Constants;
 
 
-@WebServlet("/notice/noticelist.do")
+@WebServlet("/notice/noticelist")
 public class NoticeListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
