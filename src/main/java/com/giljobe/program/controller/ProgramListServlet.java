@@ -14,7 +14,6 @@ import com.giljobe.common.*;
 public class ProgramListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
     public ProgramListServlet() {
         super();
     }

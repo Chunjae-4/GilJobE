@@ -18,7 +18,6 @@ public class ProgramMapServlet extends HttpServlet {
     public ProgramMapServlet() {
         super();
     }
-
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/map.jsp").forward(request, response);
