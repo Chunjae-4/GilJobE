@@ -14,4 +14,13 @@ public class Constants {
 
     //이미지 경로
     public static final String IMAGE_FILE_PATH = "/resources/images/";
+
+    //메인화면 헤더 li css 규칙
+    public static final String CSS_LI_ITEM = "nav-item fs-4 mx-4";
+
+    //multipart
+    public static final String FORM_DATA = "multipart/form-data";
+
+    //octet stream
+    public static final String OCTET_STREAM = "application/octet-stream";
 }

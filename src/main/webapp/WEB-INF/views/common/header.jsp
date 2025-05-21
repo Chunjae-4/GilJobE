@@ -14,36 +14,39 @@
 </head>
 
 <body>
-<nav class="navbar fixed-top navbar-light" style="background-color: #e3f2fd;">
-    <div class="container-fluid">
-        <ul class="nav nav-pills align-items-center ms-auto">
-            <%--TODO 알아서 숨기쇼 --%>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>/user/login" class="nav-link">로그인</a></li>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>" class="nav-link">로그아웃</a></li>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>/user/enrolluser" class="nav-link">회원가입</a></li>
+<nav class="navbar navbar-light" style="background-color: #e3f2fd; height: 45px;">
+    <div class="container-fluid d-flex align-items-center" style="height: 100%;">
+        <ul class="nav nav-pills d-flex align-items-center ms-auto mb-0">
+            <li class="nav-item">
+                <a href="<%=request.getContextPath()%>/user/login" class="nav-link py-0">로그인</a>
+            </li>
+            <li class="nav-item">
+                <a href="<%=request.getContextPath()%>" class="nav-link py-0">로그아웃</a>
+            </li>
+            <li class="nav-item">
+                <a href="<%=request.getContextPath()%>/user/enrolluser" class="nav-link py-0">회원가입</a>
+            </li>
         </ul>
     </div>
 </nav>
-
 <div class="container-fluid">
-    <header class="d-flex flex-wrap justify-content-center align-items-center py-3 mb-4 border-bottom" style="margin-top: 70px;">
-        <a href="<%=request.getContextPath()%>" class="d-flexmb-md align-items-center mb-3 -0 me-md-auto text-dark text-decoration-none">
-            <img class="bi me-2" width="70" src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png">
-        </a>
-
+    <header class="d-flex flex-wrap justify-content-center align-items-center py-3 mb-4 border-bottom" style="margin-top: 5px;">
         <%--활성화 "nav-link active"--%>
         <%--현재 페이지 확인 aria-current="page"--%>
-        <ul class="nav nav-pills align-items-center">
-            <li class="nav-item"><a href="<%=request.getContextPath()%>/program/programlist" class="nav-link">진로체험리스트</a></li>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>/notice/noticelist" class="nav-link">공지사항</a></li>
-            <li class="nav-item"><a href="<%=request.getContextPath()%>/user/mypage" class="nav-link">마이페이지</a></li>
+        <ul class="nav nav-pills d-flex justify-content-around align-items-center w-100">
+            <li>
+                <a href="<%=request.getContextPath()%>">
+                    <img class="bi me-2" width="100" src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png">
+                </a>
+            </li>
+
+            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/program/programlist" class="nav-link">진로체험리스트</a></li>
+            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
+            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/notice/noticelist" class="nav-link">공지사항</a></li>
+            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/user/mypage" class="nav-link">마이페이지</a></li>
         </ul>
     </header>
 </div>
-
-
-
 </body>
 
 </html>
