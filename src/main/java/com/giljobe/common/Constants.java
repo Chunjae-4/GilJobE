@@ -10,6 +10,8 @@ public class Constants {
     public static final String WEB_VIEWS = "/WEB-INF/views/";
 
     //파일 업로드 경로
-    public static final String DEFAULT_UPLOAD_PATH = "/resources//upload/";
+    public static final String DEFAULT_UPLOAD_PATH = "/resources/upload/";
 
+    //이미지 경로
+    public static final String IMAGE_FILE_PATH = "/resources/images/";
 }
