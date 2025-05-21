@@ -1,4 +1,4 @@
-package com.giljobe.qna.dto;
+package com.giljobe.qna.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ public class QNA {
 	private int inqNo;
 	private String inqDetail;
 	
-	private int userRef;
-	private int proRef;
+	private int userNoRef;
+	private int proNoRef;
 	
 }

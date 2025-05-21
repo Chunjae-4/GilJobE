@@ -1,4 +1,4 @@
-package com.giljobe.notice.dto;
+package com.giljobe.notice.model.dto;
 
 import java.sql.Date;
 
