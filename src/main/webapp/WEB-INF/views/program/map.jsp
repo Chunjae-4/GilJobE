@@ -2,7 +2,19 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-header.jsp 에서 <지도 화면>을 클릭하면 여기로 넘어온다. <br>
+header.jsp 에서 <지도 화면>을 클릭하면 여기로 넘어온다. <br> header.jsp 에서 코드 확인 가능 <br>
+<%-- <li class="nav-item"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
+ --%>
+ 지도화면 클릭하면 ProgramMapServlet 으로 연결이 된다. 그리고 거기서 forward 로 map.jsp, 여기로 연결이 되는 것.
+ 
+ 
+ 여기서는, 지도를 띄워준다.
+ 1. 기본적으로 어떤 기능을 구현하면 되는지를 먼저 정의하고
+ 
+ 2. 그리고 분기 처리 
+ 	- 클라이언트가 로그인을 한 상태냐, 아니냐
+ 	- 
+ 
 네이버 지도 API를 활용할 것이다 <br>
 기본적으로, 클라이언트의 위치 정보를 받아올 필요가 있다<br>
 그러면 아마 그 과정에서 클라이언트에게 위치 정보를 허용 할거냐는 알림이 갈 것<br>

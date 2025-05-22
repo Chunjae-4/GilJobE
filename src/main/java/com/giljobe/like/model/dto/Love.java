@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Like {
+public class Love {
 	private int userNoRef;
 	private int proNoRef;
 	

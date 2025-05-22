@@ -23,5 +23,5 @@ public class Round {
 	
 	private int proNoRef;
 	// 프로그램 PK 값에다가 + Ref
-	private List<Session> sessions;
+	private List<ProSession> sessions;
 }

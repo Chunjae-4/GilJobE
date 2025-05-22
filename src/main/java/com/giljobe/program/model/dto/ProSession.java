@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Session {
+public class ProSession {
 	private int proNoRef;
 	private int roundNoRef;
 	// 프로그램 PK 값에다가 + Ref
