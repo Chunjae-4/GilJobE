@@ -1,4 +1,4 @@
-package com.giljobe.like.model.dto;
+package com.giljobe.love.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

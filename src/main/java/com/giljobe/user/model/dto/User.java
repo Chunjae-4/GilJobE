@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.giljobe.application.model.dto.Application;
 import com.giljobe.chat.model.dto.Chat;
-import com.giljobe.like.model.dto.Love;
+import com.giljobe.love.model.dto.Love;
 import com.giljobe.qna.model.dto.QNA;
 
 import lombok.AllArgsConstructor;
