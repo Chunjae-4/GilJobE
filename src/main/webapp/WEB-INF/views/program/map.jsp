@@ -2,9 +2,9 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-header.jsp 에서 <지도 화면>을 클릭하면 여기로 넘어온다. <br> header.jsp 에서 코드 확인 가능 <br>
-<%-- <li class="nav-item"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
- --%>
+<%-- header.jsp 에서 <지도 화면>을 클릭하면 여기로 넘어온다. <br> header.jsp 에서 코드 확인 가능 <br>
+<li class="nav-item"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
+
  지도화면 클릭하면 ProgramMapServlet.java 로 연결이 된다. 그리고 거기서 forward 로 map.jsp, 여기로 연결이 되는 것.
 지금은 ProgramMapServlet.java 에서 forward 만 시켜주고 있지만, 나중에는 Service, Dao 를 통해서
 DB에 저장되어 있는 체험프로그램들(DTO - Program.java 참고) 정보를 List<Program> 으로 받아올 것이다.
@@ -55,6 +55,8 @@ DB에 저장되어 있는 체험프로그램들(DTO - Program.java 참고) 정�
 
  		
 - 핀 작업, 지도 위에 핀이 잡혀야 한
-
+ --%>
+ 
+ 목 금 토 - 오후 2시 // 
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
