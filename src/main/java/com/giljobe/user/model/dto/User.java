@@ -1,5 +1,6 @@
 package com.giljobe.user.model.dto;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.giljobe.application.model.dto.Application;
@@ -19,10 +20,10 @@ import lombok.NoArgsConstructor;
 public class User {
 
 	private int userNo;
-	private int userPhone;
+	private String userPhone;
 	private String userId;
 	private String userPw;
-	private int userBirth; // 8자리
+	private Date userBirth; // 8자리
 	private String userEmail;
 	private String userNickName;
 	private String userName;

@@ -21,7 +21,7 @@ public class EnrollServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		//유저와 기업으로 나눠서 회원가입을 누르는 화면
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"user/enroll.jsp").forward(request, response);
 		
 	}

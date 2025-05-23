@@ -1,6 +1,8 @@
 package com.giljobe.user.controller;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +14,7 @@ import com.giljobe.user.model.dto.User;
 import com.giljobe.user.model.service.UserService;
 
 
-@WebServlet("/user/enrolluserend")
+@WebServlet(urlPatterns = "/user/enrolluserend", name="EnrollUserEndServlet")
 public class EnrollUserEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -24,15 +26,17 @@ public class EnrollUserEndServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		//전체적으로 encoding필터 거쳐서 필요없음
 		//login.jsp에서 정보를 받아서 가져온 뒤 객체 생성
 		String nickName=request.getParameter("userNickName");
 		String id = request.getParameter("userId");
 		String name = request.getParameter("userName");
 		String password = request.getParameter("userPw");
 		//비밀번호 암호화
-		int phone = Integer.parseInt(request.getParameter("userPhone"));
+		String phone = request.getParameter("userPhone");
 		String email = request.getParameter("userEmail");
-		int birth = Integer.parseInt(request.getParameter("userBirth"));
+		String birth = request.getParameter("userBirth");
+		Date birthDate = Date.valueOf(birth);
 		
 		User user = User.builder()
 						//userNo는 시퀀스로 필요없지
@@ -42,7 +46,7 @@ public class EnrollUserEndServlet extends HttpServlet {
 						.userPw(password)
 						.userPhone(phone)
 						.userEmail(email)
-						.userBirth(birth)
+						.userBirth(birthDate)
 						.build();
 		
 		//생성한 유저 객체를 서비스로 보내면 서비스가 dao한테 conn과함께 유저를 넘기겠지 

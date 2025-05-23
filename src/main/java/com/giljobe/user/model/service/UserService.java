@@ -33,6 +33,12 @@ public class UserService {
 		return result;
 		
 	}
-	
+	public User login(String id, String pw) {
+		
+		conn=getConnection();
+		User u = UserDao.userDao().login(conn, id, pw);
+		close(conn);
+		return u;
+	}
 	
 }

@@ -5,37 +5,41 @@
 
 
 <div class="form-wrapper">
-	<form>
+	<form action="<%=request.getContextPath() %>/user/enrolluserend" method="post">
 		<div class="mb-3">
-			<label for="nickname" class="form-label">닉네임</label> <input
-				type="text" class="form-control" id="nickname">
+			<label for="name" class="form-label">이름</label>
+			<input type="text" class="form-control" name="userName">
 		</div>
 		<div class="mb-3">
-			<label for="id" class="form-label">아이디</label> <input type="text"
-				class="form-control" id="id">
+			<label for="id" class="form-label">아이디</label>
+			<input type="text" class="form-control" name="userId">
 		</div>
 		<div class="mb-3">
-			<label for="Password" class="form-label">비밀번호</label> <input
-				type="password" class="form-control" id="Password">
+			<label for="Password" class="form-label">비밀번호</label>
+			<input type="password" class="form-control" name="userPw">
 		</div>
 		<div class="mb-3">
-			<label for="checkPassword" class="form-label">비밀번호 확인</label> <input
-				type="password" class="form-control" id="checkPassword">
+			<label for="checkPassword" class="form-label">비밀번호 확인</label>
+			<input type="password" class="form-control" name="checkPw">
 		</div>
 		<div class="mb-3">
-			<label for="checkPassword" class="form-label">전화번호</label> <input
-				type="number" class="form-control" id="checkPassword">
+			<label for="checkPassword" class="form-label">전화번호</label>
+			<input type="text" class="form-control" name="userPhone">
 		</div>
 		<div class="mb-3">
-			<label for="checkPassword" class="form-label">이메일</label> <input
-				type="email" class="form-control" id="checkPassword">
+			<label for="nickname" class="form-label">닉네임</label>
+			<input type="text" class="form-control" name="userNickName">
 		</div>
 		<div class="mb-3">
-			<label for="checkPassword" class="form-label">생년월일</label> <input
-				type="number" class="form-control" id="checkPassword">
+			<label for="checkPassword" class="form-label">이메일</label>
+			<input type="email" class="form-control" name="userEmail">
+		</div>
+		<div class="mb-3">
+			<label for="checkPassword" class="form-label">생년월일</label>
+			<input type="date" class="form-control" name="userBirth">
 		</div>
 
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="submit" class="btn btn-primary">가입</button>
 	</form>
 </div>
 

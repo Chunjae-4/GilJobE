@@ -38,16 +38,17 @@ public class UserDao {
 	
 	public int enrollUser(Connection conn, User user) {
 		// TODO Auto-generated method stub
+		//DB접근해서 유저 저장하고 성공인지 실패인지 결과만 확인
 		int result = 0 ;
 		try {
 			pstmt=conn.prepareStatement(sql.getProperty("enrollUser"));
-			pstmt.setString(1, user.getUserId());
-			pstmt.setString(2, user.getUserId());
-			pstmt.setString(3, user.getUserId());
-			pstmt.setString(4, user.getUserId());
-			pstmt.setString(5, user.getUserId());
-			pstmt.setString(6, user.getUserId());
-			pstmt.setString(7, user.getUserId());
+			pstmt.setString(1, user.getUserId());//아이디
+			pstmt.setString(2, user.getUserName());//이름
+			pstmt.setString(3, user.getUserPw());//비밀번호?
+			pstmt.setString(4, user.getUserPhone());//폰번호
+			pstmt.setDate(5, user.getUserBirth());//생일
+			pstmt.setString(6, user.getUserEmail());//이메일
+			pstmt.setString(7, user.getUserNickName());//채팅닉네임
 			result = pstmt.executeUpdate();
 			conn.setAutoCommit(false);
 			if(result>0) {
@@ -67,13 +68,36 @@ public class UserDao {
 	
 	}
 	
+	public User login(Connection conn, String id, String pw) {
+		
+		User u = null;
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("loginUser"));
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				u=getUser(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		
+		return u;
+	}
+	
 	public User getUser(ResultSet rs) throws SQLException {
-		
-		
+			
 		return User.builder()
 					.userId(rs.getString("user_id"))
-					.userPhone(rs.getInt("user_phone"))
-					.userBirth(rs.getInt("user_birth"))
+					.userPhone(rs.getString("user_phone"))
+					.userBirth(rs.getDate("user_birth"))
 					.userEmail(rs.getString("user_email"))
 					.userNickName(rs.getString("user_nickname"))
 					.userName(rs.getString("user_name"))
