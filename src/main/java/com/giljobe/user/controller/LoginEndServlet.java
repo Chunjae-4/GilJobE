@@ -13,7 +13,7 @@ import com.giljobe.user.model.dto.User;
 import com.giljobe.user.model.service.UserService;
 
 
-@WebServlet("/user/loginend")
+@WebServlet(urlPatterns = "/user/loginend", name="LoginEndServlet")
 public class LoginEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,15 +34,13 @@ public class LoginEndServlet extends HttpServlet {
 			//DB에 일치하는 유저 정보가 있어서 user에 넣었다면
 			HttpSession session = request.getSession();//세션 생성
 			session.setAttribute("user", user);//세션에 유저 담기
-			response.sendRedirect(request.getContextPath()+"/");//세션에 넣은채로 메인화면 jsp로 보내
+			response.sendRedirect(request.getContextPath());//세션에 넣은채로 메인화면 jsp로 보내
 				
 		}else {
-			//로그인이 실패했다면 다시 로그인 화면으로 
+			//로그인이 실패했다면 다시 로그인 화면으로 setAttribute에 메세지 담아갈수도있음
 			request.getRequestDispatcher(Constants.WEB_VIEWS+"user/login.jsp").forward(request, response);
 		}
-		
-		//완료되면 메인화면으로, 실패하면 분기처리
-		response.sendRedirect(request.getContextPath()+"/");
+	
 	}
 
 	

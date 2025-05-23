@@ -1,19 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<h1>로그인</h1>유형에 맞는 로그인을 하시면 알맞는 서비스를 제공합니다
+	<h2>로그인</h2>유형에 맞는 로그인을 하시면 알맞는 서비스를 제공합니다
 	<div class="login-wrapper d-flex justify-content-center gap-4">
   <main class="form-signin">
-    <form>
+    <form method="post" action="<%=request.getContextPath()%>/user/loginend">
       <img class="mb-4" src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/groom_2920507.png"
       alt="유저" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">유저 로그인</h1>
       <div class="form-floating">
-        <input type="text" class="form-control" id="userId" placeholder="Id">
+        <input type="text" class="form-control" name="userId" placeholder="Id">
         <label for="userId">아이디</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="userPw" placeholder="Password">
+        <input type="password" class="form-control" name="userPw" placeholder="Password">
         <label for="userPw">비밀번호</label>
       </div>
       <div class="form-check text-start my-3">
@@ -33,11 +33,11 @@
       <img class="mb-4" src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/edu_4943347.png" alt="기업" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">기업 로그인</h1>
       <div class="form-floating">
-        <input type="text" class="form-control" id="companyId" placeholder="Id">
+        <input type="text" class="form-control" name="companyId" placeholder="Id">
         <label for="companyEmail">아이디</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="companyPw" placeholder="Password">
+        <input type="password" class="form-control" name="companyPw" placeholder="Password">
         <label for="companyPassword">비밀번호</label>
       </div>
       <div class="form-check text-start my-3">

@@ -1,6 +1,8 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"
-         import="com.giljobe.common.Constants"
+         import="com.giljobe.common.Constants, com.giljobe.user.model.dto.User"
+%>
+<%
+	User loginUser = (User)session.getAttribute("user");
 %>
 <!DOCTYPE html>
 <html>
@@ -17,15 +19,21 @@
 <nav class="navbar navbar-light" style="background-color: #e3f2fd; height: 45px;">
     <div class="container-fluid d-flex align-items-center" style="height: 100%;">
         <ul class="nav nav-pills d-flex align-items-center ms-auto mb-0">
+            
+            <%if(loginUser==null){ %>
             <li class="nav-item">
                 <a href="<%=request.getContextPath()%>/user/login" class="nav-link py-0">로그인</a>
             </li>
             <li class="nav-item">
-                <a href="<%=request.getContextPath()%>" class="nav-link py-0">로그아웃</a>
-            </li>
-            <li class="nav-item">
                 <a href="<%=request.getContextPath()%>/user/enroll" class="nav-link py-0">회원가입</a>
             </li>
+            <%}else{ %>
+            <p><%=loginUser.getUserId() %>님 환영합니다.</p>
+            <li class="nav-item">
+                <a href="<%=request.getContextPath()%>" class="nav-link py-0">로그아웃</a>
+            </li>
+            
+            <%} %>
         </ul>
     </div>
 </nav>

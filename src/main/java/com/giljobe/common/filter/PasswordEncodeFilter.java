@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.giljobe.common.PasswordEncoder;
 
 
-@WebFilter(servletNames = {"EnrollUserEndServlet","loginServlet"})
+@WebFilter(servletNames = {"EnrollUserEndServlet","LoginEndServlet"})
 public class PasswordEncodeFilter extends HttpFilter implements Filter {
        
    

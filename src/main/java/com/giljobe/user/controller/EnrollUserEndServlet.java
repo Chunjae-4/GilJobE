@@ -63,7 +63,7 @@ public class EnrollUserEndServlet extends HttpServlet {
 		
 		//완료되면 메인화면으로, 실패하면 분기처리
 		//이 정보들이 다시 호출되지않게 redirect로 전송
-		response.sendRedirect(Constants.WEB_VIEWS+url);
+		response.sendRedirect(request.getContextPath()+url);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
