@@ -24,7 +24,7 @@
                 <a href="<%=request.getContextPath()%>" class="nav-link py-0">로그아웃</a>
             </li>
             <li class="nav-item">
-                <a href="<%=request.getContextPath()%>/user/enrolluser" class="nav-link py-0">회원가입</a>
+                <a href="<%=request.getContextPath()%>/user/enroll" class="nav-link py-0">회원가입</a>
             </li>
         </ul>
     </div>
