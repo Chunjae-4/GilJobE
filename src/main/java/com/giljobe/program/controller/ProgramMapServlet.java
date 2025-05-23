@@ -20,6 +20,9 @@ public class ProgramMapServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// 여기서 뭔가를 
+		
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/map.jsp").forward(request, response);
 	}
 

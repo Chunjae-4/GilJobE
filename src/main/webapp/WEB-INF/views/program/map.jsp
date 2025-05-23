@@ -2,59 +2,85 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-header.jsp 에서 <지도 화면>을 클릭하면 여기로 넘어온다. <br> header.jsp 에서 코드 확인 가능 <br>
-<%-- <li class="nav-item"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
- --%>
- 지도화면 클릭하면 ProgramMapServlet.java 로 연결이 된다. 그리고 거기서 forward 로 map.jsp, 여기로 연결이 되는 것.
-지금은 ProgramMapServlet.java 에서 forward 만 시켜주고 있지만, 나중에는 Service, Dao 를 통해서
-DB에 저장되어 있는 체험프로그램들(DTO - Program.java 참고) 정보를 List<Program> 으로 받아올 것이다.
-그러면, 각각의 Program 객체들은 위도 경도 정보를 가지고 있고 체험프로그램 이름과 체험프로그램 타입 정보를 가지고 있을 것이다.
-그러면 해당 위도 경도 정보를 가지고 지도 위에다가 핀을 만들어줄 것이다. 그리고 타입 정보에 따라 핀의 색이나 디자인을 나타내줄 것이다.
-그리고 해당 핀에다가 마우스를 가져다되면 체험프로그램의 이름을 보여주고, 해당 핀이나 핀에서 띄어준 체험프로그램 이름을 클릭하면 체험 프로그램의 상세 페이지로
-넘어갈 것이다. (체험 프로그램의 상세 페이지로 넘어가는 건, 나중에 상세 페이지를 만들고 나서 연결해주면 되니까, 그냥 '상세 페이지 연결' 이런식으로만 여기에서는 표현해주면 되겠다)
-핀의 경우에는, 지도를 최대로 줌인했을때에는 각각의 핀에서 체험 프로그램 이름을 보여주고 있어도 되겠다. 즉, 마우스를 올려놓지 않더라도 핀의 이름이 띄어져있는 것이다.
-그런데, 지도를 최대로 줌인했을때에도, 같은 건물에 다른 핀 2개가 있는 경우에는, 그걸 보여주기 위한 무언가가 필요하겠다. 핀이 겹치는 것이 생기면,
-해당 겹친 핀에 마우스를 올리면 겹쳐져 있는 체험프로그램 이름들이 이름 순으로 목록을 보여주면 되겠다. 지도를 최대로 줌인했을때가 아니더라도,
-어떤 수준의 줌인 상태이더라도 핀이 겹칠때가 있다. 예를 들어, 완전 줌인했을때에는 옆 건물이라서 핀이 겹치지 않았지만,
-줌아웃을 했을때에는 축적의 원리에 의해서, 핀이 겹치게 되는 순간들이 오게 되어 있다. 그렇다면, 그렇게 겹치게 되면, 아까처럼 핀이 겹칠때 보여주는 방식은 달라져야 겠다.
-그런데, 줌아웃을 너무 많이 해서 (여기서 말하는 너무 많이 줌아웃을 했다는 것의 수준은 정하기 나름인건가, 아무튼) 지도에 표현해야 하는 핀의 갯수가 너무 많을 경우에는
-그걸 전부 다 핀으로 표현하는게 아니라, 그때는 핀을 보여주는게 아니라 지역구마다 몇개의 핀이 존재하는지 갯수만 보여줘도 되겠다.
-그리고나서 더 줌아웃을 하게 되었을때에는, 그러니까 그냥 서울경기 전부를 조망하듯이 보고 있을때에는 아무런 핀이나 핀의 수를 보여줄 필요가 없겠다.
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=12feiletwc"></script>
+<style>
+        #map {
+            width: 100%;
+            height: 600px;
+        }
+</style>
 
-여기서, 구현해야 하는 것 중에 가장 기본적인 것은, 지도를 띄워주는 것이 가장 우선되어야 겠다. 네이버지도 API를 연결해서 지도를 띄워주어야 겠다.
-일단은 기본적으로 줌인 줌아웃 기능은 지도를 연결만 해주어도 가능할 것으로 보인다.
+<h2>체험 프로그램 지도</h2>
+<div id="map"></div>
 
-그러면 핀을 표현해주는 것, 위에서 서술한 핀과 관련된 것을 구현해야겠다.
+<script>
+    let map; // 전역 선언 (블록 밖에서 사용 가능하도록)
 
-기본적으로, 클라이언트의 위치 정보를 받아올 필요가 있다<br>
-그러면 아마 그 과정에서 클라이언트에게 위치 정보를 허용 할거냐는 알림이 갈 것<br>
-위치 정보 허용했다고 쳤을때, 허용하지 않았을때 분기처리가 필요하다<br>
+    // 위치정보 허용 여부 체크
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
 
- - ok : 위치 정보를 허용했다면,
- 		우선, 클라이언트의 위치에 해당 하는 마크가 별도로 지도에 표시가 되어야 할 것
- 		그리고 해당 위치를 중심으로 지도 화면을 보여주는 것으로 시작하면 될 것
- 
- 
- - no : 위치 정보 허용하지 않았다면,
- 		클라이언트의 위치를 표현해주는 마크는 지도에 표시가 되지 않아야 할 것
- 		그리고 클라이언트가 스스로 줌인 하도록 서울 금천구 마리오아울렛2관 지역을 중심으로 보여주는 것으로 시작하면 될 것
+            map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(lat, lng),
+                zoom: 15
+            });
 
- 
- 여기서는, 지도를 띄워준다.
- 1. 기본적으로 어떤 기능을 구현하면 되는지를 먼저 정의하고
- 
- 2. 그리고 분기 처리 
- 	- 클라이언트가 로그인을 한 상태냐, 아니냐
- 	- 클라이언트가 위치 정보를 제공하는 걸 허용했느냐, 아니냐
- 		-a. 로그인은 했는데 위치정보 허용을 하지 않은 경우 
- 		-b. 로그인은 했는데 위치정보 허용을 한 경우 
- 		-c. 로그인 하지 않았는데 위치정보 허용을 하지 않은 경우  
- 		-d. 로그인 하지 않았는데 위치정보 허용을 한 경우 
- 
+            new naver.maps.Marker({
+                position: new naver.maps.LatLng(lat, lng),
+                map: map,
+                title: "내 위치"
+            });
 
+            addProgramMarkers(); // 지도 생성 후 마커 추가
 
- 		
-- 핀 작업, 지도 위에 핀이 잡혀야 한
+        }, function (error) {
+            map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(37.478113, 126.881508),
+                zoom: 15
+            });
 
+            addProgramMarkers();
+        });
+    } else {
+        map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(37.478113, 126.881508),
+            zoom: 15
+        });
+
+        addProgramMarkers();
+    }
+
+    // 💡 체험 프로그램 마커 추가 함수 분리
+    function addProgramMarkers() {
+        const programList = [
+            { name: "천연비누 만들기", lat: 37.4785, lng: 126.8810, type: "체험A" },
+            { name: "목공예 체험", lat: 37.4780, lng: 126.8820, type: "체험B" },
+            { name: "도예 체험", lat: 37.4790, lng: 126.8805, type: "체험A" }
+        ];
+
+        programList.forEach(program => {
+            const marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(program.lat, program.lng),
+                map: map,
+                title: program.name
+            });
+
+            const infoWindow = new naver.maps.InfoWindow({
+                content: `<div style="padding:5px;font-size:12px;">${program.name}</div>`
+            });
+
+            naver.maps.Event.addListener(marker, 'mouseover', () => {
+                infoWindow.open(map, marker);
+            });
+
+            naver.maps.Event.addListener(marker, 'mouseout', () => {
+                infoWindow.close();
+            });
+        });
+    }
+</script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
