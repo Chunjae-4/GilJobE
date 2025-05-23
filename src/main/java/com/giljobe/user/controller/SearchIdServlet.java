@@ -7,15 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.giljobe.common.Constants;
 
-
-@WebServlet("/user/mypage")
-public class MyPageServlet extends HttpServlet {
+@WebServlet("/user/searchId")
+public class SearchIdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    
-    public MyPageServlet() {
+
+    public SearchIdServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +25,7 @@ public class MyPageServlet extends HttpServlet {
 		
 	}
 
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

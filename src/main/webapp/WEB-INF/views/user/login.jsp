@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<h2>로그인</h2><span>유형에 맞는 로그인을 하시면 알맞는 서비스를 제공합니다</span>
+	
 	<div class="login-wrapper d-flex justify-content-center gap-4">
   <main class="form-signin">
     <form method="post" action="<%=request.getContextPath()%>/user/loginend">
@@ -9,21 +9,23 @@
       alt="유저" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">유저 로그인</h1>
       <div class="form-floating">
-        <input type="text" class="form-control" name="userId" placeholder="Id">
-        <label for="userId">아이디</label>
+        <input type="text" class="form-control" name="userId" placeholder="Id" value="<%=savedUser!=null?savedUser:"" %>">
+        <label for="userId" >아이디</label>
       </div>
       <div class="form-floating">
         <input type="password" class="form-control" name="userPw" placeholder="Password">
         <label for="userPw">비밀번호</label>
       </div>
       <div class="form-check text-start my-3">
-        <input class="form-check-input" type="checkbox" value="remember-me" id="userCheck">
+      <!-- 체크되면 name과 value값이 넘어감, 없으면 name만 -->
+        <input class="form-check-input" type="checkbox" name="userSave"
+        		<%=savedUser!=null?"checked":"" %> >
         <label class="form-check-label" for="userCheck">아이디 저장</label>
       </div>
       <button class="btn btn-primary login-btn py-2" type="submit">로그인</button>
 <div class="find-links">
-  <p class="text-body-secondary mb-0">아이디 찾기</p>
-  <p class="text-body-secondary mb-0">비밀번호 찾기</p>
+  <p class="text-body-secondary mb-0"><a href="<%=request.getContextPath()%>/user/searchId">아이디 찾기</a></p>
+  <p class="text-body-secondary mb-0"><a href="<%=request.getContextPath()%>/user/searchPw">비밀번호 찾기</a></p>
 </div>
     </form>
   </main>
@@ -41,7 +43,7 @@
         <label for="companyPassword">비밀번호</label>
       </div>
       <div class="form-check text-start my-3">
-        <input class="form-check-input" type="checkbox" value="remember-me" id="companyCheck">
+        <input class="form-check-input" type="checkbox" value="remember-me" name="companySave">
         <label class="form-check-label" for="companyCheck">아이디 저장</label>
       </div>
       <button class="btn btn-primary login-btn py-2" type="submit">로그인</button>

@@ -3,6 +3,7 @@ package com.giljobe.user.controller;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,8 +27,27 @@ public class LoginEndServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		String userSave = request.getParameter("userSave");//value값을 지정하지 않으면 체크됏을때  on값을 넘겨줌
+		System.out.println(userSave);
 		String id = request.getParameter("userId");
 		String pw = request.getParameter("userPw");
+		if(userSave!=null) {
+			System.out.println(request.getParameter("userId"));
+			//체크되면 value가 담기지만 없으면 null이 담김
+			
+			Cookie cookie = new Cookie("userSave",request.getParameter("userId"));
+			cookie.setMaxAge(60*60*24);//생명주기
+			cookie.setPath(request.getContextPath());//이거 꼭 전체로 해야하나?
+			response.addCookie(cookie);//response에 쿠키담기
+		
+		}else {
+			Cookie cookie = new Cookie("userSave",request.getParameter("userId"));
+			cookie.setMaxAge(0);//생명주기
+			cookie.setPath("/");//경로설정
+			response.addCookie(cookie);//response에 쿠키담기
+		}
+		
 		//아이디와 비밀번호를 받아서 
 		User user = UserService.userService().login(id, pw);
 		if(user!=null) {
@@ -38,7 +58,9 @@ public class LoginEndServlet extends HttpServlet {
 				
 		}else {
 			//로그인이 실패했다면 다시 로그인 화면으로 setAttribute에 메세지 담아갈수도있음
-			request.getRequestDispatcher(Constants.WEB_VIEWS+"user/login.jsp").forward(request, response);
+			request.setAttribute("wrongData", "일치하는 로그인 정보가 없습니다.");
+			request.setAttribute("mapping", "/user/login");
+			request.getRequestDispatcher(Constants.WEB_VIEWS+"common/wrongdata.jsp").forward(request, response);
 		}
 	
 	}

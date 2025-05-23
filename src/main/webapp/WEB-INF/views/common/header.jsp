@@ -3,6 +3,16 @@
 %>
 <%
 	User loginUser = (User)session.getAttribute("user");
+	Cookie[] cookies = request.getCookies();//쿠키 싹다 가져오기
+	String savedUser = null;
+	if(cookies!=null){
+		for(Cookie c:cookies){
+			if(c.getName().equals("userSave")){//savaUser라는 이름의 쿠키를 가져와서 String변수에 담기
+				savedUser=c.getValue();//여기엔 버튼을 누른 id값이 저장될것
+				break;
+			}
+		}
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -28,9 +38,9 @@
                 <a href="<%=request.getContextPath()%>/user/enroll" class="nav-link py-0">회원가입</a>
             </li>
             <%}else{ %>
-            <p><%=loginUser.getUserId() %>님 환영합니다.</p>
+            <span><b><%=loginUser.getUserId() %>님 환영합니다.</b></span>
             <li class="nav-item">
-                <a href="<%=request.getContextPath()%>" class="nav-link py-0">로그아웃</a>
+                <a href="<%=request.getContextPath()%>/user/logout" class="nav-link py-0">로그아웃</a>
             </li>
             
             <%} %>
