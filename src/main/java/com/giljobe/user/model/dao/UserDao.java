@@ -103,5 +103,25 @@ public class UserDao {
 					.userName(rs.getString("user_name"))
 					.build();
 	}
+	public User checkId(Connection conn, String userId) {
+		// TODO Auto-generated method stub
+		User u = null;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("checkId"));
+			pstmt.setString(1, userId);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				u=getUser(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return u;
+	}
 	
 }

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<h2>로그인</h2>유형에 맞는 로그인을 하시면 알맞는 서비스를 제공합니다
+	<h2>로그인</h2><span>유형에 맞는 로그인을 하시면 알맞는 서비스를 제공합니다</span>
 	<div class="login-wrapper d-flex justify-content-center gap-4">
   <main class="form-signin">
     <form method="post" action="<%=request.getContextPath()%>/user/loginend">
