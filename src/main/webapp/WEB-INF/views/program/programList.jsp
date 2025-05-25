@@ -30,26 +30,26 @@
                     <% for (Program p : programList) {%>
                         <%=p.toString()%>
                     <%}%>
-                <div class="album py-5 bg-body-tertiary">
-                    <div class="container">
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            <div class="col">
-                                <div class="card shadow-sm">
-                                    <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png" style="background-size: contain" class="bd-placeholder-img card-img-top" height="250" width="100%">
-                                    <div class="card-body"><p class="card-text">개발자의 세상으로 어서오세요!</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">무료</button>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">개발자</button>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">천재교육IT센터</button>
-                                            </div>
-                                            <small class="text-body-secondary">D-30</small></div>
+                    <div class="album py-5 bg-body-tertiary">
+                        <div class="container">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                                <div class="col">
+                                    <div class="card shadow-sm">
+                                        <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png" style="background-size: contain" class="bd-placeholder-img card-img-top" height="250" width="100%">
+                                        <div class="card-body"><p class="card-text">개발자의 세상으로 어서오세요!</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">무료</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">개발자</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">천재교육IT센터</button>
+                                                </div>
+                                                <small class="text-body-secondary">D-30</small></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <%--만약 프로그램 리스트가 없다면--%>
                 <%} else {%>
                    <div>조회된 프로그램 리스트가 없습니다.</div>
