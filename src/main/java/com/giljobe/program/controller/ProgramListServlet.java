@@ -20,7 +20,7 @@ public class ProgramListServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programlist.jsp").forward(request, response)
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programList.jsp").forward(request, response)
 		;
 	}
 
