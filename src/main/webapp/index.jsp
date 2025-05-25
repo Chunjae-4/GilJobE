@@ -2,6 +2,7 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
+<div class="container-fluid"></div>
 <div class="px-4 pt-5 my-5 text-center border-bottom ">
 <%-- TODO: 진로 프로그램 검색바   --%>
     <div class=" d-flex flex-wrap align-items-center justify-content-center w-100">
