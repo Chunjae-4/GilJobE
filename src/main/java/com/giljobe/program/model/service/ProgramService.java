@@ -1,8 +1,10 @@
 package com.giljobe.program.model.service;
 
 import com.giljobe.program.model.dao.ProgramDao;
+import com.giljobe.program.model.dto.Program;
 
 import java.sql.Connection;
+import java.util.List;
 
 import static com.giljobe.common.JDBCTemplate.close;
 import static com.giljobe.common.JDBCTemplate.getConnection;
@@ -24,4 +26,10 @@ public class ProgramService {
         return totalCount;
     }
 
+    public List<Program> searchAllPrograms(int cPage, int numPerPage) {
+        Connection conn = getConnection();
+        List<Program> programList = ProgramDao.getInstance().searchAllProgram(conn, cPage, numPerPage);
+        close(conn);
+        return programList;
+    }
 }
