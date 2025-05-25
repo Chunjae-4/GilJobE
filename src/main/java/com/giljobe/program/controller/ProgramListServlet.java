@@ -46,8 +46,7 @@ public class ProgramListServlet extends HttpServlet {
 		System.out.println(programList.toString());
 		request.setAttribute("programList", programList);
 		//3. set page
-		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programList.jsp").forward(request, response)
-		;
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programList.jsp").forward(request, response);
 
 	}
 
