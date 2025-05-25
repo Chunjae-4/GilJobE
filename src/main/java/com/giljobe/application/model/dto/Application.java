@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Application {
 	private int appNo;
-	private int proNoRef;
+	private int timeNoRef;
 	private int userNoRef;
 	private boolean applyState;
 }
