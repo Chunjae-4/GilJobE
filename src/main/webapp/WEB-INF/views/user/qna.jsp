@@ -1,11 +1,11 @@
-<%@page import="com.giljobe.program.model.dto.Program"%>
+<%@page import="com.giljobe.qna.model.dto.QNA"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
 <%
-	List<Program> programs=(List<Program>)request.getAttribute("programs");
+	List<QNA> qnas=(List<QNA>)request.getAttribute("qnas");
 %>
 <ul>
-<%for(Program p : programs){%>
-	<li><%=p %></li>
+<%for(QNA Q : qnas){%>
+	<li><%=Q %></li>
 <%}%>
 </ul>

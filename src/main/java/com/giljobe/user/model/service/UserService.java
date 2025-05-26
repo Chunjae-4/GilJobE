@@ -19,7 +19,7 @@ public class UserService {
 	public int enrollUser(User user) {
 		// TODO Auto-generated method stub
 		conn=getConnection();
-		int result = UserDao.userDao().enrollUser(conn,user);//근데 로그인 성공 실패를 분기 처리 해야하나
+		int result = userDao.enrollUser(conn,user);//근데 로그인 성공 실패를 분기 처리 해야하나
 		close(conn);
 		if(result>0) {
 			//성공
@@ -36,7 +36,7 @@ public class UserService {
 	public User login(String id, String pw) {
 		
 		conn=getConnection();
-		User u = UserDao.userDao().login(conn, id, pw);
+		User u = userDao.login(conn, id, pw);
 		close(conn);
 		return u;
 	}
@@ -44,7 +44,7 @@ public class UserService {
 	public User searchUserById(String userId) {
 		// TODO Auto-generated method stub
 		conn=getConnection();
-		User u = UserDao.userDao().searchUserById(conn,userId);
+		User u = userDao.searchUserById(conn,userId);
 		close(conn);
 		return u;
 	}
