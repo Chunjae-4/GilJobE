@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
+<%@ page import="com.giljobe.common.ProCategory" %>
+<%@ page import="java.util.Optional" %>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
@@ -9,6 +11,20 @@
         <form class="d-flex align-items-center  justify-content-center justify-content-center gap-2 mb-3 w-100" action="<%=request.getContextPath()%>/program/programsearchform">
             <span class="fw-bold">체험 프로그램 찾기</span>
             <input name="keyword" type="search" class="w-50 form-control form-control-light" placeholder="Search...(개발중)" aria-label="Search">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    직업 카테고리
+                </button>
+                <ul class="dropdown-menu">
+<%--                    직업 갯수: <%=ProCategory.values().length%>--%>
+                    <%for(ProCategory sc: ProCategory.values()){%>
+                        <% Optional<String> result = java.util.Arrays.stream(sc.getSubcategories()).reduce((prev, next) -> prev + '*' + next);%>
+                    <li class="dropdown-item"><%=result.get()%></li>
+                    <%}%>
+
+
+                </ul>
+            </div>
             <button class="btn btn-outline-light">🔎</button>
         </form>
     </div>
