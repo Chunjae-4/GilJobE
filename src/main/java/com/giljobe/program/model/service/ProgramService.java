@@ -47,5 +47,10 @@ public class ProgramService {
 		close(conn);
 		return programs;
 	}
-    
+    public List<Program> searchProgramByTitleKeyword(String keyword){
+        Connection conn=getConnection();
+        List<Program> programs = ProgramDao.getInstance().searchProgramByTitleKeyword(conn,keyword);
+        close(conn);
+        return programs;
+    }
 }

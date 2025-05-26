@@ -55,6 +55,25 @@ public class ProgramDao {
         }
         return programList;
     }
+
+    public List<Program> searchProgramByTitleKeyword(Connection conn, String keyword) {
+        List<Program> programList = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("searchProgramByTitleKeyword"));
+            pstmt.setString(1, keyword);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Program p = getProgram(rs);
+                programList.add(p);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return programList;
+    }
     
     public Program selectProgramByNo(Connection conn, int proNo) {
         Program program = null;
@@ -95,7 +114,7 @@ public class ProgramDao {
         return result;
     }
 
-    private Program getProgram(ResultSet rs) throws SQLException {
+    public Program getProgram(ResultSet rs) throws SQLException {
         return Program.builder()
                 .proNo(rs.getInt("pro_no"))
                 .proName(rs.getString("pro_name"))
