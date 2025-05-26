@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.giljobe.common.Constants;
+import com.giljobe.program.model.dto.ProTime;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.dto.Round;
+import com.giljobe.program.model.service.ProTimeService;
 import com.giljobe.program.model.service.ProgramService;
 import com.giljobe.program.model.service.RoundService;
 
@@ -78,14 +80,21 @@ public class ProgramDetailServlet extends HttpServlet {
 		
 		// 가장 미래 회차 선택 (availableRounds 중 마지막)
 		if (!availableRounds.isEmpty()) {
-		    selectedRound = availableRounds.get(availableRounds.size() - 1);
+		    selectedRound = availableRounds.get(0);
 		} else if (!rounds.isEmpty()) {
-		    selectedRound = rounds.get(rounds.size() - 1); // fallback
+		    selectedRound = rounds.get(0); // fallback
 		}
 
+		// selectedRound의 protimes 를 불러옴
+		List<ProTime> proTimes = new ArrayList<>();
+		if (selectedRound != null) {
+		    proTimes = ProTimeService.getInstance().selectProTimesByRoundNo(selectedRound.getRoundNo());
+		}
+		
 		// 4. JSP에 전달할 데이터 저장
 		request.setAttribute("program", program);
 		request.setAttribute("selectedRound", selectedRound);
+		request.setAttribute("proTimes", proTimes);
 		request.setAttribute("availableRounds", availableRounds);
 		request.setAttribute("expiredRounds", expiredRounds);
 		

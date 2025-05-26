@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" 
 		 import="com.giljobe.common.Constants"%>
-<%@ page import="com.giljobe.program.model.dto.Program,
-				com.giljobe.program.model.dto.Round,
+<%@ page import="com.giljobe.program.model.dto.*,
 				java.util.List" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <% 
@@ -11,6 +10,15 @@ Round selectedRound = (Round)request.getAttribute("selectedRound");
 List<Round> availableRounds = (List<Round>)request.getAttribute("availableRounds");
 List<Round> expiredRounds = (List<Round>)request.getAttribute("expiredRounds");
 boolean noAvailableRounds = availableRounds.isEmpty();
+List<ProTime> proTimes = (List<ProTime>) request.getAttribute("proTimes");
+java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("HH:mm");
+String imageUrl = "/resources/images/logo.png"; // ✅ 기본 이미지 경로
+if (program != null) {
+    String dbImage = program.getProImageUrl();
+    if (dbImage != null && !dbImage.trim().isEmpty() && !"null".equalsIgnoreCase(dbImage.trim())) {
+        imageUrl = dbImage;
+    }
+}
 %>
 <section class="container py-5">
     
@@ -20,13 +28,19 @@ boolean noAvailableRounds = availableRounds.isEmpty();
         <div class="row g-0">
             <!-- 프로그램 이미지 -->
             <div class="col-md-5">
-                <img src="<%=request.getContextPath() + program.getProImageUrl()%>" 
+                <img src="<%=request.getContextPath() + imageUrl%>" 
                      class="img-fluid rounded-start" alt="프로그램 이미지">
             </div>
             <!-- 텍스트 정보 -->
             <div class="col-md-7">
                 <div class="card-body">
-                    <h3 class="card-title"><%= program.getProName() %> (<%= program.getRounds().size() %>회차)</h3>
+                	<h3 class="card-title">
+					    <%= program.getProName() %> (
+					    <span id="selected-round-label">
+					        <%= selectedRound != null ? selectedRound.getRoundCount() + "회차" : "회차 정보 없음" %>
+					    </span>
+					    )
+					</h3>
                     <p class="card-text">
                         <strong>지역:</strong> <%= program.getProLocation() %><br>
                         <strong>체험일:</strong> 2025/00/00<br>
@@ -43,8 +57,11 @@ boolean noAvailableRounds = availableRounds.isEmpty();
                     	<div class="dropdown">
 							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="roundDropdownBtn"
 							          data-bs-toggle="dropdown" aria-expanded="false">
-							      회차 정보: 
-							      <%= selectedRound != null ? selectedRound.getRoundNo() + "회차" : "회차 정보 없음" %>
+								  
+								  회차 정보:
+								  <span id="round-dropdown-label">
+								      <%= selectedRound != null ? selectedRound.getRoundCount() + "회차" : "회차 정보 없음" %>
+							      </span>
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="roundDropdownBtn">
 								<% if (noAvailableRounds) { %>
@@ -56,8 +73,8 @@ boolean noAvailableRounds = availableRounds.isEmpty();
 							    <!-- ✅ 가능한 회차 -->
 							    <% for (Round r : availableRounds) { %>
 							        <li>
-							            <a class="dropdown-item" href="?proNo=<%= program.getProNo() %>&roundNo=<%= r.getRoundNo() %>">
-							                <%= r.getRoundNo() %>회차 - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
+										<a class="dropdown-item round-option" href="#" data-roundcount="<%= r.getRoundCount() %>">
+							                <%= r.getRoundCount() %>회차 - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
 							            </a>
 							        </li>
 							    <% } %>
@@ -71,7 +88,7 @@ boolean noAvailableRounds = availableRounds.isEmpty();
 							    <% for (Round r : expiredRounds) { %>
 							        <li>
 							            <span class="dropdown-item text-muted" style="pointer-events: none;">
-							                <%= r.getRoundNo() %>회차 (만료) - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
+							                <%= r.getRoundCount() %>회차 (만료) - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
 							            </span>
 							        </li>
 							    <% } %>
@@ -83,6 +100,27 @@ boolean noAvailableRounds = availableRounds.isEmpty();
 							    <button class="btn btn-outline-secondary btn-sm" disabled>참여 불가</button>
 							<% } %>       
                         <small class="text-muted">🧡 51명</small>
+                        
+                        <div id="protime-section">
+	                        <% if (proTimes != null && !proTimes.isEmpty()) { %>
+							    <div class="card mb-4">
+							        <div class="card-header fw-bold">체험 가능 시간</div>
+							        <div class="card-body">
+							            <div class="d-flex flex-wrap gap-2">
+							                <% for (ProTime pt : proTimes) { %>
+							                    <button type="button" class="btn btn-outline-secondary">
+							                        <%= timeFormat.format(pt.getStartTime()) %> ~ <%= timeFormat.format(pt.getEndTime()) %>
+							                    </button>
+							                <% } %>
+							            </div>
+							        </div>
+							    </div>
+							<% } else { %>
+							    <p class="text-muted">시간 정보가 없습니다.</p>
+							<% } %>
+						</div>
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -92,26 +130,7 @@ boolean noAvailableRounds = availableRounds.isEmpty();
         <p>프로그램 정보가 없습니다.</p>
     <% } %>
     
-    
-    
-    
-    
-    
-    
-    <% if (program != null) { %>
-        <h1><%= program.getProName() %></h1>
-        <p><strong>유형:</strong> <%= program.getProType() %></p>
-        <p><strong>장소:</strong> <%= program.getProLocation() %></p>
-        <p><strong>카테고리:</strong> <%= program.getProCategory() %></p>
-        <p><strong>이미지 경로:</strong> <%= program.getProImageUrl() %></p>
-        <p><strong>위도 / 경도:</strong> <%= program.getProLatitude() %> / <%= program.getProLongitude() %></p>
-    <% } else { %>
-        <p>프로그램 정보가 없습니다.</p>
-    <% } %>
-    
-    
-    
-    
+   
 	<!-- 지도 영역 -->
 	<div class="program-map">
 	    <h3>지도</h3>
@@ -131,5 +150,47 @@ boolean noAvailableRounds = availableRounds.isEmpty();
 	</div>
     
 </section>
+
+<script>
+$(function() {
+    $(".round-option").click(function(e) {
+        e.preventDefault();
+
+        const roundCount = $(this).data("roundcount");
+        const proNo = "<%= program.getProNo() %>";
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/program/roundinfo",
+            method: "GET",
+            data: { proNo: proNo, roundCount: roundCount },
+            success: function(data) {
+            	
+            	console.log("응답 데이터:", data);
+            	
+                // 회차 제목 변경
+                $("#selected-round-label").text(data.roundCount + "회차");
+                $("#round-dropdown-label").text(data.roundCount + "회차");
+
+                // 시간 리스트 갱신
+                let html = "";
+                if (data.proTimes.length > 0) {
+                    html += `<div class="card mb-4">
+                                <div class="card-header fw-bold">체험 가능 시간</div>
+                                <div class="card-body">
+                                    <div class="d-flex flex-wrap gap-2">`;
+                    data.proTimes.forEach(function(pt) {
+                        html += `<button class="btn btn-outline-secondary">${pt.start} ~ ${pt.end}</button>`;
+                    });
+                    html += `</div></div></div>`;
+                } else {
+                    html = `<p class="text-muted">시간 정보가 없습니다.</p>`;
+                }
+
+                $("#protime-section").html(html);
+            }
+        });
+    });
+});
+</script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
