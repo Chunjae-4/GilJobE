@@ -24,4 +24,6 @@ public class Round {
 	private String detail;
 	private int proNoRef;
 	// 프로그램 PK 값에다가 + Ref
+	
+	private List<ProTime> proTimes;
 }

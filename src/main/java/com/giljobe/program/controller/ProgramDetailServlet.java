@@ -1,6 +1,7 @@
 package com.giljobe.program.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.giljobe.common.Constants;
 import com.giljobe.program.model.dto.Program;
+import com.giljobe.program.model.dto.Round;
 import com.giljobe.program.model.service.ProgramService;
+import com.giljobe.program.model.service.RoundService;
 
 
 @WebServlet("/program/detail")
@@ -46,6 +49,8 @@ public class ProgramDetailServlet extends HttpServlet {
 			request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programList.jsp").forward(request, response);
 			return;
 		}
+		List<Round> rounds = RoundService.getInstance().selectRoundsByProgramNo(proNo);
+		program.setRounds(rounds);
 
 		// 4. JSP에 전달할 데이터 저장
 		request.setAttribute("program", program);

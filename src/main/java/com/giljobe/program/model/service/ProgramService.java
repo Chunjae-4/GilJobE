@@ -28,7 +28,7 @@ public class ProgramService {
 
     public List<Program> searchAllPrograms(int cPage, int numPerPage) {
         Connection conn = getConnection();
-        List<Program> programList = ProgramDao.getInstance().searchAllProgram(conn, cPage, numPerPage);
+        List<Program> programList = dao.searchAllProgram(conn, cPage, numPerPage);
         close(conn);
         return programList;
     }
