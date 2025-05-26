@@ -30,7 +30,7 @@ public class IdDuplicateServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		String userId=request.getParameter("id");
-		User u = UserService.userService().checkId(userId);
+		User u = UserService.userService().searchUserById(userId);
 		response.setContentType(Constants.CONTENT_TYPE_JSON);
 		new Gson().toJson(Map.of("result",u==null),response.getWriter());
 	}

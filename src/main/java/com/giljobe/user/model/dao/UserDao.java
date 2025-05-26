@@ -20,7 +20,7 @@ public class UserDao {
 	private static final UserDao DAO = new UserDao();
 	public UserDao() {
 		
-		String path = UserDao.class.getResource("/sql/user_sql.properties").getPath();
+		String path = UserDao.class.getResource("/sql/user.properties").getPath();
 		try {
 			FileReader fr = new FileReader(path);
 			sql.load(fr);
@@ -103,7 +103,7 @@ public class UserDao {
 					.userName(rs.getString("user_name"))
 					.build();
 	}
-	public User checkId(Connection conn, String userId) {
+	public User searchUserById(Connection conn, String userId) {
 		// TODO Auto-generated method stub
 		User u = null;
 		try {
