@@ -8,11 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.giljobe.common.Constants;
-import com.giljobe.love.model.dto.Love;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
+import com.giljobe.user.model.dto.User;
 
 /**
  * Servlet implementation class LoveServlet
@@ -34,8 +35,13 @@ public class LoveServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		List<Program> programs =  ProgramService.getInstance().selectProgramByNo(0);
-		
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		List<Program> programs =  ProgramService.getInstance().lovedProgramByUserNo(user.getUserNo());
+		//프로그램을 조회하려면 유저정보가 필요
+		//세션에서 유저정보를 받아와야하나?
+		request.setAttribute("lovedProgram", programs);
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"user/like.jsp").forward(request, response);
 	}
 
 	/**

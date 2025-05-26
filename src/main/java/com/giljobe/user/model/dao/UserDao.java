@@ -95,12 +95,14 @@ public class UserDao {
 	public User getUser(ResultSet rs) throws SQLException {
 			
 		return User.builder()
+					.userNo(rs.getInt("user_no"))
 					.userId(rs.getString("user_id"))
 					.userPhone(rs.getString("user_phone"))
 					.userBirth(rs.getDate("user_birth"))
 					.userEmail(rs.getString("user_email"))
 					.userNickName(rs.getString("user_nickname"))
 					.userName(rs.getString("user_name"))
+					.userRoleNo(rs.getInt("user_role_no"))
 					.build();
 	}
 	public User searchUserById(Connection conn, String userId) {

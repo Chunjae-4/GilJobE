@@ -40,5 +40,12 @@ public class ProgramService {
         return program;
     }
     
+	public List<Program> lovedProgramByUserNo(int userNo) {
+		// TODO Auto-generated method stub
+		Connection conn=getConnection();
+		List<Program> programs = ProgramDao.getInstance().lovedProgramByUserNo(conn,userNo);
+		close(conn);
+		return programs;
+	}
     
 }

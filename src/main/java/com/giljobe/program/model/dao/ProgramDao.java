@@ -107,4 +107,20 @@ public class ProgramDao {
                 .proImageUrl(rs.getString("pro_image_url"))
                 .build();
     }
+	public List<Program> lovedProgramByUserNo(Connection conn, int userNo) {
+		// TODO Auto-generated method stub
+		List<Program> programs = new ArrayList<Program>();
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectLovedProgramByUserNo"));
+			pstmt.setInt(1, userNo);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				programs.add(getProgram(rs));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return programs;
+	}
 }

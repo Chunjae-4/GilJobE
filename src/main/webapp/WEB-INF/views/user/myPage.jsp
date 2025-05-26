@@ -93,12 +93,8 @@ section {
 <script>
   	
   	$("#love").click(e=>{
-	const response = fetch("<%=request.getContextPath()%>/user/love");
-	if(response.ok){
+	location.replace("<%=request.getContextPath()%>/user/love");
 	
-		
-		
-	}
   	
   	})
   	
