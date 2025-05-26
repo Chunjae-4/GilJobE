@@ -107,7 +107,7 @@ public class UserDao {
 		// TODO Auto-generated method stub
 		User u = null;
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("checkId"));
+			pstmt=conn.prepareStatement(sql.getProperty("searchUserById"));
 			pstmt.setString(1, userId);
 			rs=pstmt.executeQuery();
 			if(rs.next()) {
