@@ -26,7 +26,6 @@ public class JDBCTemplate {
 			conn = DriverManager.getConnection(prop.getProperty("url"),prop.getProperty("user"),prop.getProperty("password"));
 			conn.setAutoCommit(false);
 		} catch (IOException|ClassNotFoundException|SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return conn;
@@ -38,7 +37,6 @@ public class JDBCTemplate {
 				val.commit();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -50,7 +48,6 @@ public class JDBCTemplate {
 				val.rollback();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -66,7 +63,6 @@ public class JDBCTemplate {
 				((PreparedStatement)val).close();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

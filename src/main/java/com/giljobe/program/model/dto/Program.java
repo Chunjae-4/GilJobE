@@ -27,8 +27,8 @@ public class Program {
 	private double proLatitude;
 	private double proLongitude;
 	private String proCategory;
-	
-	
+	private String proImageUrl;
+
 	private int comNoRef;
 	// 기업번호 참조 - 기업 번호 변수명에다가 Ref 를 붙이는걸로.
 	
@@ -37,7 +37,9 @@ public class Program {
 	private List<Chat> chats;
 	private List<Love> likes;
 	private List<Application> applications;
-	
+	// 건물이름은 이미 작성이 되었으니, 그 뒤에 혹시 몇층, 몇호,
+	// 또는 헷갈리지 않게 CU 건너편 이런식으로 작성할 수 있게만.
+	// 도시 동 도로명주소 입력할 필요 없도록!!
 	
 
 }

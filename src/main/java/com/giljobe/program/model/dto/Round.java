@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Round {
-	
 	private int roundNo;
-	private Date roundStartDate;
-	private Date roundEndDate;
-	// java.sql.Date - sql 이 맞았던 거 같은데, 맞겠죠?
-	
-	private int roundSesCount;
-	
+	private Date roundDate;
+	private int roundMaxPeople;
+	private int roundPrice;
+	private String detailLocation;
+	private String goal;
+	private String note;
+	private String summary;
+	private String detail;
 	private int proNoRef;
 	// 프로그램 PK 값에다가 + Ref
-	private List<ProSession> sessions;
 }
