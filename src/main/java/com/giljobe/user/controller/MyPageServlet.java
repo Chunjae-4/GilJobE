@@ -13,7 +13,7 @@ import com.giljobe.user.model.dto.User;
 import com.giljobe.user.model.service.UserService;
 
 
-@WebServlet("/user/mypage")
+@WebServlet("/mypage/mypageview")
 public class MyPageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,7 +26,7 @@ public class MyPageServlet extends HttpServlet {
 	//로그인을 눌러야 아이디 저장이 on/null값이 바뀐ㅁ
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		request.getRequestDispatcher(Constants.WEB_VIEWS+"user/myPage.jsp").forward(request, response);
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"mypage/myPage.jsp").forward(request, response);
 		
 	}
 

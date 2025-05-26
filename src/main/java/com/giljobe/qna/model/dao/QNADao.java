@@ -1,6 +1,5 @@
 package com.giljobe.qna.model.dao;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,10 +12,8 @@ import java.util.Properties;
 import static com.giljobe.common.JDBCTemplate.*;
 
 import com.giljobe.program.model.dao.ProgramDao;
-import com.giljobe.program.model.dto.Program;
 import com.giljobe.qna.model.dto.QNA;
 import com.giljobe.user.model.dao.UserDao;
-import com.giljobe.user.model.dto.User;
 
 public class QNADao {
 	
@@ -45,7 +42,7 @@ public class QNADao {
 		// TODO Auto-generated method stub
 		List<QNA> qnas= new ArrayList<QNA>();
 		try {
-			pstmt=conn.prepareStatement("searchQNAByUserNo");
+			pstmt=conn.prepareStatement(sql.getProperty("searchQNAByUserNo"));
 			pstmt.setInt(1, userNo);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {

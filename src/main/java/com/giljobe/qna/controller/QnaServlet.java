@@ -1,4 +1,4 @@
-package com.giljobe.user.controller;
+package com.giljobe.qna.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,31 +11,28 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.giljobe.common.Constants;
-import com.giljobe.program.model.dto.Program;
-import com.giljobe.program.model.service.ProgramService;
+import com.giljobe.qna.model.dto.QNA;
+import com.giljobe.qna.model.service.QNAService;
 import com.giljobe.user.model.dto.User;
 
 
-@WebServlet("/user/love")
-public class LoveServlet extends HttpServlet {
+@WebServlet("/mypage/qna")
+public class QnaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
-    public LoveServlet() {
+   
+    public QnaServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
-		List<Program> programs =  ProgramService.getInstance().lovedProgramByUserNo(user.getUserNo());
-		//프로그램을 조회하려면 유저정보가 필요
-		//세션에서 유저정보를 받아와야하나?
-		request.setAttribute("programs", programs);
-		request.getRequestDispatcher(Constants.WEB_VIEWS+"user/like.jsp").forward(request, response);
+		List<QNA> qnas = QNAService.qnaService().searchQNAByUserNo(user.getUserNo());
+		request.setAttribute("qnas", qnas);
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"/mypage/qna.jsp").forward(request, response);
 	}
 
 	

@@ -62,7 +62,7 @@
             <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
             <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/notice/noticelist" class="nav-link">공지사항</a></li>
             <%if(loginUser!=null){ %>
-            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/user/mypage" class="nav-link">마이페이지</a></li>
+            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/mypage/mypageview" class="nav-link">마이페이지</a></li>
             <%}else{ %>
             <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/user/login" class="nav-link">마이페이지</a></li>
             <%} %>

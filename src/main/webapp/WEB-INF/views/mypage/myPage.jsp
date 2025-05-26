@@ -59,7 +59,7 @@ section {
 	
 		$('#content').html('<p>불러오는 중...</p>');
 		$.ajax({
-		url: '<%=request.getContextPath()%>/user/' + menu,
+		url: '<%=request.getContextPath()%>/mypage/' + menu,
         method: 'GET',
         dataType: 'html', // 혹은 'json'으로 바꿀 수도 있음
         success: function (data) {
