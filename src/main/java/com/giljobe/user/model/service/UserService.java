@@ -41,10 +41,10 @@ public class UserService {
 		return u;
 	}
 	
-	public User checkId(String userId) {
+	public User searchUserById(String userId) {
 		// TODO Auto-generated method stub
 		conn=getConnection();
-		User u = UserDao.userDao().checkId(conn,userId);
+		User u = UserDao.userDao().searchUserById(conn,userId);
 		close(conn);
 		return u;
 	}

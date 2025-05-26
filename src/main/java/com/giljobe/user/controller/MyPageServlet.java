@@ -24,6 +24,7 @@ public class MyPageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		
+		request.getRequestDispatcher(Constants.WEB_VIEWS+"user/myPage.jsp").forward(request, response);
 		
 	}
 
