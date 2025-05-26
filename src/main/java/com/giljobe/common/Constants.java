@@ -8,6 +8,7 @@ public class Constants {
 
     //View 경로
     public static final String WEB_VIEWS = "/WEB-INF/views/";
+    public static final String WEB_INDEX = "/WEB-INF/index.jsp";
 
     //파일 업로드 경로
     public static final String DEFAULT_UPLOAD_PATH = "/resources/upload/";
