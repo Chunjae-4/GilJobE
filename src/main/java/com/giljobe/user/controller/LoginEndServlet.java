@@ -38,7 +38,7 @@ public class LoginEndServlet extends HttpServlet {
 			
 			Cookie cookie = new Cookie("userSave",request.getParameter("userId"));
 			cookie.setMaxAge(60*60*24);//생명주기
-			cookie.setPath(request.getContextPath());//이거 꼭 전체로 해야하나?
+			cookie.setPath("/");//이거 꼭 전체로 해야하나?
 			response.addCookie(cookie);//response에 쿠키담기
 		
 		}else {
