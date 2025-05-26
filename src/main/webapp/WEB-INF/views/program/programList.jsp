@@ -27,11 +27,10 @@
             <p>programList count :<%=programList.size()%></p>
             <%--프로그램 리스트가 있다면--%>
             <% if(programList != null && !programList.isEmpty()){%>
-            <% for (Program p : programList) {%>
-
             <div class="album py-5 bg-body-tertiary container-fluid ">
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <% for (Program p : programList) {%>
                         <div class="col">
                             <div class="card shadow-sm">
                                 <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png" style="background-size: contain" class="bd-placeholder-img card-img-top" height="250" width="100%">
@@ -47,10 +46,10 @@
                                 </div>
                             </div>
                         </div>
+                    <%}%>
                     </div>
                 </div>
             </div>
-            <%}%>
             <%--만약 프로그램 리스트가 없다면--%>
             <%} else {%>
             <div>조회된 프로그램 리스트가 없습니다.</div>
