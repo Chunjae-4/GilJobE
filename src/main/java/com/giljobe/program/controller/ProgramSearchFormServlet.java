@@ -1,4 +1,4 @@
-package com.giljobe.main.controller;
+package com.giljobe.program.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,15 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/main.do")
-public class MainViewServlet extends HttpServlet {
+@WebServlet("/program/programsearchform")
+public class ProgramSearchFormServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//       project first upload test
+        response.getWriter().write("Hello from ProgramSearchFormServlet");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        String keyword = request.getParameter("keyword");
+        System.out.println(keyword);
+
+
     }
 }
