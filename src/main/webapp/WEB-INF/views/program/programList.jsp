@@ -31,12 +31,14 @@
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <% for (Program p : programList) {%>
-                        <div class="col programDetail">
+                        <div class="col programDetail" data-prono="<%=p.getProNo()%>">
                         
                             <div class="card shadow-sm">
-                                <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png" style="background-size: contain" class="bd-placeholder-img card-img-top" height="250" width="100%">
-                                <div class="card-body"><p class="card-text"><%=p.getProName()%></p>
-                                    <%=p.toString()%>
+                            	<div>
+	                                <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png" style="background-size: contain" class="bd-placeholder-img card-img-top" height="250" width="100%">
+	                                <div class="card-body"><p class="card-text"><%=p.getProName()%></p>
+	                                    <%=p.toString()%>
+                                 </div>   
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><%=p.getProType()%></button>
@@ -60,9 +62,16 @@
         </div>
     </div>
     <script>
+ 	// 프로그램 카드 전체 클릭 시
     $(".programDetail").click(e=>{
-    	
-    	
+    	const proNo = $(e.currentTarget).data("prono");
+        location.href = "<%=request.getContextPath()%>/program/detail?proNo=" + proNo;
+        
+    });
+    
+ 	// 내부 버튼 클릭 시, 이벤트 전파 방지
+    $(".programDetail button").click(e => {
+        e.stopPropagation(); // 이벤트가 상위로 전파되지 않게 함
     });
     
     </script>
