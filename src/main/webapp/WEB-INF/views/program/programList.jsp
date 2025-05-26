@@ -73,7 +73,11 @@
     $(".programDetail button").click(e => {
         e.stopPropagation(); // 이벤트가 상위로 전파되지 않게 함
     });
-    
     </script>
+    <style>
+	    .programDetail {
+	        cursor: pointer;
+	    }
+	</style>
 </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
