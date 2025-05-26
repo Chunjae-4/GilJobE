@@ -33,5 +33,12 @@ public class ProgramService {
         return programList;
     }
     
+    public Program selectProgramByNo(int proNo) {
+        Connection conn = getConnection();
+        Program program = ProgramDao.getInstance().selectProgramByNo(conn, proNo);
+        close(conn);
+        return program;
+    }
+    
     
 }

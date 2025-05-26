@@ -31,7 +31,8 @@
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <% for (Program p : programList) {%>
-                        <div class="col">
+                        <div class="col programDetail">
+                        
                             <div class="card shadow-sm">
                                 <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png" style="background-size: contain" class="bd-placeholder-img card-img-top" height="250" width="100%">
                                 <div class="card-body"><p class="card-text"><%=p.getProName()%></p>
@@ -58,5 +59,12 @@
 
         </div>
     </div>
+    <script>
+    $(".programDetail").click(e=>{
+    	
+    	
+    });
+    
+    </script>
 </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

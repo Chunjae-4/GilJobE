@@ -38,8 +38,7 @@ public class ProgramDetailServlet extends HttpServlet {
 		int proNo = Integer.parseInt(proNoStr);
 
 		// 3. DB에서 해당 프로그램 조회
-//		Program program = new ProgramService(). .selectProgramByNo(proNo);
-		Program program = new ProgramService().getInstance().se
+		Program program = ProgramService.getInstance().selectProgramByNo(proNo);
 
 		if (program == null) {
 			request.setAttribute("msg", "해당 프로그램 정보를 찾을 수 없습니다.");

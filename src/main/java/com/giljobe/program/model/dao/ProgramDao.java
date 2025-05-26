@@ -55,6 +55,26 @@ public class ProgramDao {
         }
         return programList;
     }
+    
+    public Program selectProgramByNo(Connection conn, int proNo) {
+        Program program = null;
+        
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("selectProgramByNo"));
+            pstmt.setInt(1, proNo);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                program = getProgram(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+
+        return program;
+    }
 
     public int programCount(Connection conn)
     {
