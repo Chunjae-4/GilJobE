@@ -1,6 +1,9 @@
 package com.giljobe.program.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -51,9 +54,40 @@ public class ProgramDetailServlet extends HttpServlet {
 		}
 		List<Round> rounds = RoundService.getInstance().selectRoundsByProgramNo(proNo);
 		program.setRounds(rounds);
+		
+		LocalDate today = LocalDate.now();
+		Round selectedRound = null;
+		List<Round> expiredRounds = new ArrayList<>();
+		List<Round> availableRounds = new ArrayList<>();
+		for (Round r : rounds) {
+		    LocalDate roundDate = r.getRoundDate().toLocalDate();
+		    // Date 는 시간 값도 있어서, 날짜부분만 추출해야 함.
+		    
+		    if (roundDate.isBefore(today)) {
+		        expiredRounds.add(r);
+		    } else {
+		        availableRounds.add(r);
+		    }
+		}
+		
+		// 회차들을 날짜 기준으로 정렬 - 토글에서 보여줄 때 필요
+		rounds.sort(Comparator.comparing((Round r) -> r.getRoundDate().toLocalDate()).reversed());
+		availableRounds.sort(Comparator.comparing((Round r) -> r.getRoundDate().toLocalDate()).reversed());
+		expiredRounds.sort(Comparator.comparing((Round r) -> r.getRoundDate().toLocalDate()).reversed());
+
+		
+		// 가장 미래 회차 선택 (availableRounds 중 마지막)
+		if (!availableRounds.isEmpty()) {
+		    selectedRound = availableRounds.get(availableRounds.size() - 1);
+		} else if (!rounds.isEmpty()) {
+		    selectedRound = rounds.get(rounds.size() - 1); // fallback
+		}
 
 		// 4. JSP에 전달할 데이터 저장
 		request.setAttribute("program", program);
+		request.setAttribute("selectedRound", selectedRound);
+		request.setAttribute("availableRounds", availableRounds);
+		request.setAttribute("expiredRounds", expiredRounds);
 		
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programDetail.jsp").forward(request, response);
 	}

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Round {
 	private int roundNo;
+	private int roundCount;
 	private Date roundDate;
 	private int roundMaxPeople;
 	private int roundPrice;

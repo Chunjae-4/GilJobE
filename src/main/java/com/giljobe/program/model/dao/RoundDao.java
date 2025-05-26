@@ -59,6 +59,7 @@ public class RoundDao {
 	private Round getRound(ResultSet rs) throws SQLException {
         return Round.builder()
                 .roundNo(rs.getInt("round_no"))
+                .roundCount(rs.getInt("round_count"))
                 .roundDate(rs.getDate("round_date"))
                 .roundMaxPeople(rs.getInt("round_max_people"))
                 .roundPrice(rs.getInt("round_price"))

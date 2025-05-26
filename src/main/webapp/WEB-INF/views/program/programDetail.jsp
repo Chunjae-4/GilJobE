@@ -1,8 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" 
 		 import="com.giljobe.common.Constants"%>
-<%@ page import="com.giljobe.program.model.dto.Program" %>
+<%@ page import="com.giljobe.program.model.dto.Program,
+				com.giljobe.program.model.dto.Round,
+				java.util.List" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<% Program program = (Program)request.getAttribute("program");%>
+<% 
+Program program = (Program)request.getAttribute("program");
+List<Round> rounds = program.getRounds();
+Round selectedRound = (Round)request.getAttribute("selectedRound");
+List<Round> availableRounds = (List<Round>)request.getAttribute("availableRounds");
+List<Round> expiredRounds = (List<Round>)request.getAttribute("expiredRounds");
+boolean noAvailableRounds = availableRounds.isEmpty();
+%>
 <section class="container py-5">
     
    <% if (program != null) { %>
@@ -31,11 +40,48 @@
                     </p>
 
                     <div class="d-flex justify-content-between align-items-center mt-4">
-                        <div class="btn-group">
-                            <button class="btn btn-outline-secondary btn-sm">1회차</button>
-                            <button class="btn btn-outline-secondary btn-sm">toggle</button>
-                            <button class="btn btn-outline-primary btn-sm">참여하기</button>
-                        </div>
+                    	<div class="dropdown">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="roundDropdownBtn"
+							          data-bs-toggle="dropdown" aria-expanded="false">
+							      회차 정보: 
+							      <%= selectedRound != null ? selectedRound.getRoundNo() + "회차" : "회차 정보 없음" %>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="roundDropdownBtn">
+								<% if (noAvailableRounds) { %>
+							        <li class="dropdown-item text-muted" style="pointer-events: none;">
+							            ※ 현재 신청 가능한 회차가 없습니다.
+							        </li>
+							        <li><hr class="dropdown-divider"></li>
+							    <% } %>
+							    <!-- ✅ 가능한 회차 -->
+							    <% for (Round r : availableRounds) { %>
+							        <li>
+							            <a class="dropdown-item" href="?proNo=<%= program.getProNo() %>&roundNo=<%= r.getRoundNo() %>">
+							                <%= r.getRoundNo() %>회차 - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
+							            </a>
+							        </li>
+							    <% } %>
+							
+							    <!-- ✅ 구분선 -->
+							    <% if (!(expiredRounds).isEmpty()) { %>
+							        <li><hr class="dropdown-divider"></li>
+							    <% } %>
+							
+							    <!-- ❌ 만료된 회차 -->
+							    <% for (Round r : expiredRounds) { %>
+							        <li>
+							            <span class="dropdown-item text-muted" style="pointer-events: none;">
+							                <%= r.getRoundNo() %>회차 (만료) - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
+							            </span>
+							        </li>
+							    <% } %>
+							</ul>
+						</div>                 
+                            <% if (selectedRound != null) { %>
+							    <button class="btn btn-outline-primary btn-sm">참여하기</button>
+							<% } else { %>
+							    <button class="btn btn-outline-secondary btn-sm" disabled>참여 불가</button>
+							<% } %>       
                         <small class="text-muted">🧡 51명</small>
                     </div>
                 </div>
