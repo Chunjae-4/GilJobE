@@ -6,10 +6,10 @@
 <div class="px-4 pt-5 my-5 text-center border-bottom ">
 <%-- TODO: 진로 프로그램 검색바   --%>
     <div class=" d-flex flex-wrap align-items-center justify-content-center w-100">
-        <form class="d-flex align-items-center  justify-content-center justify-content-center gap-2 mb-3 w-100">
+        <form class="d-flex align-items-center  justify-content-center justify-content-center gap-2 mb-3 w-100" action="<%=request.getContextPath()%>/program/programsearchform">
             <span class="fw-bold">체험 프로그램 찾기</span>
-            <input type="search" class="w-50 form-control form-control-light" placeholder="Search...(개발중)" aria-label="Search">
-            <button type="button" class="btn btn-outline-light">🔎</button>
+            <input name="keyword" type="search" class="w-50 form-control form-control-light" placeholder="Search...(개발중)" aria-label="Search">
+            <button class="btn btn-outline-light">🔎</button>
         </form>
     </div>
 
