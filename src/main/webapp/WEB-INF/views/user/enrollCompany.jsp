@@ -99,11 +99,13 @@
 
 						const companyId=e.target.value.trim();
 					
+						$(e.target).next().remove();//기존 메세지 삭제하고 새 메세지 붙이기
+						
 						if (!idReg.test(companyId)) {
 							$(e.target).after(
 									$("<span>").text("형식에 맞지 않는 아이디").css("color","red"));
 									$("#submitBtn").attr("disabled", true);
-							$(e,target).focus();
+							$(e.target).focus();
 							return false;
 						}
 					
@@ -123,7 +125,11 @@
 												$("<span>").text("사용할 수 없는 아이디").css("color","red"));
 												$("#submitBtn").attr("disabled", true);
 									}
-								});
+								}).catch(error=>{
+
+								alert("중복체크 중 오류 발생");
+								$("#submitBtn").attr("disabled", true);
+								})
 					},500);
 					}
 			})()
