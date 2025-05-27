@@ -8,9 +8,9 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <meta http-equiv="refresh" content="url=<%=request.getContextPath()%>/program/randomrecommend">
-<% List<Program> programList = (List<Program>) request.getAttribute("randomRecommend");%>
+<% List<Program> randomRecommend = (List<Program>) request.getAttribute("randomRecommend");%>
 <script>
-    if (<%=programList == null%>) {
+    if (<%=randomRecommend == null%>) {
         location.href = "<%=request.getContextPath()%>/program/randomrecommend";
     }
 </script>
@@ -18,7 +18,7 @@
 <div class="container py-5">
     <!-- 검색 섹션 -->
     <section class="text-center mb-5 py-5 ">
-        <h2 class="mb-4 "style="font-size: 2rem; font-weight: 300;">체험 프로그램 찾기</h2>
+        <h1 class="mb-4 "style="font-size: 2rem; font-weight: 300;">체험 프로그램 찾기</h1>
 
         <form role="search" action="<%=request.getContextPath()%>/program/programsearchform" method="get">
             <!-- 검색창 -->
@@ -65,9 +65,9 @@
                 <div class="col-lg-8">
                     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner rounded-4 shadow overflow-hidden">
-                            <% if (programList != null) {
+                            <% if (randomRecommend != null) {
                                 boolean isFirst = true;
-                                for (Program p : programList) { %>
+                                for (Program p : randomRecommend) { %>
                             <div class="carousel-item <%= isFirst ? "active" : "" %> programDetail"
                                  data-prono="<%=p.getProNo()%>">
                                 <div class="ratio ratio-16x9">
