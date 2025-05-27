@@ -56,6 +56,25 @@ public class RoundDao {
         return rounds;
     }
 	
+	public int getNextRoundCount(Connection conn, int proNo) {
+        int result=0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("getNextRoundCount"));
+            pstmt.setInt(1, proNo);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+            	result = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        
+        return result;
+    }
+	
 	public Round getRound(ResultSet rs) throws SQLException {
         return Round.builder()
                 .roundNo(rs.getInt("round_no"))

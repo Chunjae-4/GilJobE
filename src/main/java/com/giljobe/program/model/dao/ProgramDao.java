@@ -114,6 +114,61 @@ public class ProgramDao {
         }
         return result;
     }
+    
+    public int getNextProNo(Connection conn)
+    {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("getNextProNo"));
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+                // 시퀀스에서 cache_size가 0 이면, last_number는 nextval 했을때 나올 숫자를 정확히 예측 가능!
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+    
+    // insertProgram을 하면 등록된 프로그램의 proNo를 리턴해준다!
+    public int insertProgram(Connection conn, Program program)
+    {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("insertProgram"));
+            pstmt.setString(1, program.getProName());
+            pstmt.setString(2, program.getProType());
+            pstmt.setString(3, program.getProLocation());
+            pstmt.setDouble(4, program.getProLatitude());
+            pstmt.setDouble(5, program.getProLongitude());
+            pstmt.setString(6, program.getProCategory());
+            pstmt.setString(7, program.getProImageUrl());
+            pstmt.setInt(8, program.getComNoRef());
+            result = pstmt.executeUpdate();
+            close(pstmt);
+
+// 			INSERT 성공 시 시퀀스 CURRVAL로 PRO_NO 조회
+            if (result > 0) {
+                pstmt = conn.prepareStatement("SELECT SEQ_PRO_NO.CURRVAL FROM DUAL");
+                rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    int proNo = rs.getInt(1);
+                    program.setProNo(proNo); // 여기서 서블릿에서의 객체에 반영
+                }
+            }
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
 
     public Program getProgram(ResultSet rs) throws SQLException {
         return Program.builder()
@@ -134,8 +189,9 @@ public class ProgramDao {
 			pstmt = conn.prepareStatement(sql.getProperty("selectLovedProgramByUserNo"));
 			pstmt.setInt(1, userNo);
 			rs=pstmt.executeQuery();
-			if(rs.next()) {
-				programs.add(getProgram(rs));
+			while(rs.next()) {
+				Program p = getProgram(rs);
+				programs.add(p);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -143,4 +199,21 @@ public class ProgramDao {
 		}
 		return programs;
 	}
+	
+	public List<Program> selectProgramsByCompany(Connection conn, int comNo) {
+		List<Program> programs = new ArrayList<Program>();
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectProgramsByCompany"));
+			pstmt.setInt(1, comNo);
+			rs=pstmt.executeQuery();
+			while (rs.next()) {
+                Program p = getProgram(rs);
+                programs.add(p);
+            }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return programs;
+	}
+	
 }

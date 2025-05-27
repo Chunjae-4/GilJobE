@@ -1,0 +1,106 @@
+package com.giljobe.program.controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
+import com.giljobe.program.model.dto.Program;
+import com.giljobe.program.model.service.ProgramService;
+
+@WebServlet("/program/insert")
+@MultipartConfig(
+	maxFileSize = 1024 * 1024 * 50, // 50MB 제한
+    fileSizeThreshold = 1024 * 1024	
+) //multipart/form-data 요청 파싱하려면 필요
+public class InsertProgramServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    public InsertProgramServlet() {
+        super();
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		폼에서 전달된 데이터 수집 (multipart/form-data)
+//		대표 이미지 저장 → /resources/upload/comNo/proNo/1.png - 나중에 여러 이미지 넣으면 2,3,4.png 될 것
+//		주소 → 위도/경도 변환 (지금은 더미값으로 처리하자)
+//		Program 객체 생성
+//		DB 저장 → proNo 확보
+//		회차 등록 페이지로 redirect
+		
+		request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        // 로그인된 기업 회원 정보
+//      int comNo = ((Company) session.getAttribute("loginCompany")).getComNo();
+        int comNo = 1;
+        
+        // 1. 폼 파라미터 수집
+        String proName = request.getParameter("proName");
+        String proType = request.getParameter("proType");
+        String proLocation = request.getParameter("proLocation");
+        String proCategory = request.getParameter("proCategory");
+
+        // 2. 주소로부터 위도/경도 변환 (지금은 더미 값으로 처리)
+        double latitude = 37.478668;
+        double longitude = 126.884986;
+
+        // 3. 파일 저장
+        Part filePart = request.getPart("programImage");
+// 		insert 하기 전이므로 임시로 nextval 예측
+        int proNo = ProgramService.getInstance().getNextProNo(); // sequence 예측값 얻기
+        String uploadDir = getServletContext().getRealPath("/resources/upload/" + comNo + "/" + proNo);
+        
+        // 디렉토리 생성
+        File dir = new File(uploadDir);
+        if (!dir.exists()) dir.mkdirs();
+
+        // 이미지 저장
+        String imagePath = "/resources/upload/" + comNo + "/" + proNo + "/1.png";
+        File imageFile = new File(dir, "1.png");
+        try (InputStream in = filePart.getInputStream()) {
+            Files.copy(in, imageFile.toPath());
+        }
+
+        // 4. DTO 구성
+        Program program = Program.builder()
+                .proName(proName)
+                .proType(proType)
+                .proLocation(proLocation)
+                .proLatitude(latitude)
+                .proLongitude(longitude)
+                .proCategory(proCategory)
+                .proImageUrl(imagePath)
+                .comNoRef(comNo)
+                .build();
+
+        // 5. DB 저장
+        int result = ProgramService.getInstance().insertProgram(program); // insert + selectKey로 proNo 설정
+        
+        // 6. 성공 후 회차 입력 페이지로 이동
+        if (result>0) {
+            int savedProNo = program.getProNo(); 
+         System.out.println("savedProNo 확인 : "+savedProNo);// insert 후 채워졌는지 확인
+            response.sendRedirect(request.getContextPath() + "/round/add-with-detail?proNo=" + savedProNo);
+        } else {
+            request.setAttribute("msg", "프로그램 등록에 실패했습니다.");
+            request.setAttribute("loc", request.getContextPath() + "/program/new");
+            request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+        }
+		
+	}
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}

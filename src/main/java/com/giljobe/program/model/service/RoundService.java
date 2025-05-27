@@ -25,5 +25,11 @@ public class RoundService {
         return rounds;
     }
     
+    public int getNextRoundCount(int proNo) {
+        Connection conn = getConnection();
+        int result = dao.getNextRoundCount(conn, proNo);
+        close(conn);
+        return result;
+    }
     
 }
