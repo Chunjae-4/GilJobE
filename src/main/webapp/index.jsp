@@ -7,13 +7,7 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-<meta http-equiv="refresh" content="url=<%=request.getContextPath()%>/program/randomrecommend">
-<% List<Program> randomRecommend = (List<Program>) request.getAttribute("randomRecommend");%>
-<script>
-    if (<%=randomRecommend == null%>) {
-        location.href = "<%=request.getContextPath()%>/program/randomrecommend";
-    }
-</script>
+<% List<Program> randomRecommend = (List<Program>) application.getAttribute("randomRecommend");%>
 
 <div class="container py-5">
     <!-- 검색 섹션 -->
@@ -43,9 +37,8 @@
 
             <!-- 카테고리 버튼들 -->
             <div class="d-flex flex-wrap justify-content-center gap-2 mt-3" style="max-width: 700px; margin: 0 auto;">
-                <% for (ProCategory sc : ProCategory.values()) {
-                    Optional<String> result = java.util.Arrays.stream(sc.getSubcategories())
-                            .reduce((prev, next) -> prev + " · " + next); %>
+                <% for (ProCategory sc : ProCategory.values()) {%>
+                <%   Optional<String> result = java.util.Arrays.stream(sc.getSubcategories()).reduce((prev, next) -> prev + " · " + next); %>
                 <button type="button"
                         class="btn btn-outline-secondary category-btn px-3 py-2"
                         data-category="<%= result.get() %>">
