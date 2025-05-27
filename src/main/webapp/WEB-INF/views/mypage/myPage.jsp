@@ -14,9 +14,9 @@
 			<hr>
 			<ul class="nav nav-pills flex-column mb-auto">
 				<li onclick="sideMenu('userinfo')">내 정보 관리</li>
-				<li onclick="sideMenu('application')">신청 프로그램 관리</li>
-				<li onclick="sideMenu('love')">좋아요 누른 글</li>
-				<li onclick="sideMenu('qna')">문의 내역</li>
+				<li onclick="sideMenu('applist')">신청 프로그램 관리</li>
+				<li onclick="sideMenu('lovelist')">좋아요 누른 글</li>
+				<li onclick="sideMenu('qnalist')">문의 내역</li>
 				<li>기타 등등</li>
 			</ul>
 			<hr>

@@ -16,7 +16,7 @@ import com.giljobe.program.model.service.ProgramService;
 import com.giljobe.user.model.dto.User;
 
 
-@WebServlet("/mypage/love")
+@WebServlet("/mypage/lovelist")
 public class LoveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

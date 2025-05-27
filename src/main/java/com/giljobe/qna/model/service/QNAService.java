@@ -23,7 +23,7 @@ public class QNAService {
 		List<QNA> qnas = qnadao.searchQNAByUserNo(conn,userNo);
 		close(conn);
 		return qnas;
-	}
+	}	
 	
 	
 	

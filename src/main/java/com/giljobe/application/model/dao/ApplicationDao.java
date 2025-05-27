@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Properties;
 
 import com.giljobe.application.model.dto.Application;
+import com.giljobe.program.model.dao.ProTimeDao;
+import com.giljobe.user.model.dao.UserDao;
 
 public class ApplicationDao {
 	private static final ApplicationDao DAO = new ApplicationDao();
@@ -35,11 +37,11 @@ public class ApplicationDao {
 		}
 		
 	}
-	public List<Application> searchQNAByUserNo(Connection conn, int userNo) {
+	public List<Application> searchAppByUserNo(Connection conn, int userNo) {
 		// TODO Auto-generated method stub
 		List<Application> qnas= new ArrayList<Application>();
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("searchQNAByUserNo"));
+			pstmt=conn.prepareStatement(sql.getProperty("searchAppByUserNo"));
 			pstmt.setInt(1, userNo);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
@@ -56,9 +58,14 @@ public class ApplicationDao {
 	
 		return qnas;
 	}
-	private Application getApp(ResultSet rs) {
+	private Application getApp(ResultSet rs) throws SQLException {
 		// TODO Auto-generated method stub
-		return Application.builder().build();
+		return Application.builder()
+							.appNo(rs.getInt("app_no"))
+							.timeNoRef(ProTimeDao.getInstance().getProTime(rs))
+							.userNoRef(UserDao.userDao().getUser(rs))
+							.applyState(rs.getBoolean("app_state"))
+							.build();
 	}
 
 }

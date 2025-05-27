@@ -17,10 +17,10 @@ public class ApplicationService {
 	private ApplicationDao appdao = ApplicationDao.applicationDao();
 	private Connection conn;
 	
-	public List<Application> searchQNAByUserNo(int userNo) {
+	public List<Application> searchAppByUserNo(int userNo) {
 		// TODO Auto-generated method stub
 		conn=getConnection();
-		List<Application> qnas = appdao.searchQNAByUserNo(conn,userNo);
+		List<Application> qnas = appdao.searchAppByUserNo(conn,userNo);
 		close(conn);
 		return qnas;
 	}

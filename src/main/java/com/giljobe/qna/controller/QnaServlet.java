@@ -16,7 +16,7 @@ import com.giljobe.qna.model.service.QNAService;
 import com.giljobe.user.model.dto.User;
 
 
-@WebServlet("/mypage/qna")
+@WebServlet("/mypage/qnalist")
 public class QnaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
