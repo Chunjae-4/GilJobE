@@ -8,16 +8,19 @@
     <div class="row justify-content-center g-4">
 
       <!-- 유저 로그인 -->
-      <div class="col-md-5">
-        <div class="bg-white p-4 rounded-4 shadow-sm">
-          <form method="post" action="<%=request.getContextPath()%>/user/loginend">
-            <div class="text-center mb-4">
+      <div class="col-12 col-sm-6 col-md-5 col-lg-4">
+        <div class="bg-white p-5 rounded-4 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+          <form method="post" action="<%=request.getContextPath()%>/user/loginend" class="d-flex flex-column h-100">
+
+            <!-- 상단 정보 -->
+            <div class="mb-4">
               <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/groom_2920507.png"
-                   alt="유저" width="64" class="mb-2">
-              <h4 class="fw-bold">유저 로그인</h4>
-              <p class="text-muted small">개인 이용자를 위한 로그인</p>
+                   alt="유저" width="90" class="mb-4">
+              <h5 class="fw-semibold mb-2">유저 로그인</h5>
+              <p class="text-muted small mb-0">개인 이용자를 위한 로그인</p>
             </div>
 
+            <!-- 입력 필드 -->
             <div class="form-floating mb-3">
               <input type="text" class="form-control" name="userId" id="userId" placeholder="아이디"
                      value="<%=savedUser != null ? savedUser : "" %>">
@@ -29,33 +32,39 @@
               <label for="userPw">비밀번호</label>
             </div>
 
-            <div class="form-check mb-3">
+            <div class="form-check mb-4 text-start">
               <input class="form-check-input" type="checkbox" name="userSave" id="userSave"
                 <%=savedUser != null ? "checked" : "" %>>
               <label class="form-check-label" for="userSave">아이디 저장</label>
             </div>
 
-            <button class="btn btn-primary w-100 py-2 rounded-pill" type="submit">로그인</button>
-
-            <div class="d-flex justify-content-center gap-4 mt-3 small">
-              <a href="<%=request.getContextPath()%>/user/searchId" class="text-secondary">아이디 찾기</a>
-              <a href="<%=request.getContextPath()%>/user/searchPw" class="text-secondary">비밀번호 찾기</a>
+            <!-- 하단 버튼 & 링크 -->
+            <div class="mt-auto">
+              <button class="btn btn-primary w-100 py-2 rounded-pill mb-3" type="submit">로그인</button>
+              <div class="d-flex justify-content-center gap-3 small text-secondary">
+                <a href="<%=request.getContextPath()%>/user/searchId" class="text-decoration-none">아이디 찾기</a>
+                <a href="<%=request.getContextPath()%>/user/searchPw" class="text-decoration-none">비밀번호 찾기</a>
+              </div>
             </div>
+
           </form>
         </div>
       </div>
 
       <!-- 기업 로그인 -->
-      <div class="col-md-5">
-        <div class="bg-white p-4 rounded-4 shadow-sm">
-          <form method="post" action="<%=request.getContextPath()%>/company/loginend">
-            <div class="text-center mb-4">
+      <div class="col-12 col-sm-6 col-md-5 col-lg-4">
+        <div class="bg-white p-5 rounded-4 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+          <form method="post" action="<%=request.getContextPath()%>/company/loginend" class="d-flex flex-column h-100">
+
+            <!-- 상단 정보 -->
+            <div class="mb-4">
               <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/edu_4943347.png"
-                   alt="기업" width="64" class="mb-2">
-              <h4 class="fw-bold">기업 로그인</h4>
-              <p class="text-muted small">기업 회원 전용 로그인</p>
+                   alt="기업" width="90" class="mb-4">
+              <h5 class="fw-semibold mb-2">기업 로그인</h5>
+              <p class="text-muted small mb-0">기업 회원 전용 로그인</p>
             </div>
 
+            <!-- 입력 필드 -->
             <div class="form-floating mb-3">
               <input type="text" class="form-control" name="companyId" id="companyId" placeholder="아이디">
               <label for="companyId">아이디</label>
@@ -66,17 +75,20 @@
               <label for="companyPw">비밀번호</label>
             </div>
 
-            <div class="form-check mb-3">
+            <div class="form-check mb-4 text-start">
               <input class="form-check-input" type="checkbox" name="companySave" id="companySave">
               <label class="form-check-label" for="companySave">아이디 저장</label>
             </div>
 
-            <button class="btn btn-primary w-100 py-2 rounded-pill" type="submit">로그인</button>
-
-            <div class="d-flex justify-content-center gap-4 mt-3 small text-secondary">
-              <span>아이디 찾기</span>
-              <span>비밀번호 찾기</span>
+            <!-- 하단 버튼 & 링크 -->
+            <div class="mt-auto">
+              <button class="btn btn-primary w-100 py-2 rounded-pill mb-3" type="submit">로그인</button>
+              <div class="d-flex justify-content-center gap-3 small text-secondary">
+                <span>아이디 찾기</span>
+                <span>비밀번호 찾기</span>
+              </div>
             </div>
+
           </form>
         </div>
       </div>
