@@ -17,7 +17,8 @@ public class QNA {
 	private int qnaNo;
 	private String qnaContent;
 	
-	private User userNoRef;
-	private Program proNoRef;
+	private int userNoRef;
+	private int proNoRef;
+	private String answer;
 	
 }

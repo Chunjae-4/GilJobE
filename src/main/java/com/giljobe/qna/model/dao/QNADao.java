@@ -66,8 +66,9 @@ public class QNADao {
 		return QNA.builder()
 					.qnaNo(rs.getInt("qna_no"))
 					.qnaContent(rs.getString("qna_content"))
-					.userNoRef(UserDao.userDao().getUser(rs))
-					.proNoRef(ProgramDao.getInstance().getProgram(rs))
+					.userNoRef(rs.getInt("user_no"))
+					.proNoRef(rs.getInt("pro_no"))
+					.answer(rs.getString("answer"))
 					.build();
 	}
 	
