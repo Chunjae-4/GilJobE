@@ -62,6 +62,14 @@ public class ProgramRoundAjaxServlet extends HttpServlet {
 
 		Map<String, Object> responseMap = new HashMap<>();
 		responseMap.put("roundCount", selectedRound.getRoundCount());
+		responseMap.put("roundDate", selectedRound.getRoundDate().toString()); // 필요시 포맷 변경
+		responseMap.put("detailLocation", selectedRound.getDetailLocation());
+		responseMap.put("roundMaxPeople", selectedRound.getRoundMaxPeople());
+		responseMap.put("roundPrice", selectedRound.getRoundPrice());
+		responseMap.put("goal", selectedRound.getGoal());
+		responseMap.put("summary", selectedRound.getSummary());
+		responseMap.put("note", selectedRound.getNote());
+		responseMap.put("detail", selectedRound.getDetail());
 		responseMap.put("proTimes", timeList);
 
 		PrintWriter out = response.getWriter();

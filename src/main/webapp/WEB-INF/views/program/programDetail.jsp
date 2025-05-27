@@ -13,6 +13,8 @@ boolean noAvailableRounds = availableRounds.isEmpty();
 List<ProTime> proTimes = (List<ProTime>) request.getAttribute("proTimes");
 java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("HH:mm");
 String imageUrl = "/resources/images/logo.png"; // ✅ 기본 이미지 경로
+// resources/upload/ComNo/ProNo/imageNo 가 프로그램 이미지 저장 경로
+// 이거는 나중에, 진짜 나중에 wrapper로 이미지 업로드할 때 이름 바꿔서 저장되도록 해놓을 것. 이건 나중에.
 if (program != null) {
     String dbImage = program.getProImageUrl();
     if (dbImage != null && !dbImage.trim().isEmpty() && !"null".equalsIgnoreCase(dbImage.trim())) {
@@ -22,7 +24,9 @@ if (program != null) {
 %>
 <section class="container py-5">
     
-   <% if (program != null) { %>
+   <% if (program != null) {
+   if (selectedRound != null) { %>
+    <!-- 전체 화면 시작 -->
     <!-- 프로그램 요약 카드 -->
     <div class="card mb-4 shadow-sm">
         <div class="row g-0">
@@ -42,15 +46,18 @@ if (program != null) {
 					    )
 					</h3>
                     <p class="card-text">
-                        <strong>지역:</strong> <%= program.getProLocation() %><br>
-                        <strong>체험일:</strong> 2025/00/00<br>
-                        <strong>체험이수시간:</strong> 2시간<br>
-                        <strong>체험가능시간:</strong> 13:00 ~ 15:00<br>
-                        <strong>모집인원:</strong> 17명<br>
-                        <strong>직업군:</strong> 디자인을 체험하고 싶은 사람<br>
-                        <strong>직업 유형:</strong> 시각디자인<br>
-                        <strong>직군 분류:</strong> 디자인<br>
-                        <strong>참가비:</strong> 무료
+                        <strong>주소:</strong> <%=program.getProLocation()%>
+                        <span id="program-descript1">
+	                        <%=selectedRound.getDetailLocation() %><br>
+	                        <strong>체험일:</strong> <%=selectedRound.getRoundDate() %><br>
+	                        <strong>모집인원:</strong> <%=selectedRound.getRoundMaxPeople() %><br>
+                        </span>
+                        <strong>직업 유형:</strong> <%=program.getProType() %><br>
+                        <strong>분류:</strong> <%=program.getProCategory() %><br>
+                        <span id="program-descript2">
+	                        <strong>참가비:</strong> 
+	                        <%=selectedRound.getRoundPrice()!=0 ? selectedRound.getRoundPrice() +"원":"무료"  %>
+                   		</span>
                     </p>
 
                     <div class="d-flex justify-content-between align-items-center mt-4">
@@ -127,8 +134,24 @@ if (program != null) {
         </div>
     </div>
     <% } else { %>
+    	<p class="text-muted">※ 유효한 회차 정보가 없습니다.</p>
+  	<% } 
+   	} else { %>
         <p>프로그램 정보가 없습니다.</p>
     <% } %>
+    
+    <% if (selectedRound != null) { %>
+	<div class="card mb-4">
+	    <div class="card-header fw-bold">프로그램 요약</div>
+	    <div class="card-body" id="program-descript3">
+	        <p><strong>목표:</strong> <%= selectedRound.getGoal() %></p>
+	        <p><strong>프로그램 핵심 요약:</strong> <%= selectedRound.getSummary() %></p>
+	        <p><strong>유의사항:</strong> <%= selectedRound.getNote() %></p>
+	        <p><strong>상세 내용:</strong></p>
+	        <div class="border p-3 bg-light"><%= selectedRound.getDetail() %></div>
+	    </div>
+	</div>
+	<% } %>
     
    
 	<!-- 지도 영역 -->
@@ -163,23 +186,32 @@ $(function() {
             url: "<%=request.getContextPath()%>/program/roundinfo",
             method: "GET",
             data: { proNo: proNo, roundCount: roundCount },
-            success: function(data) {
-            	
-            	console.log("응답 데이터:", data);
-            	
-                // 회차 제목 변경
+            success: function(data) {            	
                 $("#selected-round-label").text(data.roundCount + "회차");
                 $("#round-dropdown-label").text(data.roundCount + "회차");
-
-                // 시간 리스트 갱신
+                $("#program-descript1").html(`
+                        \${data.detailLocation}<br>
+                        <strong>체험일:</strong> \${data.roundDate}<br>
+                        <strong>모집인원:</strong> \${data.roundMaxPeople}<br>`);
+                $("#program-descript2").html(`
+                		<strong>참가비:</strong>
+                		\${data.roundPrice!=0 ? data.roundPrice +"원":"무료"}`);
+                $("#program-descript3").html(`
+                        <p><strong>목표:</strong> \${data.goal}</p>
+                        <p><strong>프로그램 핵심 요약:</strong> \${data.summary}</p>
+                        <p><strong>유의사항:</strong> \${data.note}</p>
+                        <p><strong>상세 내용:</strong></p>
+                        <div class="border p-3 bg-light">\${data.detail}</div>`);
+                
+	         	 // 시간 리스트 갱신
                 let html = "";
                 if (data.proTimes.length > 0) {
                     html += `<div class="card mb-4">
                                 <div class="card-header fw-bold">체험 가능 시간</div>
                                 <div class="card-body">
                                     <div class="d-flex flex-wrap gap-2">`;
-                    data.proTimes.forEach(function(pt) {
-                        html += `<button class="btn btn-outline-secondary">${pt.start} ~ ${pt.end}</button>`;
+                    data.proTimes.forEach(e=> {
+                        html += `<button class="btn btn-outline-secondary">\${e.start} ~ \${e.end}</button>`;
                     });
                     html += `</div></div></div>`;
                 } else {
