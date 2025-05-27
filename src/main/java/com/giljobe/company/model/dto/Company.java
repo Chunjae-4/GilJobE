@@ -19,7 +19,7 @@ public class Company {
 	private String comName;
 	private String comId;
 	private String comPw;
-	private int comPhone;
+	private String comPhone;
 	private String comEmail;
 	private int comBinNo;
 	

@@ -1,6 +1,7 @@
 package com.giljobe.program.model.dao;
 
 import com.giljobe.common.JDBCTemplate;
+import com.giljobe.company.model.dao.CompanyDao;
 import com.giljobe.program.model.dto.Program;
 
 import java.io.FileNotFoundException;
@@ -124,8 +125,8 @@ public class ProgramDao {
                 .proLongitude(rs.getDouble("pro_longitude"))
                 .proCategory(rs.getString("pro_category"))
                 .proImageUrl(rs.getString("pro_image_url"))
+                .comNoRef(CompanyDao.companyDao().getCompany(rs))
                 .build();
-        //companyDao추가하고 빌더할때 추가
     }
 	public List<Program> lovedProgramByUserNo(Connection conn, int userNo) {
 		// TODO Auto-generated method stub
