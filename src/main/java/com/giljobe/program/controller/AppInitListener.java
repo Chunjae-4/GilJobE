@@ -1,5 +1,6 @@
 package com.giljobe.program.controller;
 
+import com.giljobe.common.LoggerUtil;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
 
@@ -14,13 +15,12 @@ import java.util.List;
 public class AppInitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("✅ 웹 애플리케이션 시작됨: contextInitialized");
+        LoggerUtil.start("AppInitListener Start");
         List<Program> randomRecommendProgramList = new ArrayList<>();
 
         int count = ProgramService.getInstance().programCount();
         if (count > 0) {
             for(int i = 1; i <= 3; i++) {
-                System.out.println("i: "+ i);
                 Program p = ProgramService.getInstance().selectProgramByNo(i);
                 if (p != null) {
                     randomRecommendProgramList.add(p);
@@ -31,11 +31,11 @@ public class AppInitListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
 
         context.setAttribute("randomRecommend", randomRecommendProgramList);
-        System.out.println("AppInitListener request: " + randomRecommendProgramList);
+        LoggerUtil.end("AppInitListener Ready:" + randomRecommendProgramList != null);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("❌ 웹 애플리케이션 종료됨: contextDestroyed");
+        LoggerUtil.status("AppInitListener contextDestroyed:");
     }
 }

@@ -2,8 +2,14 @@ package com.giljobe.common;
 
 public class LoggerUtil {
 
-    public static void info(String message) {
+    public static void start(String message) {
         System.out.println(LogMessage.START + message);
+    }
+    public static void end(String message) {
+        System.out.println(LogMessage.END + message);
+    }
+    public static void status(String message) {
+        System.out.println(LogMessage.STATUS + message);
     }
 
     public static void debug(String message) {
