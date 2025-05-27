@@ -153,14 +153,24 @@ if (program != null) {
 	    </div>
 	</div>
 	<% } %>
-    
-   
+	
 	<!-- 지도 영역 -->
 	<div class="program-map">
 	    <h3>지도</h3>
-	    <div id="map" style="width:100%; height:300px;"></div>
-	    활용해야될 위도 경도 값 <%=program.getProLatitude() + program.getProLongitude() %>
+	
+	    <!-- 지도에 필요한 정보들 JSP에서 request에 전달 -->
+	    <!-- 지도 표시용 모듈(mapComponent.jsp)을 include 하기 전 필요한 정보들을 request에 담아야 함 -->
+	    <%
+		    request.setAttribute("programName", program.getProName());            // 프로그램 이름
+		    request.setAttribute("programLocation", program.getProLocation());    // 주소
+		    request.setAttribute("programLat", program.getProLatitude());         // 위도 (double)
+		    request.setAttribute("programLng", program.getProLongitude());        // 경도 (double)
+	    %>
+	
+	    <!-- 지도 모듈 (mapComponent.jsp) include 하여 지도 컴포넌트 삽입 -->
+	    <jsp:include page="/WEB-INF/views/program/mapComponent.jsp" />
 	</div>
+	
 	
 	<!-- 채팅방 영역 -->
 	<div class="program-chat">

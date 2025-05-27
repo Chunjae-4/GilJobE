@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -91,6 +93,10 @@ public class ProgramDetailServlet extends HttpServlet {
 		    proTimes = ProTimeService.getInstance().selectProTimesByRoundNo(selectedRound.getRoundNo());
 		}
 		
+		// naverMapKey 세팅
+		String propPath = getServletContext().getRealPath("/WEB-INF/classes/api/naver.properties");
+		Properties prop = new Properties();
+		
 		// 4. JSP에 전달할 데이터 저장
 		request.setAttribute("program", program);
 		request.setAttribute("selectedRound", selectedRound);
@@ -98,7 +104,16 @@ public class ProgramDetailServlet extends HttpServlet {
 		request.setAttribute("availableRounds", availableRounds);
 		request.setAttribute("expiredRounds", expiredRounds);
 		
-		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programDetail.jsp").forward(request, response);
+		try (FileInputStream fis = new FileInputStream(propPath)) {
+		    prop.load(fis);
+		    String apiKey = prop.getProperty("naver.map.key");
+		    request.setAttribute("naverMapKey", apiKey); // naverMapKey 전달
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+
+		// JSP로 forward
+		request.getRequestDispatcher(Constants.WEB_VIEWS + "program/programDetail.jsp").forward(request, response);
 	}
 
 
