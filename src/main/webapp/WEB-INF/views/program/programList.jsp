@@ -18,7 +18,7 @@
 <section class="text-center mb-5 py-5 ">
     <div class="row py-lg-5">
         <div class="col-lg-10 col-md-12 mx-auto">
-            <h1 class="fw-light">진로 체험 프로그램 페이지</h1>
+            <h1 class="fw-normal">진로 체험 프로그램 페이지</h1>
             <p class="lead text-body-secondary">다양한 체험 프로그램을 만나보세요.</p>
         </div>
     </div>
@@ -54,7 +54,12 @@
     </form>
 </section>
 
+<%--<%if(company && login){%>--%>
+
+<%--<%}%>--%>
 <%--TODO: 프로그램 등록은 기업회원이 로그인 되어있지 않으면 보이지않도록 분기점 추가 필요--%>
+<%--loginUser로 처리해두고, 나중에 기업 회원 추가되면 그때 수정 ㄱㄱ--%>
+<% if(loginUser != null) { %>
 <section class="container my-5">
     <div class="p-4 p-md-5 bg-light rounded-3 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
 
@@ -72,6 +77,8 @@
         </div>
     </div>
 </section>
+<%}%>
+
 <section class="bg-body-tertiary py-5">
     <div class="container">
         <p class="mb-4 text-muted">총 <%=programList.size()%>개의 프로그램이 검색되었습니다.</p>

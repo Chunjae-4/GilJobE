@@ -18,7 +18,12 @@
 <div class="container py-5">
     <!-- 검색 섹션 -->
     <section class="text-center mb-5 py-5 ">
-        <h1 class="mb-4 "style="font-size: 2rem; font-weight: 300;">체험 프로그램 찾기</h1>
+        <div class="row py-lg-5">
+            <div class="col-lg-10 col-md-12 mx-auto">
+                <h1 class="fw-normal">체험 프로그램 검색</h1>
+                <p class="lead text-body-secondary">제목과 카테고리를 이용하여 원하는 결과를 얻어보세요.</p>
+            </div>
+        </div>
 
         <form role="search" action="<%=request.getContextPath()%>/program/programsearchform" method="get">
             <!-- 검색창 -->
@@ -57,7 +62,7 @@
 
                 <!-- 왼쪽: 타이틀 -->
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h2 class="fw-bold mb-3">체험 프로그램<br>랜덤 추천</h2>
+                    <h2 class="fw- mb-3">체험 프로그램<br>랜덤 추천</h2>
                     <p class="text-muted">새로운 체험을 발견해보세요!</p>
                 </div>
 
@@ -91,12 +96,12 @@
 
                         <!-- 캐러셀 컨트롤 -->
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                                data-bs-slide="prev" style="width: 5%;">
+                                data-bs-slide="prev" style="width: 10%;">
                             <span class="carousel-control-prev-icon bg-dark bg-opacity-50 rounded-circle p-2" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                                data-bs-slide="next" style="width: 5%;">
+                                data-bs-slide="next" style="width: 10%;">
                             <span class="carousel-control-next-icon bg-dark bg-opacity-50 rounded-circle p-2" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
