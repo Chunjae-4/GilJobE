@@ -53,6 +53,8 @@
         </div>
     </form>
 </section>
+
+<%--TODO: 프로그램 등록은 기업회원이 로그인 되어있지 않으면 보이지않도록 분기점 추가 필요--%>
 <section class="container my-5">
     <div class="p-4 p-md-5 bg-light rounded-3 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
 
@@ -81,9 +83,10 @@
                 <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
 
                     <!-- 이미지 -->
-                    <img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png"
-                         class="card-img-top object-fit-cover" alt="프로그램 이미지"
-                         style="height: 220px;">
+                    <div class="ratio ratio-16x9">
+                        <img src="<%=request.getContextPath()%><%=Constants.DEFAULT_UPLOAD_PATH%><%=p.getProImageUrl()%>.jpg"
+                             class="w-100 h-100 object-fit-cover" alt="프로그램 이미지">
+                    </div>
 
                     <!-- 카드 바디 -->
                     <div class="card-body">

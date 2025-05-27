@@ -32,8 +32,9 @@ if (program != null) {
         <div class="row g-0">
             <!-- 프로그램 이미지 -->
             <div class="col-md-5">
-                <img src="<%=request.getContextPath() + imageUrl%>" 
-                     class="img-fluid rounded-start" alt="프로그램 이미지">
+				<!-- 이미지 -->
+				<img src="<%=request.getContextPath()%><%=Constants.DEFAULT_UPLOAD_PATH%><%=program.getProImageUrl()%>.jpg"
+					 class="w-100 h-100 object-fit-cover" alt="프로그램 이미지">
             </div>
             <!-- 텍스트 정보 -->
             <div class="col-md-7">
