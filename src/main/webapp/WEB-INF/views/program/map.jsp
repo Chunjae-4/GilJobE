@@ -13,25 +13,6 @@
     }
 </style>
 
-해야 할 일 - 
-(1) - 내 위치에 해당하는 핀의 경우에는 디자인을 핀이 아니라 다른 걸로 하던, 아니면 다른 표시가 되든 해야 할 것 같음.
-지도에 표시되는 프로그램들에 대한 핀과 본인 위치에 대한 핀이 디자인이 똑같은 건 안 된다.
-
-(2) - programDetail.jsp 에서, 지도 영역에 해당하는 div tag 에 지도가 표시되어야 한다.
-프로그램 상세페이지에 들어가면 지도가 나오게 된다. 즉, 특정 프로그램 내에 있는 지도니까, 해당 프로그램의 주소를 가지고,
-해당 프로그램을 가장 중앙에 두고 있는 지도를 띄워주면 되겠다. 그 지도에서 이동하고 스크롤하고 줌인줌아웃은 가능하게 하자!
-
-(3) - 지도 영역에 해당하는 div tag 내에, programDetailMap.jsp 을 보여주게 할 것이다. 즉, (2) 에서 얘기한 거는
-programDetailMap.jsp 에 구현을 하고, programDetail.jsp 에는 programDetailMap.jsp 를 포함시켜서 보여주는 것.
-
-(4) - 참고로, programDetail.jsp 를 연결시키는 건 ProgramDetailServlet.java 임.
-
-(5) - 그리고 naver map api key 의 경우에는 resources에 넣어놓음 - 이걸 다운로드 받은 뒤에 리소스에 넣어놓아야 함
-src/main/resources에 넣어놓아야 함
-
-(6) - 어떤 ui 인지 이해를 위해서 피그마 확인 필.
-
-
 <h2>체험 프로그램 지도</h2>
 <!-- 지도가 표시될 영역 -->
 <div id="map"></div>

@@ -50,7 +50,7 @@ if (program != null) {
                         <span id="program-descript1">
 	                        <%=selectedRound.getDetailLocation() %><br>
 	                        <strong>체험일:</strong> <%=selectedRound.getRoundDate() %><br>
-	                        <strong>모집인원:</strong> <%=selectedRound.getRoundMaxPeople() %><br>
+	                        <strong>최대모집인원:</strong> <%=selectedRound.getRoundMaxPeople() %><br>
                         </span>
                         <strong>직업 유형:</strong> <%=program.getProType() %><br>
                         <strong>분류:</strong> <%=program.getProCategory() %><br>
@@ -146,7 +146,7 @@ if (program != null) {
 	    <div class="card-body" id="program-descript3">
 	        <p><strong>목표:</strong> <%= selectedRound.getGoal() %></p>
 	        <p><strong>프로그램 핵심 요약:</strong> <%= selectedRound.getSummary() %></p>
-	        <p><strong>유의사항:</strong> <%= selectedRound.getNote() %></p>
+	        <p><strong>유의사항:</strong> <%= selectedRound.getNote()!=null?selectedRound.getNote():"없음" %></p>
 	        <p><strong>상세 내용:</strong></p>
 	        <div class="border p-3 bg-light"><%= selectedRound.getDetail() %></div>
 	    </div>
@@ -158,6 +158,7 @@ if (program != null) {
 	<div class="program-map">
 	    <h3>지도</h3>
 	    <div id="map" style="width:100%; height:300px;"></div>
+	    활용해야될 위도 경도 값 <%=program.getProLatitude() + program.getProLongitude() %>
 	</div>
 	
 	<!-- 채팅방 영역 -->
@@ -192,14 +193,14 @@ $(function() {
                 $("#program-descript1").html(`
                         \${data.detailLocation}<br>
                         <strong>체험일:</strong> \${data.roundDate}<br>
-                        <strong>모집인원:</strong> \${data.roundMaxPeople}<br>`);
+                        <strong>최대모집인원:</strong> \${data.roundMaxPeople}<br>`);
                 $("#program-descript2").html(`
                 		<strong>참가비:</strong>
                 		\${data.roundPrice!=0 ? data.roundPrice +"원":"무료"}`);
                 $("#program-descript3").html(`
                         <p><strong>목표:</strong> \${data.goal}</p>
                         <p><strong>프로그램 핵심 요약:</strong> \${data.summary}</p>
-                        <p><strong>유의사항:</strong> \${data.note}</p>
+                        <p><strong>유의사항:</strong> \${data.note!=null?data.note:'없음'}</p>
                         <p><strong>상세 내용:</strong></p>
                         <div class="border p-3 bg-light">\${data.detail}</div>`);
                 
