@@ -2,31 +2,37 @@
 	pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<section id="content">
+<section class="bg-body-tertiary py-5">
+	<div class="container">
+		<div class="row justify-content-center g-4">
 
-	<div class="login-wrapper d-flex justify-content-center gap-4">
-		<main class="form-signin">
-			<form method="get" action="<%=request.getContextPath()%>/user/enrolluser">
-				<img class="mb-4"
-					src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/groom_2920507.png"
-					alt="유저" width="100" height="100">
-				<h1 class="h3 mb-3 fw-normal">유저 회원가입</h1>
+			<!-- 유저 회원가입 -->
+			<div class="col-md-5">
+				<div class="bg-white p-4 rounded-4 shadow-sm text-center">
+					<form method="get" action="<%=request.getContextPath()%>/user/enrolluser">
+						<img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/groom_2920507.png"
+							 alt="유저" width="100" class="mb-3">
+						<h4 class="fw-semibold mb-3">유저 회원가입</h4>
+						<p class="text-muted small mb-4">개인 사용자를 위한 회원가입</p>
+						<button class="btn btn-primary rounded-pill px-4 py-2" type="submit">회원가입</button>
+					</form>
+				</div>
+			</div>
 
-				<button class="btn btn-primary login-btn" type="submit">회원가입</button>
-			
-			</form>
-		</main>
+			<!-- 기업 회원가입 -->
+			<div class="col-md-5">
+				<div class="bg-white p-4 rounded-4 shadow-sm text-center">
+					<form method="get" action="<%=request.getContextPath()%>/company/enrollcompany">
+						<img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/edu_4943347.png"
+							 alt="기업" width="100" class="mb-3">
+						<h4 class="fw-semibold mb-3">기업 회원가입</h4>
+						<p class="text-muted small mb-4">기업 고객 전용 회원가입</p>
+						<button class="btn btn-primary rounded-pill px-4 py-2" type="submit">회원가입</button>
+					</form>
+				</div>
+			</div>
 
-		<main class="form-signin">
-			<form method="get" action="<%=request.getContextPath()%>/company/enrollcompany">
-				<img class="mb-4"
-					src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/edu_4943347.png"
-					alt="기업" width="100" height="100">
-				<h1 class="h3 mb-3 fw-normal">기업 회원가입</h1>
-
-				<button class="btn btn-primary login-btn" type="submit">회원가입</button>
-			</form>
-		</main>
+		</div>
 	</div>
 </section>
 <style>
