@@ -61,7 +61,7 @@ private static ProTimeDao proTimeDao = new ProTimeDao();
                 .timeNo(rs.getInt("time_no"))
                 .startTime(rs.getDate("start_time"))
                 .endTime(rs.getDate("end_time"))
-                .roundNoRef(RoundDao.getInstance().getRound(rs))
+                .roundNoRef(rs.getInt("round_no"))
                 .build();
     }
 }

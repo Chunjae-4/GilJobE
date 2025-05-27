@@ -15,5 +15,5 @@ public class ProTime {
     private int timeNo;
     private Date startTime;
     private Date endTime;
-    private Round roundNoRef;
+    private int roundNoRef;
 }

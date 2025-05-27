@@ -62,8 +62,8 @@ public class ApplicationDao {
 		// TODO Auto-generated method stub
 		return Application.builder()
 							.appNo(rs.getInt("app_no"))
-							.timeNoRef(ProTimeDao.getInstance().getProTime(rs))
-							.userNoRef(UserDao.userDao().getUser(rs))
+							.timeNoRef(rs.getInt("time_no"))
+							.userNoRef(rs.getInt("uesr_no"))
 							.applyState(rs.getBoolean("app_state"))
 							.build();
 	}

@@ -23,7 +23,7 @@ public class Round {
 	private String note;
 	private String summary;
 	private String detail;
-	private Program proNoRef;
+	private int proNoRef;
 	// 프로그램 PK 값에다가 + Ref
 	
 	private List<ProTime> proTimes;

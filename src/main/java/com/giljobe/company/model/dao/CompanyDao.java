@@ -35,10 +35,10 @@ public class CompanyDao {
 		
 		return Company.builder()
 						.comNo(rs.getInt("com_no"))
-						.comName(rs.getString("con_name"))
-						.comId(rs.getString("con_id"))
-						.comPw(rs.getString("con_pw"))
-						.comPhone(rs.getString("com_pw"))
+						.comName(rs.getString("com_name"))
+						.comId(rs.getString("com_id"))
+						.comPw(rs.getString("com_pw"))
+						.comPhone(rs.getString("com_phone"))
 						.comEmail(rs.getString("com_email"))
 						.comBinNo(rs.getInt("com_bin_no"))
 						.build();

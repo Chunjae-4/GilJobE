@@ -125,7 +125,6 @@ public class ProgramDao {
                 .proLongitude(rs.getDouble("pro_longitude"))
                 .proCategory(rs.getString("pro_category"))
                 .proImageUrl(rs.getString("pro_image_url"))
-                .comNoRef(CompanyDao.companyDao().getCompany(rs))
                 .build();
     }
 	public List<Program> lovedProgramByUserNo(Connection conn, int userNo) {

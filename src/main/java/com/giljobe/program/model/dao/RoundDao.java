@@ -68,7 +68,7 @@ public class RoundDao {
                 .note(rs.getString("note"))
                 .summary(rs.getString("summary"))
                 .detail(rs.getString("detail"))
-                .proNoRef(ProgramDao.getInstance().getProgram(rs))
+                .proNoRef(rs.getInt("pro_no"))
                 .build();
     }
 }
