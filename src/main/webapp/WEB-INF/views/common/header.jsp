@@ -26,51 +26,68 @@
 </head>
 
 <body>
-<nav class="navbar navbar-light" style="background-color: #e3f2fd; height: 45px;">
-    <div class="container-fluid d-flex align-items-center" style="height: 100%;">
-        <ul class="nav nav-pills d-flex align-items-center ms-auto mb-0">
-            
-            <%if(loginUser==null){ %>
+<!-- 상단 로그인/회원가입 바 -->
+<nav class="navbar navbar-light bg-light py-1 border-bottom">
+    <div class="container-fluid d-flex justify-content-end align-items-center">
+        <ul class="nav mb-0">
+            <% if (loginUser == null) { %>
             <li class="nav-item">
-                <a href="<%=request.getContextPath()%>/user/login" class="nav-link py-0">로그인</a>
+                <a href="<%=request.getContextPath()%>/user/login" class="nav-link px-2">로그인</a>
             </li>
             <li class="nav-item">
-                <a href="<%=request.getContextPath()%>/user/enroll" class="nav-link py-0">회원가입</a>
+                <a href="<%=request.getContextPath()%>/user/enroll" class="nav-link px-2">회원가입</a>
             </li>
-            <%}else{ %>
-            <span><b><%=loginUser.getUserId() %>님 환영합니다.</b></span>
+            <% } else { %>
+            <li class="nav-item me-2">
+                <span class="navbar-text fw-bold text-primary"><%=loginUser.getUserId()%>님 환영합니다.</span>
+            </li>
             <li class="nav-item">
-                <a href="<%=request.getContextPath()%>/user/logout" class="nav-link py-0">로그아웃</a>
+                <a href="<%=request.getContextPath()%>/user/logout" class="nav-link px-2">로그아웃</a>
             </li>
-            
-            <%} %>
+            <% } %>
         </ul>
     </div>
 </nav>
-<div class="container-fluid">
-    <header class="d-flex flex-wrap justify-content-center align-items-center py-3 mb-4 border-bottom" style="margin-top: 5px;">
-        <%--활성화 "nav-link active"--%>
-        <%--현재 페이지 확인 aria-current="page"--%>
-        <ul class="nav nav-pills d-flex justify-content-around align-items-center w-100">
-            <li>
-                <a href="<%=request.getContextPath()%>">
-                    <img class="bi me-2" width="100" src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png">
-                </a>
-            </li>
+<!-- 메인 내비게이션 바 -->
+<header class="bg-white shadow-sm">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-between py-3">
 
-            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/program/programlist" class="nav-link">진로체험리스트</a></li>
-            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/program/map" class="nav-link">지도화면</a></li>
-            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/notice/noticelist" class="nav-link">공지사항</a></li>
-            <%if(loginUser!=null){ %>
-            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/mypage/mypageview" class="nav-link">마이페이지</a></li>
-            <%}else{ %>
-            <li class="<%=Constants.CSS_LI_ITEM%>>"><a href="<%=request.getContextPath()%>/user/login" class="nav-link">마이페이지</a></li>
-            <%} %>
-        </ul>
-    </header>
-</div>
+            <!-- 로고 -->
+            <a href="<%=request.getContextPath()%>" class="text-decoration-none">
+                <img class="rounded-3"  src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/logo.png" alt="로고" width="100">
+            </a>
+
+            <!-- 내비 메뉴 -->
+            <ul class="nav gap-4 mb-0 fs-5 fw-semibold">
+                <li class="nav-item">
+                    <a href="<%=request.getContextPath()%>/program/programlist" class="nav-link text-dark">체험리스트</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<%=request.getContextPath()%>/program/map" class="nav-link text-dark">지도</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<%=request.getContextPath()%>/notice/noticelist" class="nav-link text-dark">공지사항</a>
+                </li>
+                <li class="nav-item">
+                    <% if (loginUser != null) { %>
+                    <a href="<%=request.getContextPath()%>/mypage/mypageview" class="nav-link text-dark">마이페이지</a>
+                    <% } else { %>
+                    <a href="<%=request.getContextPath()%>/user/login" class="nav-link text-dark">마이페이지</a>
+                    <% } %>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</header>
 </body>
-
+<style>
+    .nav-link:hover {
+        color: #0d6efd; /* Bootstrap 기본 primary 컬러 */
+        text-decoration: underline;
+    }
+</style>
 </html>
 
 

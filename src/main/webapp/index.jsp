@@ -17,8 +17,8 @@
 
 <div class="container py-5">
     <!-- 검색 섹션 -->
-    <section class="text-center mb-5 py-5 bg-light">
-        <h2 class="mb-4 fw-bold">체험 프로그램 찾기</h2>
+    <section class="text-center mb-5 py-5 ">
+        <h2 class="mb-4 "style="font-size: 2rem; font-weight: 300;">체험 프로그램 찾기</h2>
 
         <form role="search" action="<%=request.getContextPath()%>/program/programsearchform" method="get">
             <!-- 검색창 -->
@@ -51,7 +51,7 @@
         </form>
     </section>
     <!-- 랜덤 추천 섹션 -->
-    <section class="bg-light py-5">
+    <section class="bg-light py-5 rounded-5 ">
         <div class="container-fluid px-4">
             <div class="row align-items-center">
 
@@ -73,6 +73,17 @@
                                 <div class="ratio ratio-16x9">
                                     <img src="<%=request.getContextPath()%><%=Constants.DEFAULT_UPLOAD_PATH%><%=p.getProImageUrl()%>.jpg"
                                          class="d-block w-100 object-fit-cover" alt="프로그램 이미지">
+                                </div>
+                                <!-- 프로그램 이름 + 카테고리 묶은 왼쪽 상단 캡션 -->
+                                <div class="position-absolute top-0 start-0 m-3 px-4 py-3 bg-dark bg-opacity-75 text-white rounded-3 shadow" style="font-size: 1.1rem; font-weight: 200; max-width: 70%;">
+
+                                    <!-- 프로그램 이름 -->
+                                    <div class="fw-semibold fs-4 mb-1"><%= p.getProName() %></div>
+
+                                    <!-- 카테고리 (작은 글씨, 연한 톤) -->
+                                    <div class="text-white-50" style="font-size: 0.95rem;">
+                                        <%= p.getProCategory() %>
+                                    </div>
                                 </div>
                             </div>
                             <% isFirst = false; } } %>
