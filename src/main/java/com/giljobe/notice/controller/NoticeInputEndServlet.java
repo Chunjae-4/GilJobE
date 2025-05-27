@@ -1,6 +1,7 @@
 package com.giljobe.notice.controller;
 
 import com.giljobe.common.Constants;
+import com.giljobe.common.LoggerUtil;
 import com.giljobe.notice.model.dto.Notice;
 import com.giljobe.notice.model.service.NoticeService;
 
@@ -21,9 +22,10 @@ public class NoticeInputEndServlet extends HttpServlet {
                 .noticeContent(content)
                 .noticeTitle(title)
                 .build();
+        LoggerUtil.debug("InputEndServlet notice: " + n);
         int result = NoticeService.getInstance().insertNotice(n);
         String msg, loc;
-        System.out.println("InputEndServlet result: "  +  result);
+        LoggerUtil.debug("InputEndServlet result: " + result);
         //등록 성공
         if (result > 0) {
             msg = "공지사항 등록이 완료되었습니다.";

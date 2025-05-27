@@ -1,9 +1,8 @@
 package com.giljobe.notice.model.dao;
 
 
+import com.giljobe.common.LoggerUtil;
 import com.giljobe.notice.model.dto.Notice;
-import com.giljobe.program.model.dao.ProgramDao;
-import com.giljobe.program.model.dto.Program;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -39,18 +38,17 @@ public class NoticeDao {
     }
     public int insertNotice(Connection conn, Notice n) {
         int result = 0;
-        System.out.println("Dao InsertNotice: " + n.toString());
         try {
-            pstmt=conn.prepareStatement(sql.getProperty("insertNotice"));
+            pstmt = conn.prepareStatement(sql.getProperty("insertNotice"));
             pstmt.setString(1, n.getNoticeTitle());
             pstmt.setString(2, n.getNoticeContent());
-
+            result = pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(pstmt);
         }
-        System.out.println(result);
+        LoggerUtil.debug("NoticeDao result: " + result);
         return result;
     }
 

@@ -1,6 +1,7 @@
 package com.giljobe.notice.model.service;
 
 
+import com.giljobe.common.LoggerUtil;
 import com.giljobe.notice.model.dao.NoticeDao;
 import com.giljobe.notice.model.dto.Notice;
 
@@ -28,6 +29,8 @@ public class NoticeService {
     public int insertNotice(Notice n) {
         Connection conn = getConnection();
         int result = dao.insertNotice(conn, n);
+        LoggerUtil.debug("NoticeService notice: " + n);
+        LoggerUtil.debug("NoticeService result: " + result);
         if(result>0) commit(conn);
         else rollback(conn);
         close(conn);
