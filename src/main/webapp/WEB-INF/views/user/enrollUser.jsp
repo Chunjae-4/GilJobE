@@ -32,7 +32,7 @@
 		<div class="mb-3">
 			<label for="phone" class="form-label">전화번호<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userPhone" placeholder="'-'제외하고 입력" id="phone" required>
+				name="userPhone" placeholder="'-'제외하고 입력" id="userPhone" required>
 		</div>
 		<div class="mb-3">
 			<label for="nickname" class="form-label">닉네임<span
@@ -54,49 +54,32 @@
 		<input type="submit" class="btn btn-primary" value="가입" id="submitBtn" disabled>
 	</form>
 </div>
-
-<style>
-.form-wrapper {
-  max-width: 500px;
-  margin: 0 auto;
-  min-height: calc(100vh - 210px); /* 화면 전체 높이 - (header+footer 높이) */
-  background-color: #f9f9f9;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-</style>
 <script>
 	const idReg = /^[a-zA-Z0-9]{4,16}$/;
 	const pwReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]).{8,}$/;
-	const phoneReg= /[^0-9]/g; //hmm
+	const numonly = /[^0-9]/g; //문자가 있니 없니
+	
 	const validateForm=()=>{
-				const userId = $("#userId").val().trim();
 				const userPw = $("#userPw").val().trim();
-				const userPhone = $("#phone").val().trim();
+				const userPhone = $("#userPhone").val().trim();
+				const checkPw = $("#checkPw").val().trim();
 				
 				if(!pwReg.test(userPw)){
 					 alert("비밀번호는 영문, 숫자, 특수문자를 하나씩 포함한 8자 이상이어야 합니다.");
 					 $("#userPw").focus();
 					 return false;
 				}
-				if(userPw!==$("#checkPw").val().trim()){
-					 alert("비밀번호가 일치하지 않습니다.");
+				if(userPw !== checkPw){
+					 alert("비밀번호 확인이 일치하지 않습니다.");
 					 $("#checkPw").focus();		
 					 return false;
 				}
-				if($("#userNickName").val().trim()===""){
-					alert("닉네임을 입력해주세요.");
-					$("#userNickname").focus();
-					return false;
-				}
-				if(!phoneReg.test(userPhone)){
+				if(numonly.test(userPhone)){ // 문자 없으면 false 잘썻으면 false !때문에 true
 					alert("전화번호 형식에 맞지 않습니다. -를 제외한 숫자만 입력해주세요.");
-					$("#phone").focus();
+					$("#userPhone").focus();
 					return false;
 				}
+				
 				return true;
 		}
 		
@@ -112,13 +95,14 @@
 
 						const userId=e.target.value.trim();
 					
-						if(!idReg.test(userId)){
-							$(e.target).next().remove();//기존 메세지 삭제하고 새 메세지 붙이기
+						$(e.target).next().remove();//기존 메세지 삭제하고 새 메세지 붙이기
+						
+						if (!idReg.test(userId)) {
 							$(e.target).after(
-									$("<span>").text("사용할 수 없는 아이디").css("color","red"));
-							$("#submitBtn").attr("disabled", true);//정규표현식에 맞지않으면 버튼 비활성화
-							
-							return;
+									$("<span>").text("형식에 맞지 않는 아이디").css("color","red"));
+									$("#submitBtn").attr("disabled", true);
+							$(e.target).focus();
+							return false;
 						}
 					
 						fetch("<%=request.getContextPath()%>/user/idduplicate?id="+userId)
@@ -137,12 +121,28 @@
 												$("<span>").text("사용할 수 없는 아이디").css("color","red"));
 												$("#submitBtn").attr("disabled", true);
 									}
-								});
+								}).catch(error=>{
+
+								alert("중복체크 중 오류 발생");
+								$("#submitBtn").attr("disabled", true);
+								})
 					},500);
 					}
 			})()
 	);
 </script>
 
+<style>
+.form-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  min-height: calc(100vh - 210px); /* 화면 전체 높이 - (header+footer 높이) */
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
 
+</style>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
