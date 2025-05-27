@@ -1,7 +1,10 @@
 package com.giljobe.company.model.dao;
 
+import static com.giljobe.common.JDBCTemplate.close;
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,6 +45,69 @@ public class CompanyDao {
 						.comEmail(rs.getString("com_email"))
 						.comBinNo(rs.getInt("com_bin_no"))
 						.build();
+	}
+	public Company searchUserById(Connection conn, String companyId) {
+		// TODO Auto-generated method stub
+		Company c = null;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("selectCompanyById"));
+			pstmt.setString(1, companyId);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				c=getCompany(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return c;
+	}
+	public int enrollCompany(Connection conn, Company c) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("insertCompany"));
+			pstmt.setString(1, c.getComName());
+			pstmt.setString(2, c.getComId());
+			pstmt.setString(3, c.getComPw());
+			pstmt.setString(4, c.getComPhone());
+			pstmt.setString(5, c.getComEmail());
+			pstmt.setInt(6, c.getComBinNo());
+			result=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return result;
+	}
+	public Company loginCompany(Connection conn, String id, String pw) {
+		Company c = null;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("loginCompany"));
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				c=getCompany(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return c;
 	}
 	
 }

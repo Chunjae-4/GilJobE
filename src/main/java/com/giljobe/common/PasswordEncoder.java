@@ -19,6 +19,9 @@ public class PasswordEncoder extends HttpServletRequestWrapper{
 		if(oriPw.equals("userPw")) {//request.getParameter("userPw")와 같다면 
 			return getSHA512(super.getParameter(oriPw));//wrapper처리한 값을 반환
 		}
+		if(oriPw.equals("companyPw")) {//request.getParameter("companyPw")와 같다면 
+			return getSHA512(super.getParameter(oriPw));//wrapper처리한 값을 반환
+		}
 		return super.getParameter(oriPw);//해당안되면 그냥 보내줘
 	}
 	private String getSHA512(String oriPw) {

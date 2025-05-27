@@ -31,7 +31,7 @@
   </main>
 
   <main class="form-signin">
-    <form>
+    <form method="post" action="<%=request.getContextPath()%>/company/loginend">
       <img class="mb-4" src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/edu_4943347.png" alt="기업" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">기업 로그인</h1>
       <div class="form-floating">

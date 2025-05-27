@@ -18,7 +18,7 @@
 		</main>
 
 		<main class="form-signin">
-			<form method="get" action="<%=request.getContextPath()%>/user/enrollcompany">
+			<form method="get" action="<%=request.getContextPath()%>/company/enrollcompany">
 				<img class="mb-4"
 					src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/edu_4943347.png"
 					alt="기업" width="100" height="100">

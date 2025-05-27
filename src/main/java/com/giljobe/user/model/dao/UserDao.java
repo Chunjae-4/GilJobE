@@ -51,12 +51,7 @@ public class UserDao {
 			pstmt.setString(7, user.getUserNickName());//채팅닉네임
 			result = pstmt.executeUpdate();
 			conn.setAutoCommit(false);
-			if(result>0) {
-				commit(conn);
-			}else {
-				rollback(conn);
-				close(conn);
-			}
+	
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

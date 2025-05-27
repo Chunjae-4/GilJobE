@@ -1,14 +1,23 @@
+<%@page import="com.giljobe.company.model.dto.Company"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"
          import="com.giljobe.common.Constants, com.giljobe.user.model.dto.User"
 %>
 <%
 	User loginUser = (User)session.getAttribute("user");
+	Company loginCompany = (Company)session.getAttribute("company");
+	
+	
 	Cookie[] cookies = request.getCookies();//쿠키 싹다 가져오기
 	String savedUser = null;
+	String savedCompany = null;
 	if(cookies!=null){
 		for(Cookie c:cookies){
 			if(c.getName().equals("userSave")){//savaUser라는 이름의 쿠키를 가져와서 String변수에 담기
 				savedUser=c.getValue();//여기엔 버튼을 누른 id값이 저장될것
+				break;
+			}
+			if(c.getName().equals("companySave")){//savaUser라는 이름의 쿠키를 가져와서 String변수에 담기
+				savedCompany=c.getValue();//여기엔 버튼을 누른 id값이 저장될것
 				break;
 			}
 		}
@@ -30,21 +39,29 @@
 <nav class="navbar navbar-light bg-light py-1 border-bottom">
     <div class="container-fluid d-flex justify-content-end align-items-center">
         <ul class="nav mb-0">
-            <% if (loginUser == null) { %>
+        <!-- 로그인 유저가 있으면 로그인 유저  -->
+            <% if (loginUser == null && loginCompany == null) { %>
             <li class="nav-item">
                 <a href="<%=request.getContextPath()%>/user/login" class="nav-link px-2">로그인</a>
             </li>
             <li class="nav-item">
                 <a href="<%=request.getContextPath()%>/user/enroll" class="nav-link px-2">회원가입</a>
             </li>
-            <% } else { %>
+            <% } else if(loginUser!=null){ %>
             <li class="nav-item me-2">
                 <span class="navbar-text fw-bold text-primary"><%=loginUser.getUserId()%>님 환영합니다.</span>
             </li>
             <li class="nav-item">
                 <a href="<%=request.getContextPath()%>/user/logout" class="nav-link px-2">로그아웃</a>
             </li>
-            <% } %>
+            <% }else{ %>
+             <li class="nav-item me-2">
+                <span class="navbar-text fw-bold text-primary"><%=loginCompany.getComId()%>님 환영합니다.</span>
+            </li>
+            <li class="nav-item">
+                <a href="<%=request.getContextPath()%>/user/logout" class="nav-link px-2">로그아웃</a>
+            </li>          
+            <%} %>
         </ul>
     </div>
 </nav>
