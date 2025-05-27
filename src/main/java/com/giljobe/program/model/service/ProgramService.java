@@ -1,13 +1,12 @@
 package com.giljobe.program.model.service;
 
-import com.giljobe.program.model.dao.ProgramDao;
-import com.giljobe.program.model.dto.Program;
+import static com.giljobe.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
 
-import static com.giljobe.common.JDBCTemplate.close;
-import static com.giljobe.common.JDBCTemplate.getConnection;
+import com.giljobe.program.model.dao.ProgramDao;
+import com.giljobe.program.model.dto.Program;
 
 public class ProgramService {
     //싱글톤
@@ -36,6 +35,11 @@ public class ProgramService {
     public int insertProgram(Program program) {
         Connection conn = getConnection();
         int result = dao.insertProgram(conn, program);
+        if (result > 0) {
+            commit(conn);
+        } else {
+            rollback(conn);
+        }
         close(conn);
         return result;
     }
