@@ -1,6 +1,6 @@
 package com.giljobe.application.model.dao;
 
-import static com.giljobe.common.JDBCTemplate.*;
+import static com.giljobe.common.JDBCTemplate.close;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,12 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import com.giljobe.application.model.dto.Application;
-import com.giljobe.program.model.dao.ProTimeDao;
-import com.giljobe.user.model.dao.UserDao;
 
 public class ApplicationDao {
 	private static final ApplicationDao DAO = new ApplicationDao();
@@ -66,6 +66,12 @@ public class ApplicationDao {
 							.userNoRef(rs.getInt("uesr_no"))
 							.applyState(rs.getBoolean("app_state"))
 							.build();
+	}
+	private Map<String,Object> getAppMap(ResultSet rs)throws SQLException {
+		Map<String,Object> app=new HashMap();
+		app.put("",rs.getString(0));
+		
+		return app;
 	}
 
 }

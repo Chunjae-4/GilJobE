@@ -31,7 +31,8 @@ public class ApplicationListServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 		List<Application> applications = ApplicationService.applicationService().searchAppByUserNo(user.getUserNo());
-		request.setAttribute("applications", applications);
+		user.setApplications(applications);
+		request.setAttribute("user", user);
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"mypage/application.jsp").forward(request, response);
 	
 	}
