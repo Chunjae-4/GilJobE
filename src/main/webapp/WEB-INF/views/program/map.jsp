@@ -27,12 +27,19 @@
             // 위치 허용한 경우: 현재 좌표를 중심으로 지도 생성
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
+            
+         	// 네이버 지도 옵션 설정
+            const mapOptions = {
+                    center: new naver.maps.LatLng(lat, lng),
+                    zoom: 16,
+                    zoomControl: true, // 줌 컨트롤 표시 (+, - 버튼)
+                    zoomControlOptions: {
+                        position: naver.maps.Position.RIGHT_BOTTOM // 오른쪽 아래에 위치
+                    }
+                };
 
-            // 네이버 지도 객체 생성 (현재 위치를 중심으로)
-            map = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(lat, lng),
-                zoom: 15
-            });
+         	// 네이버 지도 객체 생성 (현재 위치를 중심으로)
+            const map = new naver.maps.Map("map", mapOptions);
 
             // 현재 위치에 마커 추가
             new naver.maps.Marker({

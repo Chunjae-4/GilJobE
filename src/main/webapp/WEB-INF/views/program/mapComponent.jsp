@@ -28,12 +28,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // 위도/경도 값 자바스크립트 변수로 전달
     const lat = <%= lat %>;
     const lng = <%= lng %>;
+    
+ 	// 네이버 지도 옵션 설정
+    const mapOptions = {
+            center: new naver.maps.LatLng(lat, lng),
+            zoom: 16,
+            zoomControl: true, // 줌 컨트롤 표시 (+, - 버튼)
+            zoomControlOptions: {
+                position: naver.maps.Position.RIGHT_BOTTOM // 오른쪽 아래에 위치
+            }
+        };
 
-    // 지도 생성
-    const map = new naver.maps.Map("map", {
-        center: new naver.maps.LatLng(lat, lng),
-        zoom: 16
-    });
+ 	// 네이버 지도 객체 생성
+    const map = new naver.maps.Map("map", mapOptions);
 
     // 마커 추가
     const marker = new naver.maps.Marker({
