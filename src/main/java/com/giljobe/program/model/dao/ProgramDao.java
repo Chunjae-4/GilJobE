@@ -125,6 +125,7 @@ public class ProgramDao {
                 .proCategory(rs.getString("pro_category"))
                 .proImageUrl(rs.getString("pro_image_url"))
                 .build();
+        //companyDao추가하고 빌더할때 추가
     }
 	public List<Program> lovedProgramByUserNo(Connection conn, int userNo) {
 		// TODO Auto-generated method stub

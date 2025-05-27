@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.giljobe.application.model.dto.Application;
 import com.giljobe.chat.model.dto.Chat;
+import com.giljobe.company.model.dto.Company;
 import com.giljobe.love.model.dto.Love;
 import com.giljobe.qna.model.dto.QNA;
 
@@ -29,7 +30,7 @@ public class Program {
 	private String proCategory;
 	private String proImageUrl;
 
-	private int comNoRef;
+	private Company comNoRef;
 	// 기업번호 참조 - 기업 번호 변수명에다가 Ref 를 붙이는걸로.
 	
 	private List<Round> rounds;	// 회차 정보

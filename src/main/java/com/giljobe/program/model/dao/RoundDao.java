@@ -56,7 +56,7 @@ public class RoundDao {
         return rounds;
     }
 	
-	private Round getRound(ResultSet rs) throws SQLException {
+	public Round getRound(ResultSet rs) throws SQLException {
         return Round.builder()
                 .roundNo(rs.getInt("round_no"))
                 .roundCount(rs.getInt("round_count"))
@@ -68,7 +68,7 @@ public class RoundDao {
                 .note(rs.getString("note"))
                 .summary(rs.getString("summary"))
                 .detail(rs.getString("detail"))
-                .proNoRef(rs.getInt("pro_no"))
+                .proNoRef(ProgramDao.getInstance().getProgram(rs))
                 .build();
     }
 }

@@ -56,12 +56,12 @@ private static ProTimeDao proTimeDao = new ProTimeDao();
         return proTimes;
     }
 	
-	private ProTime getProTime(ResultSet rs) throws SQLException {
+	public ProTime getProTime(ResultSet rs) throws SQLException {
         return ProTime.builder()
                 .timeNo(rs.getInt("time_no"))
                 .startTime(rs.getDate("start_time"))
                 .endTime(rs.getDate("end_time"))
-                .roundNoRef(rs.getInt("round_no"))
+                .roundNoRef(RoundDao.getInstance().getRound(rs))
                 .build();
     }
 }
