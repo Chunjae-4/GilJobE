@@ -57,6 +57,25 @@ public class ProgramDao {
         return programList;
     }
 
+    public List<Program> selectRandomRecommendedPrograms(Connection conn) {
+        List<Program> programList = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("selectRandomRecommendedPrograms"));
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Program p = getSimpleProgram(rs);
+                programList.add(p);
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return programList;
+    }
+
+
     public List<Program> searchProgramByTitleKeyword(Connection conn, String keyword) {
         List<Program> programList = new ArrayList<>();
         try {
@@ -167,6 +186,15 @@ public class ProgramDao {
             close(pstmt);
         }
         return result;
+    }
+    public Program getSimpleProgram(ResultSet rs) throws SQLException {
+        int proNo = rs.getInt("pro_no");
+        return Program.builder()
+                .proNo(proNo)
+                .proName(rs.getString("pro_name"))
+                .proCategory(rs.getString("pro_category"))
+                .proImageUrl(rs.getString("pro_image_url"))
+                .build();
     }
 
     public Program getProgram(ResultSet rs) throws SQLException {

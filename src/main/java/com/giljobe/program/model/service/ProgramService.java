@@ -50,7 +50,14 @@ public class ProgramService {
         close(conn);
         return programList;
     }
-    
+
+    public List<Program> searchProgramsInfo() {
+        Connection conn = getConnection();
+        List<Program> programList = dao.selectRandomRecommendedPrograms(conn);
+        close(conn);
+        return programList;
+    }
+
     public Program selectProgramByNo(int proNo) {
         Connection conn = getConnection();
         Program program = ProgramDao.getInstance().selectProgramByNo(conn, proNo);

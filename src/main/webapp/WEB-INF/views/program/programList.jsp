@@ -139,11 +139,16 @@ String pageUri = (String) request.getAttribute("pageUri");%>
         </div>
         <% } %>
     </div>
-    <%-- 이전 버튼 --%>
-    <li class="page-item <%= (pageNo == 1 ? "disabled" : "") %>">
-        <a class="page-link" href="<%= (pageNo == 1 ? "#" : pageUri + "?cPage=" + (pageNo - 1)) %>">이전</a>
-    </li>
+</section>
+
+<%--페이징 버튼 --%>
+<section>
     <ul class="pagination justify-content-center">
+        <%-- 이전 버튼 --%>
+        <li class="page-item <%= (pageNo == 1 ? "disabled" : "") %>">
+            <a class="page-link" href="<%= (pageNo == 1 ? "#" : pageUri + "?cPage=" + (pageNo - 1)) %>">이전</a>
+        </li>
+
         <%-- 페이지 번호 출력 --%>
         <% for (; pageNo <= pageEnd && pageNo <= totalPage; pageNo++) { %>
         <li class="page-item <%= (pageNo == cPage ? "active" : "") %>">
@@ -157,6 +162,8 @@ String pageUri = (String) request.getAttribute("pageUri");%>
         </li>
     </ul>
 </section>
+
+
 <script>
     // 프로그램 카드 전체 클릭 시
     $(".programDetail").click(e => {
