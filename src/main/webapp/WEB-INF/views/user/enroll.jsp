@@ -7,27 +7,31 @@
 		<div class="row justify-content-center g-4">
 
 			<!-- 유저 회원가입 -->
-			<div class="col-md-5">
-				<div class="bg-white p-4 rounded-4 shadow-sm text-center">
+			<div class="col-12 col-sm-6 col-md-5 col-lg-4">
+				<div class="bg-white p-5 rounded-4 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
 					<form method="get" action="<%=request.getContextPath()%>/user/enrolluser">
 						<img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/groom_2920507.png"
-							 alt="유저" width="100" class="mb-3">
-						<h4 class="fw-semibold mb-3">유저 회원가입</h4>
+							 alt="유저" width="90" class="mb-4">
+						<h5 class="fw-semibold mb-2">유저 회원가입</h5>
 						<p class="text-muted small mb-4">개인 사용자를 위한 회원가입</p>
-						<button class="btn btn-primary rounded-pill px-4 py-2" type="submit">회원가입</button>
+						<div class="mt-auto">
+							<button class="btn btn-primary rounded-pill px-4 py-2" type="submit">회원가입</button>
+						</div>
 					</form>
 				</div>
 			</div>
 
 			<!-- 기업 회원가입 -->
-			<div class="col-md-5">
-				<div class="bg-white p-4 rounded-4 shadow-sm text-center">
+			<div class="col-12 col-sm-6 col-md-5 col-lg-4">
+				<div class="bg-white p-5 rounded-4 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
 					<form method="get" action="<%=request.getContextPath()%>/company/enrollcompany">
 						<img src="<%=request.getContextPath()%><%=Constants.IMAGE_FILE_PATH%>/edu_4943347.png"
-							 alt="기업" width="100" class="mb-3">
-						<h4 class="fw-semibold mb-3">기업 회원가입</h4>
+							 alt="기업" width="90" class="mb-4">
+						<h5 class="fw-semibold mb-2">기업 회원가입</h5>
 						<p class="text-muted small mb-4">기업 고객 전용 회원가입</p>
-						<button class="btn btn-primary rounded-pill px-4 py-2" type="submit">회원가입</button>
+						<div class="mt-auto">
+							<button class="btn btn-primary rounded-pill px-4 py-2" type="submit">회원가입</button>
+						</div>
 					</form>
 				</div>
 			</div>
