@@ -20,7 +20,6 @@ public class NoticeDetailServlet extends HttpServlet {
         if (notice != null) {
             request.setAttribute("notice", notice);
         }
-        System.out.println(notice);
         request.getRequestDispatcher(Constants.WEB_VIEWS + "notice/noticeDetail.jsp").forward(request, response);
     }
 

@@ -26,7 +26,6 @@ public class NoticeDao {
 
     private NoticeDao() {
         String path = NoticeDao.class.getResource("/sql/notice.properties").getPath();
-        System.out.println(path);
         try (FileReader reader = new FileReader(path)) {
             sql.load(reader);
         } catch (IOException e) {
@@ -80,7 +79,6 @@ public class NoticeDao {
             rs = pstmt.executeQuery();
             if(rs.next()){
                 result = rs.getInt(1);
-                System.out.println(result);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

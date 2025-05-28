@@ -33,7 +33,6 @@ public class NoticeListServlet extends HttpServlet {
 
 		//1. 전체 데이터 수 가져오기
 		int totalCount = NoticeService.getInstance().noticeCount();
-		System.out.println(totalCount);
 
 		int totalPage = (int)Math.ceil((double)totalCount / numPerPage);
 		int pageBarSize = 5;
@@ -42,7 +41,6 @@ public class NoticeListServlet extends HttpServlet {
 
 		//2. DB All NoticeList
 		List<Notice> noticeList = NoticeService.getInstance().searchAllNotice(cPage, numPerPage);
-		System.out.println(noticeList.toString());
 		request.setAttribute("noticeList", noticeList);
 		//3. set page
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"notice/noticeList.jsp").forward(request, response);
