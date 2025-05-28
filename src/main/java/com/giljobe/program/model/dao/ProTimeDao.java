@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.giljobe.common.LoggerUtil;
 import com.giljobe.program.model.dto.ProTime;
 
 public class ProTimeDao {
@@ -27,7 +28,7 @@ private static ProTimeDao proTimeDao = new ProTimeDao();
     	try (FileReader reader = new FileReader(path)) {
             sql.load(reader);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         }
     }
     public static ProTimeDao getInstance() {
@@ -47,7 +48,7 @@ private static ProTimeDao proTimeDao = new ProTimeDao();
             	proTimes.add(pt);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
