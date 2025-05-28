@@ -13,7 +13,7 @@
 
 <%--programlist servlet 에서 리스트 가져오기--%>
 <% List<Program> programList = (List<Program>) request.getAttribute("programList");
-int pageNo = (int) request.getAttribute("pageStart");
+int pageStart = (int) request.getAttribute("pageStart");
 int pageEnd = (int) request.getAttribute("pageEnd");
 int totalPage = (int) request.getAttribute("totalPage");
 int cPage = (int) request.getAttribute("cPage");
@@ -86,7 +86,7 @@ String pageUri = (String) request.getAttribute("pageUri");%>
 
 <section class="bg-body-tertiary py-5">
     <div class="container">
-        <p class="mb-4 text-muted"><%=pageNo%> 페이지입니다. </p>
+        <p class="mb-4 text-muted"><%=cPage%> 페이지입니다. </p>
 
         <% if (!programList.isEmpty()) { %>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
@@ -119,7 +119,7 @@ String pageUri = (String) request.getAttribute("pageUri");%>
                     </div>
 
                     <!-- 하단 버튼 그룹 -->
-                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
+                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center my-3">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-primary"><%=p.getProType()%></button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">
@@ -142,24 +142,21 @@ String pageUri = (String) request.getAttribute("pageUri");%>
 </section>
 
 <%--페이징 버튼 --%>
-<section>
+<section class="my-3">
     <ul class="pagination justify-content-center">
-        <%-- 이전 버튼 --%>
-        <li class="page-item <%= (pageNo == 1 ? "disabled" : "") %>">
-            <a class="page-link" href="<%= (pageNo == 1 ? "#" : pageUri + "?cPage=" + (pageNo - 1)) %>">이전</a>
-        </li>
+        <% if (totalPage == 1){%>
+            <%-- 1페이지면 안보여줄거임! --%>
+        <% } else {%>
 
-        <%-- 페이지 번호 출력 --%>
-        <% for (; pageNo <= pageEnd && pageNo <= totalPage; pageNo++) { %>
-        <li class="page-item <%= (pageNo == cPage ? "active" : "") %>">
-            <a class="page-link" href="<%= pageUri %>?cPage=<%= pageNo %>"><%= pageNo %></a>
-        </li>
+            <%-- 페이지 번호 출력 --%>
+            <% for (; pageStart <= pageEnd && pageStart <= totalPage; pageStart++) { %>
+            <li class="page-item <%= (pageStart == cPage ? "active" : "") %>">
+               <a class="page-link" href="<%= pageUri %>?cPage=<%= pageStart %>"><%= pageStart %></a>
+            </li>
+            <% } %>
+
         <% } %>
 
-        <%-- 다음 버튼 --%>
-        <li class="page-item <%= (pageNo > totalPage ? "disabled" : "") %>">
-            <a class="page-link" href="<%= (pageNo > totalPage ? "#" : pageUri + "?cPage=" + pageNo) %>">다음</a>
-        </li>
     </ul>
 </section>
 
