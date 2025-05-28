@@ -29,7 +29,7 @@ public class NoticeDao {
         try (FileReader reader = new FileReader(path)) {
             sql.load(reader);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
     public static NoticeDao getInstance() {
@@ -63,7 +63,7 @@ public class NoticeDao {
                 noticeList.add(p);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             close(rs);
             close(pstmt);
@@ -81,7 +81,7 @@ public class NoticeDao {
                 result = rs.getInt(1);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             close(rs);
             close(pstmt);
@@ -99,7 +99,7 @@ public class NoticeDao {
                 notice = getNotice(rs);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             close(rs);
             close(pstmt);
