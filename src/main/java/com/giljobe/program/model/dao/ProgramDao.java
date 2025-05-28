@@ -1,10 +1,10 @@
 package com.giljobe.program.model.dao;
 
-import com.giljobe.common.JDBCTemplate;
-import com.giljobe.company.model.dao.CompanyDao;
+import com.giljobe.common.LoggerUtil;
+import com.giljobe.love.model.dto.Love;
+import com.giljobe.love.model.service.LoveService;
 import com.giljobe.program.model.dto.Program;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -30,7 +30,7 @@ public class ProgramDao {
         try (FileReader reader = new FileReader(path)) {
             sql.load(reader);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         }
     }
     public static ProgramDao getInstance() {
@@ -49,7 +49,7 @@ public class ProgramDao {
                 programList.add(p);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
@@ -68,7 +68,7 @@ public class ProgramDao {
                 programList.add(p);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
@@ -78,7 +78,7 @@ public class ProgramDao {
     
     public Program selectProgramByNo(Connection conn, int proNo) {
         Program program = null;
-        
+        LoggerUtil.debug("ProgramDao.selectProgramByNo: " + proNo);
         try {
             pstmt = conn.prepareStatement(sql.getProperty("selectProgramByNo"));
             pstmt.setInt(1, proNo);
@@ -87,7 +87,7 @@ public class ProgramDao {
                 program = getProgram(rs);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
@@ -104,10 +104,9 @@ public class ProgramDao {
             rs = pstmt.executeQuery();
             if(rs.next()){
                 result = rs.getInt(1);
-                System.out.println(result);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
@@ -126,7 +125,7 @@ public class ProgramDao {
                 // 시퀀스에서 cache_size가 0 이면, last_number는 nextval 했을때 나올 숫자를 정확히 예측 가능!
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             close(rs);
             close(pstmt);
@@ -162,7 +161,7 @@ public class ProgramDao {
             }
             
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
@@ -171,8 +170,12 @@ public class ProgramDao {
     }
 
     public Program getProgram(ResultSet rs) throws SQLException {
+        int proNo = rs.getInt("pro_no");
+        int likeCount = 0;
+        likeCount = LoveService.getInstance().countLoveByProgram(proNo);
+
         return Program.builder()
-                .proNo(rs.getInt("pro_no"))
+                .proNo(proNo)
                 .proName(rs.getString("pro_name"))
                 .proType(rs.getString("pro_type"))
                 .proLocation(rs.getString("pro_location"))
@@ -180,6 +183,7 @@ public class ProgramDao {
                 .proLongitude(rs.getDouble("pro_longitude"))
                 .proCategory(rs.getString("pro_category"))
                 .proImageUrl(rs.getString("pro_image_url"))
+                .likeCount(likeCount)
                 .build();
     }
 	public List<Program> lovedProgramByUserNo(Connection conn, int userNo) {
