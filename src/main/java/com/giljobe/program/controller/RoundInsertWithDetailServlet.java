@@ -2,7 +2,9 @@ package com.giljobe.program.controller;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,9 +80,16 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
 //            LocalTime start = LocalTime.of(h, m);
 //            LocalTime end = start.plusMinutes(duration);
 //
+//         // LocalTime -> LocalDateTime -> java.util.Date
+//            LocalDateTime ldtStart = LocalDate.now().atTime(start);
+//            LocalDateTime ldtEnd = LocalDate.now().atTime(end);
+//
+//            Date startDate = (Date) Timestamp.valueOf(ldtStart);
+//            Date endDate = (Date) Timestamp.valueOf(ldtEnd);
+//
 //            ProTime pt = ProTime.builder()
-//                    .startTime(Date.valueOf(start))
-//                    .endTime(Date.valueOf(end))
+//                    .startTime(startDate)
+//                    .endTime(endDate)
 //                    .roundNoRef(roundNo)
 //                    .build();
 //            proTimeList.add(pt);

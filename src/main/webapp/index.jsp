@@ -68,8 +68,16 @@
                                 for (Program p : randomRecommend) { %>
                             <div class="carousel-item <%= isFirst ? "active" : "" %> programDetail" data-prono="<%=p.getProNo()%>">
                                 <div class="ratio ratio-16x9">
-                                    <img src="<%=request.getContextPath()%><%=Constants.DEFAULT_UPLOAD_PATH%><%=p.getProImageUrl()%>.jpg"  class="d-block w-100 object-fit-cover" alt="프로그램 이미지">
-                                </div>
+									<%
+										String imagePath;
+										if (p.getProImageUrl() != null && !p.getProImageUrl().trim().isEmpty()) {
+										    imagePath = Constants.DEFAULT_UPLOAD_PATH + p.getProImageUrl(); // ex: /resources/upload/1/1/1.jpg
+										} else {
+										    imagePath = "/resources/images/logo.png"; // ✅ 기본 이미지 경로
+										}
+									%>
+									<img src="<%= request.getContextPath() + imagePath %>"
+									     class="d-block w-100 object-fit-cover" alt="프로그램 이미지">                                </div>
                                 <!-- 프로그램 이름 + 카테고리 묶은 왼쪽 상단 캡션 -->
                                 <div class="position-absolute top-0 start-0 m-3 px-4 py-3 bg-dark bg-opacity-75 text-white rounded-3 shadow" style="font-size: 1.1rem; font-weight: 200; max-width: 70%;">
 
