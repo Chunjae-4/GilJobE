@@ -75,6 +75,36 @@ public class RoundDao {
         return result;
     }
 	
+	public Round getLastRoundByProNo(Connection conn, int proNo) {
+		try {
+	    	pstmt = conn.prepareStatement(sql.getProperty("getLastRoundByProNo"));
+	        pstmt.setInt(1, proNo);
+	        rs = pstmt.executeQuery();
+            if (rs.next()) {
+            	return Round.builder()
+	                    .roundNo(rs.getInt("round_no"))
+	                    .roundDate(rs.getDate("round_date"))
+	                    .roundMaxPeople(rs.getInt("round_max_people"))
+	                    .roundPrice(rs.getInt("round_price"))
+	                    .detailLocation(rs.getString("detail_location"))
+	                    .goal(rs.getString("goal"))
+	                    .summary(rs.getString("summary"))
+	                    .detail(rs.getString("detail"))
+	                    .note(rs.getString("note"))
+	                    .proNoRef(rs.getInt("pro_no"))
+	                    .roundCount(rs.getInt("round_count"))
+	                    .build();
+            }
+        } catch (SQLException e) {
+	        e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        
+	    return null;
+	}
+	
 	public int insertRound(Connection conn, Round round) {
 	    int result = 0;
 	    try {

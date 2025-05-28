@@ -32,6 +32,13 @@ public class RoundService {
         close(conn);
         return result;
     }
+    
+    public Round getLastRoundByProNo(int proNo) {
+        Connection conn = getConnection();
+        Round round = dao.getLastRoundByProNo(conn, proNo);
+        close(conn);
+        return round;
+    }
 
     
     public int getNextRoundCount(int proNo) {
@@ -40,6 +47,8 @@ public class RoundService {
         close(conn);
         return result;
     }
+    
+    
     
     
     
