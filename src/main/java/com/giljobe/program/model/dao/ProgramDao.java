@@ -76,11 +76,13 @@ public class ProgramDao {
     }
 
 
-    public List<Program> searchProgramByTitleKeyword(Connection conn, String keyword) {
+    public List<Program> searchProgramByTitleKeyword(Connection conn, String keyword, int cPage, int numPerPage) {
         List<Program> programList = new ArrayList<>();
         try {
             pstmt = conn.prepareStatement(sql.getProperty("searchProgramByTitleKeyword"));
             pstmt.setString(1, keyword);
+            pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+            pstmt.setInt(3, cPage * numPerPage);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Program p = getProgram(rs);
@@ -120,6 +122,25 @@ public class ProgramDao {
         int result = 0;
         try {
             pstmt = conn.prepareStatement(sql.getProperty("programCount"));
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+
+    public int countProgramByTitleKeyword(Connection conn, String keyword)
+    {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("countProgramByTitleKeyword"));
+            pstmt.setString(1, keyword);
             rs = pstmt.executeQuery();
             if(rs.next()){
                 result = rs.getInt(1);
