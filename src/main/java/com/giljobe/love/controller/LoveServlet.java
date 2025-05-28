@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.giljobe.common.Constants;
+import com.giljobe.love.model.dto.Love;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
 import com.giljobe.user.model.dto.User;
@@ -32,6 +33,7 @@ public class LoveServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 		List<Program> programs =  ProgramService.getInstance().lovedProgramByUserNo(user.getUserNo());
+		//여기안에 프로그램 no값과 프로그램 이름값을 넣었음
 		//프로그램을 조회하려면 유저정보가 필요
 		//세션에서 유저정보를 받아와야하나?
 		request.setAttribute("programs", programs);

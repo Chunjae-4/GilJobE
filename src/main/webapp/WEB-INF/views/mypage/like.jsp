@@ -6,6 +6,6 @@
 %>
 <ul>
 <%for(Program p : programs){%>
-	<li><%=p %></li>
+	<li><%=p.getProName() %></li>
 <%}%>
 </ul>

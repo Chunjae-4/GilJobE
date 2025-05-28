@@ -95,7 +95,9 @@
                     <li class="nav-item">
                         <% if (loginUser != null) { %>
                         <a href="<%=request.getContextPath()%>/mypage/mypageview" class="nav-link text-dark">마이페이지</a>
-                        <% } else { %>
+                        <% } else if(loginCompany != null){ %>
+						<a href="<%=request.getContextPath()%>/mypage/companymypageview" class="nav-link text-dark">마이페이지</a>
+                        <%}else{ %>
                         <a href="<%=request.getContextPath()%>/user/login" class="nav-link text-dark">마이페이지</a>
                         <% } %>
                     </li>
