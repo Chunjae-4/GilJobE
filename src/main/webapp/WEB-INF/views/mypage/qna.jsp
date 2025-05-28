@@ -8,6 +8,7 @@
 %>
 <ul>
 <%for( QNA q: qnas){%>
-	<li><%=q %></li>
+	<li>문의 내용 : <%=q.getQnaContent() %></li>
+	<li>답변 : <%=q.getAnswer() %></li>
 <%}%>
 </ul>

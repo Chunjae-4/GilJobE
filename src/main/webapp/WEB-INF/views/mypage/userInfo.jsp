@@ -39,9 +39,10 @@
 				style="color: red">*</span></label> <input type="date" class="form-control"
 				name="userBirth" value= "<%=loginUser.getUserBirth()%>" required>
 		</div>
-		<input type="submit" value="회원 정보 수정" id="submitBtn"> <input type="submit" id="pwsubmitBtn"
-				value="비밀번호수정"> 
+		<input type="submit" value="회원 정보 수정" id="submitBtn"> 
 	</form>
+	<input type="button" id="pwsubmitBtn"
+				value="비밀번호수정"> 
 </section>
 <script>
 	const numonly = /[^0-9]/g; //문자가 있니 없니

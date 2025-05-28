@@ -120,5 +120,16 @@ public class UserDao {
 		
 		return u;
 	}
+	public int updateUser(Connection conn, User u) {
+
+		int result = 0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("updateUser"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 }

@@ -13,8 +13,8 @@
 			<hr>
 			<ul class="nav nav-pills flex-column mb-auto">
 				<li onclick="sideMenu('companyinfo')">내 정보 관리</li>
-				<li onclick="sideMenu('applist')">등록 프로그램 관리</li>
-				<li onclick="sideMenu('qnalist')">문의 내역</li>
+				<li onclick="sideMenu('companyprogram')">등록 프로그램 관리</li>
+				<li onclick="sideMenu('answerlist')">문의 내역</li>
 				<li>기타 등등</li>
 			</ul>
 			<hr>
@@ -48,7 +48,9 @@
         }
       });
 	}
-  	
+	$(document).ready(function () {
+	    sideMenu('companyinfo');
+	});
   	
   </script>
 <style>

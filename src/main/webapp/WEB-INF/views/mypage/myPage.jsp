@@ -24,31 +24,9 @@
 	</aside>
 
 	<!-- 본문 영역 -->
-	<section class="p-3" id="content">
-		
-	</section>
+	<section class="p-3" id="content"></section>
 </main>
-<style>
-main {
-	flex: 1;
-	display: flex;
-	min-height: 0; /* 내부 요소 overflow 방지 */
-}
 
-aside {
-	width: 280px;
-	background-color: #f8f9fa;
-	padding: 1rem;
-	box-sizing: border-box;
-}
-
-section {
-	flex-grow: 1;
-	padding: 1rem;
-	overflow-y: auto;
-	background-color: #fff;
-}
-</style>
 <script>
   	
   	//ajax로 url을 서블렛으로 보내고 printwriter로 화면 조립해서 띄워주면 힘드니까
@@ -70,9 +48,29 @@ section {
         }
       });
 	}
-  	
-  	
+	$(document).ready(function () {
+	    sideMenu('userinfo');
+	});
   </script>
-
-
+	<style>
+		main {
+			flex: 1;
+			display: flex;
+			min-height: 0; /* 내부 요소 overflow 방지 */
+		}
+		
+		aside {
+			width: 280px;
+			background-color: #f8f9fa;
+			padding: 1rem;
+			box-sizing: border-box;
+		}
+		
+		section {
+			flex-grow: 1;
+			padding: 1rem;
+			overflow-y: auto;
+			background-color: #fff;
+		}
+	</style>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
