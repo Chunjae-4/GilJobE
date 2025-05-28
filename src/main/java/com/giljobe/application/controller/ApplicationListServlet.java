@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.giljobe.application.model.dto.Application;
+import com.giljobe.application.model.dto.ApplicationProgram;
 import com.giljobe.application.model.service.ApplicationService;
 import com.giljobe.common.Constants;
 import com.giljobe.user.model.dto.User;
@@ -30,9 +31,9 @@ public class ApplicationListServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
-		List<Application> applications = ApplicationService.applicationService().searchAppByUserNo(user.getUserNo());
-		user.setApplications(applications);
-		request.setAttribute("user", user);
+		List<ApplicationProgram> applications = ApplicationService.applicationService().searchAppByUserNo(user.getUserNo());
+//		user.setApplications(applications);
+		request.setAttribute("applications", applications);
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"mypage/application.jsp").forward(request, response);
 	
 	}
