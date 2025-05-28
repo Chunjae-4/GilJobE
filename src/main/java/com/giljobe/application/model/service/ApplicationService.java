@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.giljobe.application.model.dao.ApplicationDao;
+import com.giljobe.application.model.dao.ApplicationProgramDao;
 import com.giljobe.application.model.dto.Application;
+import com.giljobe.application.model.dto.ApplicationProgram;
 
 public class ApplicationService {
 	private static final ApplicationService SERVICE = new ApplicationService();
@@ -15,13 +17,14 @@ public class ApplicationService {
 		return SERVICE;
 	}
 	private ApplicationDao appdao = ApplicationDao.applicationDao();
+	private ApplicationProgramDao appprodao = ApplicationProgramDao.applicationProgramDao();
 	private Connection conn;
 	
-	public List<Application> searchAppByUserNo(int userNo) {
+	public List<ApplicationProgram> searchAppByUserNo(int userNo) {
 		// TODO Auto-generated method stub
 		conn=getConnection();
-		List<Application> qnas = appdao.searchAppByUserNo(conn,userNo);
+		List<ApplicationProgram> apps = appprodao.searchAppByUserNo(conn,userNo);
 		close(conn);
-		return qnas;
+		return apps;
 	}
 }
