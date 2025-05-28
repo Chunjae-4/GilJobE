@@ -1,4 +1,4 @@
-package com.giljobe.user.controller;
+package com.giljobe.company.controller;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -11,45 +11,42 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.giljobe.common.Constants;
-import com.giljobe.user.model.dto.User;
-import com.giljobe.user.model.service.UserService;
+import com.giljobe.company.model.dto.Company;
+import com.giljobe.company.model.service.CompanyService;
 
 
-@WebServlet("/user/updateUser")
-public class UpdateUserServlet extends HttpServlet {
+@WebServlet("/company/updateCompany")
+public class CompanyUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-   
-    public UpdateUserServlet() {
+    
+    public CompanyUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
+
+HttpSession session = request.getSession();
 		
-		String userId=request.getParameter("userId");
-		String newname=request.getParameter("userName");
-		String newphone=request.getParameter("userPhone");
-		String newnickName =request.getParameter("userNickName");
-		String newemail=request.getParameter("userEmail");
-		Date newbirth =Date.valueOf(request.getParameter("userBirth"));
+		String comId=request.getParameter("companyId");
+		String newname=request.getParameter("companyName");
+		String newphone=request.getParameter("companyPhone");
+		int newBinNo =Integer.parseInt(request.getParameter("companyBinNo"));
+		String newemail=request.getParameter("companyEmail");
 		
-//		User loginUser = (User)session.getAttribute("user");
+		Company c = Company.builder()
+							.comName(newname)
+							.comPhone(newphone)
+							.comBinNo(newBinNo)
+							.comEmail(newemail)
+							.comId(comId)
+							.build();
 		
-		User u = User.builder()
-				.userId(userId)
-//				.userPw(loginUser.getUserPw())
-				.userName(newname)
-				.userPhone(newphone)
-				.userNickName(newnickName)
-				.userEmail(newemail)
-				.userBirth(newbirth)
-				.build();	
+		int result= CompanyService.companyService().updateCompany(c);
 		
-		int result = UserService.userService().updateUser(u);
+		
 		
 		String msg;
 		String loc;
@@ -57,20 +54,18 @@ public class UpdateUserServlet extends HttpServlet {
 		if(result>0) {
 			//성공
 			msg="회원정보 수정완료";
-			
-			session.setAttribute("user", u );
+			session.setAttribute("company", c );
 		}else {
 			//실패
 			msg="회원정보 수정 실패";
-			
 		}
-		loc="/mypage/mypageview";
+		loc="/mypage/companymypageview";
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);
 		request.getRequestDispatcher(Constants.MSG).forward(request, response);
+	
 	}
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

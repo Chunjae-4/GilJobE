@@ -8,30 +8,30 @@
 	<form action="<%=request.getContextPath()%>/user/updateUser"
 		method="post" onsubmit="return validateForm()">
 		<div class="mb-3">
-			<label for="name" class="form-label">이름<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userName" placeholder="개명하셨나요?" value="<%=loginUser.getUserName() %>" required>
-		</div>
-		<div class="mb-3">
 			<label for="id" class="form-label">아이디<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userId" id="userId"
+				name="userId" id="userId" maxlength="16"
 				value="<%=loginUser.getUserId() %>" readonly>
 		</div>
 		<div class="mb-3">
-			<label for="phone" class="form-label">전화번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
+			<label for="name" class="form-label">이름<span 
+				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="5"
+				name="userName" placeholder="개명하셨나요?" value="<%=loginUser.getUserName() %>" required>
+		</div>
+		<div class="mb-3">
+			<label for="phone" class="form-label">전화번호<span 
+				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="11"
 				name="userPhone" placeholder="'-'제외하고 입력" id="userPhone" value="<%=loginUser.getUserPhone() %>" required>
 		</div>
 		<div class="mb-3">
 			<label for="nickname" class="form-label">닉네임<span
 				style="color: red">*</span></label> <input
-				type="text" class="form-control" name="userNickName" id="userNickName"
+				type="text" class="form-control" name="userNickName" id="userNickName" maxlength="10"
 				placeholder="최대 10자 까지 입력(특수문자 입력불가)" value = "<%=loginUser.getUserNickName() %>" required>
 		</div>
 		<div class="mb-3">
 			<label for="email" class="form-label">이메일<span
-				style="color: red">*</span></label> <input type="email" class="form-control"
+				style="color: red">*</span></label> <input type="email" class="form-control" maxlength="20"
 				name="userEmail" placeholder="user@email.com" value="<%=loginUser.getUserEmail() %>" required>
 		</div>
 		<div class="mb-3">

@@ -8,31 +8,31 @@
 	<form action="<%=request.getContextPath()%>/company/enrollendcompany"
 		method="post" onsubmit="return validateForm()">
 		<div class="mb-3">
-			<label for="name" class="form-label">기업명<span
+			<label for="name" class="form-label">기업명<span 
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyName" placeholder="기업명을 입력해주세요" required>
+				name="companyName" maxlength="5" placeholder="기업명을 입력해주세요" required>
 		</div>
 		<div class="mb-3">
 			<label for="binNo" class="form-label">사업자 등록번호<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyBinNo" id="companyBinNo"
+				name="companyBinNo" id="companyBinNo" maxlength="10"
 				placeholder="-제외 입력" required>
 		</div>
 		<div class="mb-3">
 			<label for="email" class="form-label">이메일<span
 				style="color: red">*</span></label> <input type="email" class="form-control"
-				name="companyEmail" placeholder="company@email.com" required>
+				name="companyEmail" maxlength="20" placeholder="company@email.com" required>
 		</div>
 		<div class="mb-3">
 			<label for="id" class="form-label">아이디<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyId" id="companyId"
+				name="companyId" id="companyId" maxlength="16"
 				placeholder="4~16자 사이의 영문 대소문자, 숫자 (특수문자 입력불가)" required>
 		</div>
 		<div class="mb-3">
 			<label for="password" class="form-label">비밀번호<span
 				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="companyPw" id="companyPw"
+				class="form-control" name="companyPw" id="companyPw" maxlength="20"
 				placeholder="8자리 이상 영문 대소문자, 숫자, 특수문자" required>
 		</div>
 		<div class="mb-3">
@@ -43,7 +43,7 @@
 		<div class="mb-3">
 			<label for="phone" class="form-label">전화번호<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyPhone" id="companyPhone" placeholder="'-'제외하고 입력"  required>
+				name="companyPhone" id="companyPhone" maxlength="11" placeholder="'-'제외하고 입력"  required>
 		</div>
 		<input type="submit" class="btn btn-primary" value="가입" id="submitBtn" disabled>
 	</form>

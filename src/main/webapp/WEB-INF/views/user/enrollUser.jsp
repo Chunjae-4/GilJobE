@@ -10,18 +10,18 @@
 		<div class="mb-3">
 			<label for="name" class="form-label">이름<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userName" placeholder="성함을 입력해주세요" required>
+				name="userName" maxlength="5" placeholder="성함을 입력해주세요" required>
 		</div>
 		<div class="mb-3">
 			<label for="id" class="form-label">아이디<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userId" id="userId"
+				name="userId" id="userId" maxlength="16"
 				placeholder="4~16자 사이의 영문 대소문자, 숫자 (특수문자 입력불가)" required>
 		</div>
 		<div class="mb-3">
 			<label for="password" class="form-label">비밀번호<span
 				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="userPw" id="userPw"
+				class="form-control" name="userPw" id="userPw" maxlength="20"
 				placeholder="8자리 이상 영문 대소문자, 숫자, 특수문자" required>
 		</div>
 		<div class="mb-3">
@@ -32,18 +32,18 @@
 		<div class="mb-3">
 			<label for="phone" class="form-label">전화번호<span
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userPhone" placeholder="'-'제외하고 입력" id="userPhone" required>
+				name="userPhone" maxlength="11" placeholder="'-'제외하고 입력" id="userPhone" required>
 		</div>
 		<div class="mb-3">
 			<label for="nickname" class="form-label">닉네임<span
 				style="color: red">*</span></label> <input
-				type="text" class="form-control" name="userNickName" id="userNickName"
+				type="text" class="form-control" name="userNickName" id="userNickName" maxlength="10"
 				placeholder="최대 10자 까지 입력(특수문자 입력불가)" required>
 		</div>
 		<div class="mb-3">
 			<label for="email" class="form-label">이메일<span
 				style="color: red">*</span></label> <input type="email" class="form-control"
-				name="userEmail" placeholder="user@email.com" required>
+				name="userEmail" maxlength="20" placeholder="user@email.com" required>
 		</div>
 		<div class="mb-3">
 			<label for="birth" class="form-label">생년월일<span
