@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.giljobe.common.LoggerUtil;
 import com.giljobe.program.model.dto.Round;
 
 public class RoundDao {
@@ -27,7 +28,7 @@ public class RoundDao {
     	try (FileReader reader = new FileReader(path)) {
             sql.load(reader);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error("RoundDao exception: " + e.getMessage(), e);
         }
     }
     public static RoundDao getInstance() {
@@ -47,7 +48,7 @@ public class RoundDao {
             	rounds.add(r);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
@@ -66,7 +67,7 @@ public class RoundDao {
             	result = rs.getInt(1);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerUtil.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(pstmt);
