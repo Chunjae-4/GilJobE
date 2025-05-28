@@ -85,6 +85,7 @@
 </form>
 
 <script>
+	let count=0;
     function addStartTime() {
         const container = document.getElementById("startTimeContainer");
 
@@ -94,17 +95,17 @@
         let hourOptions = '';
         for (let h = 0; h < 24; h++) {
             const padded = h.toString().padStart(2, '0');
-            hourOptions += `<option value="${h}">\${padded}</option>`;
+            hourOptions += `<option value="\${h}">\${padded}</option>`;
         }
 
         let minuteOptions = '';
         for (let m = 0; m < 60; m += 5) {
             const padded = m.toString().padStart(2, '0');
-            minuteOptions += `<option value="${m}">\${padded}</option>`;
+            minuteOptions += `<option value="\${m}">\${padded}</option>`;
         }
 
         newRow.innerHTML = `
-            <select name="startHour" class="form-select me-2" style="width:auto;">
+            <select name="startHour"+(count++) class="form-select me-2" style="width:auto;">
                 \${hourOptions}
             </select>
             <select name="startMinute" class="form-select me-2" style="width:auto;">

@@ -56,6 +56,30 @@ private static ProTimeDao proTimeDao = new ProTimeDao();
         return proTimes;
     }
 	
+	//insertProTimes, s 가 붙어있음
+	public int insertProTimes(Connection conn, List<ProTime> list) {
+	    int result = 0;
+	    try {
+	    	// query에는 s 없이 그냥. Batch로 할거니까.
+	        pstmt = conn.prepareStatement(sql.getProperty("insertProTime"));
+	        for (ProTime pt : list) {
+	            pstmt.setDate(1, new java.sql.Date(pt.getStartTime().getTime()));
+	            pstmt.setDate(2, new java.sql.Date(pt.getEndTime().getTime()));
+	            pstmt.setInt(3, pt.getRoundNoRef());
+	            pstmt.addBatch();
+	        }
+	        int[] batchResult = pstmt.executeBatch();
+	        for (int r : batchResult) result += r;
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException(e);
+	    } finally {
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+	
 	public ProTime getProTime(ResultSet rs) throws SQLException {
         return ProTime.builder()
                 .timeNo(rs.getInt("time_no"))

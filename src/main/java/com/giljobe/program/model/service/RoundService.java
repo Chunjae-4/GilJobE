@@ -1,7 +1,6 @@
 package com.giljobe.program.model.service;
 
-import static com.giljobe.common.JDBCTemplate.close;
-import static com.giljobe.common.JDBCTemplate.getConnection;
+import static com.giljobe.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
@@ -25,11 +24,23 @@ public class RoundService {
         return rounds;
     }
     
+    public int insertRound(Round round) {
+        Connection conn = getConnection();
+        int result = dao.insertRound(conn, round);
+        if (result > 0) commit(conn);
+        else rollback(conn);
+        close(conn);
+        return result;
+    }
+
+    
     public int getNextRoundCount(int proNo) {
         Connection conn = getConnection();
         int result = dao.getNextRoundCount(conn, proNo);
         close(conn);
         return result;
     }
+    
+    
     
 }

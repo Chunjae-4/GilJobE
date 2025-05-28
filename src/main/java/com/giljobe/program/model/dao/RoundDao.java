@@ -75,6 +75,43 @@ public class RoundDao {
         return result;
     }
 	
+	public int insertRound(Connection conn, Round round) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("insertRound"));
+	        pstmt.setInt(1, round.getRoundCount());
+	        pstmt.setDate(2, round.getRoundDate());
+	        pstmt.setInt(3, round.getRoundMaxPeople());
+	        pstmt.setInt(4, round.getRoundPrice());
+	        pstmt.setString(5, round.getDetailLocation());
+	        pstmt.setString(6, round.getGoal());
+	        pstmt.setString(7, round.getNote());
+	        pstmt.setString(8, round.getSummary());
+	        pstmt.setString(9, round.getDetail());
+	        pstmt.setInt(10, round.getProNoRef());
+
+	        result = pstmt.executeUpdate();
+	        close(pstmt);
+
+	        if (result > 0) {
+	            pstmt = conn.prepareStatement(sql.getProperty("getCurrRoundNo"));
+	            rs = pstmt.executeQuery();
+	            if (rs.next()) {
+	                round.setRoundNo(rs.getInt(1)); // DTO에 반영
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException(e);
+	    } finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+	
+	
 	public Round getRound(ResultSet rs) throws SQLException {
         return Round.builder()
                 .roundNo(rs.getInt("round_no"))

@@ -77,6 +77,9 @@ public class InsertProgramServlet extends HttpServlet {
         // 실제 파일 저장
         try (InputStream in = filePart.getInputStream()) {
             Files.copy(in, imageFile.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ServletException("이미지 업로드 실패", e);
         }
 
         // ✅ DB에 저장할 경로는 upload 루트 기준 상대 경로만 저장 (ex: 1/1/1.png)

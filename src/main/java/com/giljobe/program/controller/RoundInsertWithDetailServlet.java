@@ -38,11 +38,19 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
         // 1. 기본값 수집
         int proNo = Integer.parseInt(request.getParameter("proNoRef"));
         Date roundDate = Date.valueOf(request.getParameter("roundDate"));
-        int duration = Integer.parseInt(request.getParameter("duration"));
+        String durationStr = request.getParameter("duration");
+        if (durationStr == null || durationStr.trim().isEmpty()) {
+            throw new IllegalArgumentException("duration 값이 없습니다.");
+        }
+        int duration = Integer.parseInt(durationStr);
 
         String[] hours = request.getParameterValues("startHour");
         String[] minutes = request.getParameterValues("startMinute");
-
+        
+        if (hours == null || minutes == null || hours.length != minutes.length) {
+            throw new IllegalArgumentException("시작 시간 정보가 잘못되었거나 비어 있습니다.");
+        }
+        
         int roundMaxPeople = Integer.parseInt(request.getParameter("roundMaxPeople"));
         int roundPrice = Integer.parseInt(request.getParameter("roundPrice"));
         String detailLocation = request.getParameter("detailLocation");
@@ -69,34 +77,36 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
                 .proNoRef(proNo)
                 .build();
 
-//        // 4. insert round + get generated roundNo
-//        int roundNo = RoundService.getInstance().insertRoundAndReturnNo(round); // sequence 사용
-//
-//        // 5. 각 startHour + startMinute → startTime / endTime
-//        List<ProTime> proTimeList = new ArrayList<>();
-//        for (int i = 0; i < hours.length; i++) {
-//            int h = Integer.parseInt(hours[i]);
-//            int m = Integer.parseInt(minutes[i]);
-//            LocalTime start = LocalTime.of(h, m);
-//            LocalTime end = start.plusMinutes(duration);
-//
-//         // LocalTime -> LocalDateTime -> java.util.Date
-//            LocalDateTime ldtStart = LocalDate.now().atTime(start);
-//            LocalDateTime ldtEnd = LocalDate.now().atTime(end);
-//
-//            Date startDate = (Date) Timestamp.valueOf(ldtStart);
-//            Date endDate = (Date) Timestamp.valueOf(ldtEnd);
-//
-//            ProTime pt = ProTime.builder()
-//                    .startTime(startDate)
-//                    .endTime(endDate)
-//                    .roundNoRef(roundNo)
-//                    .build();
-//            proTimeList.add(pt);
-//        }
-//
-//        // 6. insert ProTimes
-//        ProTimeService.getInstance().insertProTimes(proTimeList);
+        // 4. insert round + get generated roundNo
+        RoundService.getInstance().insertRound(round); // insert + DTO에 roundNo 세팅
+        int roundNo = round.getRoundNo(); // DTO에서 꺼냄
+
+        // 5. 각 startHour + startMinute → startTime / endTime
+        List<ProTime> proTimeList = new ArrayList<>();
+        for (int i = 0; i < hours.length; i++) {
+            int h = Integer.parseInt(hours[i]);
+            int m = Integer.parseInt(minutes[i]);
+            LocalTime start = LocalTime.of(h, m);
+            LocalTime end = start.plusMinutes(duration);
+
+            // LocalTime -> LocalDateTime -> java.util.Date
+            LocalDateTime ldtStart = LocalDate.now().atTime(start);
+            LocalDateTime ldtEnd = LocalDate.now().atTime(end);
+
+            // Timestamp로 시간값 포함한 millisecond를 얻고 → Date로 저장
+            Date startDate = new java.sql.Date(java.sql.Timestamp.valueOf(ldtStart).getTime());
+            Date endDate = new java.sql.Date(java.sql.Timestamp.valueOf(ldtEnd).getTime());
+
+            ProTime pt = ProTime.builder()
+                    .startTime(startDate)
+                    .endTime(endDate)
+                    .roundNoRef(roundNo)
+                    .build();
+            proTimeList.add(pt);
+        }
+
+        // 6. insert ProTimes
+        ProTimeService.getInstance().insertProTimes(proTimeList);
 
         // 7. 완료 후 리다이렉트
         response.sendRedirect(request.getContextPath() + "/program/detail?proNo=" + proNo);

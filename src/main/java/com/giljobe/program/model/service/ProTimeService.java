@@ -1,7 +1,6 @@
 package com.giljobe.program.model.service;
 
-import static com.giljobe.common.JDBCTemplate.close;
-import static com.giljobe.common.JDBCTemplate.getConnection;
+import static com.giljobe.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
@@ -27,4 +26,14 @@ public class ProTimeService {
         close(conn);
         return rounds;
     }
+    
+    public int insertProTimes(List<ProTime> list) {
+        Connection conn = getConnection();
+        int result = dao.insertProTimes(conn, list);
+        if (result > 0) commit(conn);
+        else rollback(conn);
+        close(conn);
+        return result;
+    }
+
 }
