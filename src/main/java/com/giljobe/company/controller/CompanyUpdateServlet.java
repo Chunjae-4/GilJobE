@@ -46,8 +46,6 @@ HttpSession session = request.getSession();
 		
 		int result= CompanyService.companyService().updateCompany(c);
 		
-		
-		
 		String msg;
 		String loc;
 		

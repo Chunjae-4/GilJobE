@@ -49,5 +49,21 @@ public class LoveDao {
         }
         return result;
     }
+	public int removelove(Connection conn, int proNo, int userNo) {
+		int result = 0;
+        try{
+            pstmt = conn.prepareStatement(sql.getProperty("deleteLove"));
+            pstmt.setInt(1, userNo);
+            pstmt.setInt(2, proNo);
+            result = pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+        		e.getStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+	}
 
 }
