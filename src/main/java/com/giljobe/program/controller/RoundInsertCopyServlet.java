@@ -33,7 +33,7 @@ public class RoundInsertCopyServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
         try {
-            int proNo = Integer.parseInt(request.getParameter("proNoRef")); // 숨겨서 같이 넘겨줘야 함
+            int proNo = Integer.parseInt(request.getParameter("proNoRef")); // roundAddCopy.jsp에서 숨겨서 같이 넘겨줘야 함
             String[] selectedDates = request.getParameterValues("selectedDates");
 
             // 1. 마지막 회차 가져오기

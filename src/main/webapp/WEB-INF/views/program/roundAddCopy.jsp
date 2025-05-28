@@ -28,6 +28,7 @@ roundAddCopy.jsp 페이지로 이동
 
     <!-- 선택된 날짜들을 hidden input 배열로 저장 -->
     <form action="<%=request.getContextPath()%>/round/insert-copy-latest" method="post" onsubmit="return validateBeforeSubmit();">
+        <input type="hidden" name="proNoRef" value="<%=request.getParameter("proNo")%>">
         <div id="hiddenDateInputs"></div>
         <button type="submit" class="btn btn-success">등록하기</button>
     </form>
