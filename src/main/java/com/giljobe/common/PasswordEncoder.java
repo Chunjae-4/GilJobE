@@ -24,6 +24,8 @@ public class PasswordEncoder extends HttpServletRequestWrapper{
 		}
 		return super.getParameter(oriPw);//해당안되면 그냥 보내줘
 	}
+	
+	
 	private String getSHA512(String oriPw) {
 		// TODO Auto-generated method stub
 		MessageDigest md = null;
