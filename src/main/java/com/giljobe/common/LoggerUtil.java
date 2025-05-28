@@ -1,12 +1,16 @@
 package com.giljobe.common;
 
+import java.text.SimpleDateFormat;
+
 public class LoggerUtil {
 
     public static void start(String message) {
-        System.out.println(LogMessage.START + message);
+        String now = new SimpleDateFormat("HH시 mm분 ss초").format(System.currentTimeMillis());
+        System.out.println(LogMessage.START + message + " " + now);
     }
     public static void end(String message) {
-        System.out.println(LogMessage.END + message);
+        String now = new SimpleDateFormat("HH시 mm분 ss초").format(System.currentTimeMillis());
+        System.out.println(LogMessage.END + message + " " + now);
     }
     public static void status(String message) {
         System.out.println(LogMessage.STATUS + message);
