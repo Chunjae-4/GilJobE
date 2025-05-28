@@ -64,7 +64,7 @@ String pageUri = (String) request.getAttribute("pageUri");%>
 <%--<%}%>--%>
 <%--TODO: 프로그램 등록은 기업회원이 로그인 되어있지 않으면 보이지않도록 분기점 추가 필요--%>
 <%--loginUser로 처리해두고, 나중에 기업 회원 추가되면 그때 수정 ㄱㄱ--%>
-<% if(loginUser != null) { %>
+<% if(loginCompany != null) { %>
 <section class="container my-5">
     <div class="p-4 p-md-5 bg-light rounded-3 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
 
@@ -86,9 +86,9 @@ String pageUri = (String) request.getAttribute("pageUri");%>
 
 <section class="bg-body-tertiary py-5">
     <div class="container">
-        <p class="mb-4 text-muted">총 <%=programList.size()%>개의 프로그램이 검색되었습니다.</p>
+        <p class="mb-4 text-muted"><%=pageNo%> 페이지입니다. </p>
 
-        <% if (programList != null && !programList.isEmpty()) { %>
+        <% if (!programList.isEmpty()) { %>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
             <% for (Program p : programList) { %>
             <div class="col programDetail" data-prono="<%=p.getProNo()%>">
@@ -101,7 +101,7 @@ String pageUri = (String) request.getAttribute("pageUri");%>
 							if (p.getProImageUrl() != null && !p.getProImageUrl().trim().isEmpty()) {
 							    imagePath = Constants.DEFAULT_UPLOAD_PATH + p.getProImageUrl(); // ex: /resources/upload/1/1/1.jpg
 							} else {
-							    imagePath = "/resources/images/logo.png"; // ✅ 기본 이미지 경로
+							    imagePath = "/resources/images/logo.png";
 							}
 						%>
 						<img src="<%= request.getContextPath() + imagePath %>"

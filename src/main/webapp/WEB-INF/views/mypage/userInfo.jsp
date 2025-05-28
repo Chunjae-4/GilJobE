@@ -4,46 +4,65 @@
 <%
 	User loginUser = (User)session.getAttribute("user");
 %>
-<section class="form-wrapper">
-	<form action="<%=request.getContextPath()%>/user/updateUser"
-		method="post" onsubmit="return validateForm()">
-		<div class="mb-3">
-			<label for="id" class="form-label">아이디<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userId" id="userId" maxlength="16"
-				value="<%=loginUser.getUserId() %>" readonly>
+<h4 class="fw-bold mb-2">내 정보 수정</h4>
+<p class="text-muted mb-4" style="font-size: 0.95rem;">회원가입 시 입력한 정보를 확인하고 수정할 수 있어요.</p>
+
+<form action="<%=request.getContextPath()%>/user/updateUser" method="post" onsubmit="return validateForm()">
+	<div class="row gy-4">
+
+		<!-- 아이디 -->
+		<div class="col-12">
+			<label for="userId" class="form-label">아이디 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" id="userId" name="userId"
+				   value="<%=loginUser.getUserId()%>" readonly>
+			<div class="form-text text-muted">아이디는 변경할 수 없습니다.</div>
 		</div>
-		<div class="mb-3">
-			<label for="name" class="form-label">이름<span 
-				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="5"
-				name="userName" placeholder="개명하셨나요?" value="<%=loginUser.getUserName() %>" required>
+
+		<!-- 이름 -->
+		<div class="col-12">
+			<label for="userName" class="form-label">이름 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="userName" maxlength="5"
+				   value="<%=loginUser.getUserName()%>" required>
 		</div>
-		<div class="mb-3">
-			<label for="phone" class="form-label">전화번호<span 
-				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="11"
-				name="userPhone" placeholder="'-'제외하고 입력" id="userPhone" value="<%=loginUser.getUserPhone() %>" required>
+
+		<!-- 전화번호 -->
+		<div class="col-12">
+			<label for="userPhone" class="form-label">전화번호 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="userPhone" maxlength="11"
+				   placeholder="예: 01012345678"
+				   value="<%=loginUser.getUserPhone()%>" required>
 		</div>
-		<div class="mb-3">
-			<label for="nickname" class="form-label">닉네임<span
-				style="color: red">*</span></label> <input
-				type="text" class="form-control" name="userNickName" id="userNickName" maxlength="10"
-				placeholder="최대 10자 까지 입력(특수문자 입력불가)" value = "<%=loginUser.getUserNickName() %>" required>
+
+		<!-- 닉네임 -->
+		<div class="col-12">
+			<label for="userNickName" class="form-label">닉네임 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="userNickName" maxlength="10"
+				   value="<%=loginUser.getUserNickName()%>" required>
 		</div>
-		<div class="mb-3">
-			<label for="email" class="form-label">이메일<span
-				style="color: red">*</span></label> <input type="email" class="form-control" maxlength="20"
-				name="userEmail" placeholder="user@email.com" value="<%=loginUser.getUserEmail() %>" required>
+
+		<!-- 이메일 -->
+		<div class="col-12">
+			<label for="userEmail" class="form-label">이메일 <span class="text-danger">*</span></label>
+			<input type="email" class="form-control" name="userEmail"
+				   value="<%=loginUser.getUserEmail()%>" required>
 		</div>
-		<div class="mb-3">
-			<label for="birth" class="form-label">생년월일<span
-				style="color: red">*</span></label> <input type="date" class="form-control"
-				name="userBirth" value= "<%=loginUser.getUserBirth()%>" required>
+
+		<!-- 생년월일 -->
+		<div class="col-12">
+			<label for="userBirth" class="form-label">생년월일 <span class="text-danger">*</span></label>
+			<input type="date" class="form-control" name="userBirth"
+				   value="<%=loginUser.getUserBirth()%>" required>
 		</div>
-		<input type="submit" value="회원 정보 수정" id="submitBtn"> 
-	</form>
-	<input type="button" id="pwsubmitBtn"
-				value="비밀번호수정"> 
-</section>
+
+		<!-- 버튼 -->
+		<div class="col-12 d-flex justify-content-end gap-2 mt-3">
+			<button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">정보 수정</button>
+			<a href="<%=request.getContextPath()%>/user/updatePw"
+			   class="btn btn-outline-secondary px-4 py-2 rounded-pill">비밀번호 변경</a>
+		</div>
+	</div>
+</form>
+
 <script>
 	const numonly = /[^0-9]/g; //문자가 있니 없니
 	
@@ -61,17 +80,3 @@
 		
 </script>
 
-
-<style>
-.form-wrapper {
-  max-width: 500px;
-  margin: 0 auto;
-  min-height: calc(100vh - 210px); /* 화면 전체 높이 - (header+footer 높이) */
-  background-color: #f9f9f9;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-</style>

@@ -6,16 +6,29 @@
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=<%=request.getAttribute("naverMapKey")%>"></script>
 
 <!-- 지도 영역의 스타일 지정 -->
+
+<!-- 지도 페이지 스타일 -->
 <style>
     #map {
         width: 100%;
         height: 600px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 </style>
 
-<h2>체험 프로그램 지도</h2>
-<!-- 지도가 표시될 영역 -->
-<div id="map"></div>
+<section class="bg-body-tertiary text-center mb-5 py-5 ">
+    <div class="container">
+        <div class="row py-lg-5">
+            <div class="col-lg-10 col-md-12 mx-auto">
+                <h1 class="fw-normal">체험 프로그램 지도</h1>
+                <p class="lead text-body-secondary">현재 위치를 기준으로 주변의 체험 프로그램을 확인해보세요.</p>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+</section>
+
 
 <script>
     let map; // 지도 객체를 외부에서도 접근 가능하도록 전역 변수로 선언
