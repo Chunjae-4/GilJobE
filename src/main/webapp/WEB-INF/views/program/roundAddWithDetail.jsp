@@ -17,6 +17,7 @@
     <div class="mb-3">
         <label class="form-label">⏳ 체험 시간 (분 단위) *</label>
         <input type="number" name="duration" class="form-control" min="1" required>
+        
     </div>
     
 	<!-- 시작 시간들 -->
@@ -85,7 +86,7 @@
 </form>
 
 <script>
-	let count=0;
+	
     function addStartTime() {
         const container = document.getElementById("startTimeContainer");
 
@@ -105,7 +106,7 @@
         }
 
         newRow.innerHTML = `
-            <select name="startHour"+(count++) class="form-select me-2" style="width:auto;">
+            <select name="startHour" class="form-select me-2" style="width:auto;">
                 \${hourOptions}
             </select>
             <select name="startMinute" class="form-select me-2" style="width:auto;">
@@ -129,6 +130,71 @@
             }
         }
     });
+    
+    document.querySelector("form").addEventListener("submit", function(e) {
+        const duration = parseInt(document.querySelector("input[name='duration']").value);
+        if (!duration || duration < 1) {
+            alert("활동 시간은 1분 이상이어야 합니다.");
+            e.preventDefault();
+            return;
+        }
+
+        const hourEls = document.querySelectorAll("select[name='startHour']");
+        const minuteEls = document.querySelectorAll("select[name='startMinute']");
+        const timeRanges = [];
+
+        for (let i = 0; i < hourEls.length; i++) {
+            const h = parseInt(hourEls[i].value);
+            const m = parseInt(minuteEls[i].value);
+            const startMinutes = h * 60 + m;
+            const endMinutes = startMinutes + duration;
+
+            // 중복/겹침 검사
+            let overlap = false;
+            for (const [prevStart, prevEnd] of timeRanges) {
+                // 만약 시작시간이 이전 구간 안에 들어오거나, 종료시간이 이전 시작시간보다 크면 겹침
+                if (
+                    (startMinutes >= prevStart && startMinutes < prevEnd) ||
+                    (endMinutes > prevStart && endMinutes <= prevEnd) ||
+                    (startMinutes <= prevStart && endMinutes >= prevEnd) // 완전히 감싸는 경우
+                ) {
+                	overlap = true;
+                    break;
+                	
+                }
+            }
+            if (overlap) {
+            	alert(`시작 시간 \${String(h).padStart(2, "0")}:\${String(m).padStart(2, "0")} 은 기존 타임과 겹칩니다.`);
+                e.preventDefault();
+                return;
+            }
+            timeRanges.push([startMinutes, endMinutes]);
+        }
+
+        const maxPeople = document.querySelector("input[name='roundMaxPeople']").value;
+        if (!maxPeople || parseInt(maxPeople) < 1) {
+            alert("최대 인원은 1명 이상이어야 합니다.");
+            e.preventDefault();
+            return;
+        }
+
+        const requiredFields = ["detailLocation", "goal", "summary", "detail"];
+        const fieldLabels = {
+        	    detailLocation: "상세 위치",
+        	    goal: "체험 목표",
+        	    summary: "요약 설명",
+        	    detail: "상세 설명"
+        };
+        for (const name of requiredFields) {
+            const val = document.querySelector(`[name='\${name}']`).value;
+            if (!val || val.trim() === "") {
+                alert(`"\${fieldLabels[name]}" 항목을 입력해주세요.`);
+                e.preventDefault();
+                return;
+            }
+        }
+    });
+
 </script>
 
 
