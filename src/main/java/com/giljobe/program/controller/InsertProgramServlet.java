@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.giljobe.common.Constants;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
 
@@ -55,20 +56,33 @@ public class InsertProgramServlet extends HttpServlet {
 
         // 3. 파일 저장
         Part filePart = request.getPart("programImage");
-// 		insert 하기 전이므로 임시로 nextval 예측
-        int proNo = ProgramService.getInstance().getNextProNo(); // sequence 예측값 얻기
-        String uploadDir = getServletContext().getRealPath("/resources/upload/" + comNo + "/" + proNo);
-        
+
+        // insert 하기 전이므로 임시로 nextval 예측
+        int proNo = ProgramService.getInstance().getNextProNo();
+        String relativePath = comNo + "/" + proNo; // Constants.DEFAULT_UPLOAD_PATH는 뺀 경로
+        String uploadDir = getServletContext().getRealPath(Constants.DEFAULT_UPLOAD_PATH + relativePath);
+
         // 디렉토리 생성
         File dir = new File(uploadDir);
         if (!dir.exists()) dir.mkdirs();
 
-        // 이미지 저장
-        String imagePath = "/resources/upload/" + comNo + "/" + proNo + "/1.png";
-        File imageFile = new File(dir, "1.png");
+        // 확장자 추출
+        String originalFileName = filePart.getSubmittedFileName();
+        String ext = originalFileName.substring(originalFileName.lastIndexOf(".")); // ex: .jpg
+
+        // 저장 파일명: 1.jpg, 1.png ...
+        String savedFileName = "1" + ext;
+        File imageFile = new File(dir, savedFileName);
+
+        // 실제 파일 저장
         try (InputStream in = filePart.getInputStream()) {
             Files.copy(in, imageFile.toPath());
         }
+
+        // ✅ DB에 저장할 경로는 upload 루트 기준 상대 경로만 저장 (ex: 1/1/1.png)
+        String imagePath = relativePath + "/" + savedFileName;
+        
+        // 추후에 여러 이미지를 업로드하게 되었을때에 확장 가능한 구조
 
         // 4. DTO 구성
         Program program = Program.builder()

@@ -12,13 +12,11 @@ List<Round> expiredRounds = (List<Round>)request.getAttribute("expiredRounds");
 boolean noAvailableRounds = availableRounds.isEmpty();
 List<ProTime> proTimes = (List<ProTime>) request.getAttribute("proTimes");
 java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("HH:mm");
-String imageUrl = "/resources/images/logo.png"; // ✅ 기본 이미지 경로
-// resources/upload/ComNo/ProNo/imageNo 가 프로그램 이미지 저장 경로
-// 이거는 나중에, 진짜 나중에 wrapper로 이미지 업로드할 때 이름 바꿔서 저장되도록 해놓을 것. 이건 나중에.
+String imageUrl = "/resources/images/logo.png"; // 기본 이미지
 if (program != null) {
     String dbImage = program.getProImageUrl();
     if (dbImage != null && !dbImage.trim().isEmpty() && !"null".equalsIgnoreCase(dbImage.trim())) {
-        imageUrl = dbImage;
+        imageUrl = Constants.DEFAULT_UPLOAD_PATH + dbImage; // ex: /resources/upload/1/4/1.png
     }
 }
 %>
@@ -33,7 +31,7 @@ if (program != null) {
             <!-- 프로그램 이미지 -->
             <div class="col-md-5">
 				<!-- 이미지 -->
-				<img src="<%=request.getContextPath()%><%=Constants.DEFAULT_UPLOAD_PATH%><%=program.getProImageUrl()%>.jpg"
+				<img src="<%=request.getContextPath() + imageUrl %>"
 					 class="w-100 h-100 object-fit-cover" alt="프로그램 이미지">
             </div>
             <!-- 텍스트 정보 -->

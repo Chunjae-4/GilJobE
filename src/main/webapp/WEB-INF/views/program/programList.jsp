@@ -14,6 +14,7 @@
 <%--programlist servlet 에서 리스트 가져오기--%>
 <% List<Program> programList = (List<Program>) request.getAttribute("programList");%>
 
+
 <!-- 검색 섹션 -->
 <section class="text-center mb-5 py-5 ">
     <div class="row py-lg-5">
@@ -91,8 +92,17 @@
 
                     <!-- 이미지 -->
                     <div class="ratio ratio-16x9">
-                        <img src="<%=request.getContextPath()%><%=Constants.DEFAULT_UPLOAD_PATH%><%=p.getProImageUrl()%>.jpg"
-                             class="w-100 h-100 object-fit-cover" alt="프로그램 이미지">
+                        <%
+							String imagePath;
+							if (p.getProImageUrl() != null && !p.getProImageUrl().trim().isEmpty()) {
+							    imagePath = Constants.DEFAULT_UPLOAD_PATH + p.getProImageUrl(); // ex: /resources/upload/1/1/1.jpg
+							} else {
+							    imagePath = "/resources/images/logo.png"; // ✅ 기본 이미지 경로
+							}
+						%>
+						<img src="<%= request.getContextPath() + imagePath %>"
+						     class="d-block w-100 object-fit-cover" alt="프로그램 이미지">
+                             
                     </div>
 
                     <!-- 카드 바디 -->
