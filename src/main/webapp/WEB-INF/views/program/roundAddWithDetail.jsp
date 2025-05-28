@@ -4,8 +4,17 @@
 
 <h2 class="my-4">회차 정보 직접 입력</h2>
 
-<form action="<%=request.getContextPath()%>/round/insert-with-detail" method="post">
-    <input type="hidden" name="proNoRef" value="<%=request.getParameter("proNo")%>">
+<%
+    String proNoParam = request.getParameter("proNo");
+    String actionUrl = (proNoParam != null && !proNoParam.isEmpty())
+        ? request.getContextPath() + "/round/insert-with-detail-existing"
+        : request.getContextPath() + "/round/insert-with-detail";
+    // 새로운 프로그램에서 오는 것인지, 아니면 기존 프로그램에서 오는 것인지 분기처리
+%>
+<form action="<%= actionUrl %>" method="post">
+    <% if (proNoParam != null && !proNoParam.isEmpty()) { %>
+    <input type="hidden" name="proNo" value="<%= proNoParam %>">
+	<% } %>
 
     <!-- 체험 날짜 -->
     <div class="mb-3">

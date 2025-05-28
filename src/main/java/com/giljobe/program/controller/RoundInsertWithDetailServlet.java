@@ -2,7 +2,6 @@ package com.giljobe.program.controller;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,10 +13,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.giljobe.program.model.dto.ProTime;
+import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.dto.Round;
 import com.giljobe.program.model.service.ProTimeService;
+import com.giljobe.program.model.service.ProgramService;
 import com.giljobe.program.model.service.RoundService;
 
 @WebServlet("/round/insert-with-detail")
@@ -33,24 +35,23 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
 //			Round 한 개 생성
 //			연결된 ProTime 여러 개 생성 (startTime + duration → endTime 계산)
 //			모두 DB에 저장
+//		Program, Round, ProTime insert
+		
 		request.setCharacterEncoding("UTF-8");
 
+        // 0. 세션에 보관된 pendingProgram 꺼내기
+        HttpSession session = request.getSession();
+        Program program = (Program) session.getAttribute("pendingProgram");
+        if (program == null) {
+            request.setAttribute("msg", "프로그램 정보가 유실되었습니다. 처음부터 다시 시도해주세요.");
+            request.setAttribute("loc", request.getContextPath() + "/program/new");
+            request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+            return;
+        }
+	
         // 1. 기본값 수집
-        int proNo = Integer.parseInt(request.getParameter("proNoRef"));
         Date roundDate = Date.valueOf(request.getParameter("roundDate"));
-        String durationStr = request.getParameter("duration");
-        if (durationStr == null || durationStr.trim().isEmpty()) {
-            throw new IllegalArgumentException("duration 값이 없습니다.");
-        }
-        int duration = Integer.parseInt(durationStr);
-
-        String[] hours = request.getParameterValues("startHour");
-        String[] minutes = request.getParameterValues("startMinute");
-        
-        if (hours == null || minutes == null || hours.length != minutes.length) {
-            throw new IllegalArgumentException("시작 시간 정보가 잘못되었거나 비어 있습니다.");
-        }
-        
+        int duration = Integer.parseInt(request.getParameter("duration"));
         int roundMaxPeople = Integer.parseInt(request.getParameter("roundMaxPeople"));
         int roundPrice = Integer.parseInt(request.getParameter("roundPrice"));
         String detailLocation = request.getParameter("detailLocation");
@@ -58,12 +59,15 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
         String note = request.getParameter("note");
         String summary = request.getParameter("summary");
         String detail = request.getParameter("detail");
-
-        // 2. roundCount 계산 (프로그램의 현재 최대 회차 + 1)
-        int roundCount = RoundService.getInstance().getNextRoundCount(proNo); // 예: max+1
-        System.out.println(roundCount); // 숫자 확인용
+        String[] hours = request.getParameterValues("startHour");
+        String[] minutes = request.getParameterValues("startMinute");
+        if (hours == null || minutes == null || hours.length != minutes.length) {
+            throw new IllegalArgumentException("시작 시간 정보가 잘못되었거나 비어 있습니다.");
+        }
         
-        // 3. Round 객체 생성 (roundNo는 sequence.nextval)
+        
+        // 2. Round 객체 생성 (여기는 proNo 이 없음)
+        int roundCount = 1; // 새로운 프로그램의 첫 round가 되는 것.
         Round round = Round.builder()
                 .roundDate(roundDate)
                 .roundCount(roundCount)
@@ -74,14 +78,9 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
                 .note(note)
                 .summary(summary)
                 .detail(detail)
-                .proNoRef(proNo)
                 .build();
 
-        // 4. insert round + get generated roundNo
-        RoundService.getInstance().insertRound(round); // insert + DTO에 roundNo 세팅
-        int roundNo = round.getRoundNo(); // DTO에서 꺼냄
-
-        // 5. 각 startHour + startMinute → startTime / endTime
+        // 3. ProTime 목록 생성 (여기는 roundNo이 없음)
         List<ProTime> proTimeList = new ArrayList<>();
         for (int i = 0; i < hours.length; i++) {
             int h = Integer.parseInt(hours[i]);
@@ -100,17 +99,25 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
             ProTime pt = ProTime.builder()
                     .startTime(startDate)
                     .endTime(endDate)
-                    .roundNoRef(roundNo)
                     .build();
             proTimeList.add(pt);
         }
 
-        // 6. insert ProTimes
-        ProTimeService.getInstance().insertProTimes(proTimeList);
-
-        // 7. 완료 후 리다이렉트
-        response.sendRedirect(request.getContextPath() + "/program/detail?proNo=" + proNo);
-   
+        // 4. 서비스 호출 → Program + Round + ProTime 트랜잭션으로 insert
+        boolean result = ProgramService.getInstance()
+                .insertProgramWithRoundAndProTimes(program, round, proTimeList);
+        
+        // 5. 세션에서 임시 객체 제거
+        session.removeAttribute("pendingProgram");
+        
+        // 6. 완료 후 리다이렉트
+        if (result) {
+            response.sendRedirect(request.getContextPath() + "/program/detail?proNo=" + program.getProNo());
+        } else {
+            request.setAttribute("msg", "등록 중 오류가 발생했습니다.");
+            request.setAttribute("loc", request.getContextPath() + "/program/new");
+            request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+        }   
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

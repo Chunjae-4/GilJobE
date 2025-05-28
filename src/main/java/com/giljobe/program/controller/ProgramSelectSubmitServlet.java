@@ -38,7 +38,7 @@ public class ProgramSelectSubmitServlet extends HttpServlet {
 
             if ("yes".equals(changeDetail)) {
                 // 회차 추가 (세부정보 변경 있음)
-                response.sendRedirect(request.getContextPath() + "/round/add-with-detail?proNo=" + proNo);
+                response.sendRedirect(request.getContextPath() + "/round/add-with-detail-existing?proNo=" + proNo);
             } else {
                 // 회차 추가 (세부정보 변경 없음 - 복사)
                 response.sendRedirect(request.getContextPath() + "/round/add-copy-latest?proNo=" + proNo);

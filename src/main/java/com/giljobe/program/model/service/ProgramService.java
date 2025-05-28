@@ -1,12 +1,20 @@
 package com.giljobe.program.model.service;
 
-import static com.giljobe.common.JDBCTemplate.*;
+import static com.giljobe.common.JDBCTemplate.close;
+import static com.giljobe.common.JDBCTemplate.commit;
+import static com.giljobe.common.JDBCTemplate.getConnection;
+import static com.giljobe.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
+import com.giljobe.program.model.dao.ProTimeDao;
 import com.giljobe.program.model.dao.ProgramDao;
+import com.giljobe.program.model.dao.RoundDao;
+import com.giljobe.program.model.dto.ProTime;
 import com.giljobe.program.model.dto.Program;
+import com.giljobe.program.model.dto.Round;
 
 public class ProgramService {
     //싱글톤
@@ -41,6 +49,38 @@ public class ProgramService {
             rollback(conn);
         }
         close(conn);
+        return result;
+    }
+    
+    public boolean insertProgramWithRoundAndProTimes(Program p, Round r, List<ProTime> pts) {
+        Connection conn = getConnection();
+        boolean result = false;
+        try {
+            // 1. Program insert
+            int resultP = dao.insertProgram(conn, p);
+            if (resultP == 0) throw new SQLException("Program insert 실패");
+            
+            // 2. Round insert (proNo 넣기)
+            r.setProNoRef(p.getProNo());
+            int resultR = RoundDao.getInstance().insertRound(conn, r);
+            if (resultR == 0) throw new SQLException("Round insert 실패");
+            
+            
+            // 3. ProTime insert (roundNo 넣기)
+            for (ProTime pt : pts) {
+                pt.setRoundNoRef(r.getRoundNo());
+            }
+            int resultPT = ProTimeDao.getInstance().insertProTimes(conn, pts);
+            if (resultPT == 0) throw new SQLException("ProTime insert 실패");
+            
+            commit(conn);
+            result=true;
+        } catch (Exception e) {
+            rollback(conn);
+            throw new RuntimeException("트랜잭션 전체 실패", e);
+        } finally {
+            close(conn);
+        }
         return result;
     }
 

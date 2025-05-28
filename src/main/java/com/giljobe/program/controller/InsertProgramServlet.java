@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.giljobe.common.Constants;
+import com.giljobe.company.model.dto.Company;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
 
@@ -41,7 +42,7 @@ public class InsertProgramServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         // 로그인된 기업 회원 정보
-//      int comNo = ((Company) session.getAttribute("loginCompany")).getComNo();
+//        int comNo = ((Company) session.getAttribute("loginCompany")).getComNo();
         int comNo = 1;
         
         // 1. 폼 파라미터 수집
@@ -56,10 +57,11 @@ public class InsertProgramServlet extends HttpServlet {
 
         // 3. 파일 저장
         Part filePart = request.getPart("programImage");
+        String tempProNo = "temp_" + System.currentTimeMillis(); // DB에 안 넣으므로 임시값
 
-        // insert 하기 전이므로 임시로 nextval 예측
-        int proNo = ProgramService.getInstance().getNextProNo();
-        String relativePath = comNo + "/" + proNo; // Constants.DEFAULT_UPLOAD_PATH는 뺀 경로
+//        // insert 하기 전이므로 임시로 nextval 예측
+//        int proNo = ProgramService.getInstance().getNextProNo();
+        String relativePath = comNo + "/" + tempProNo; // Constants.DEFAULT_UPLOAD_PATH는 뺀 경로
         String uploadDir = getServletContext().getRealPath(Constants.DEFAULT_UPLOAD_PATH + relativePath);
 
         // 디렉토리 생성
@@ -83,6 +85,7 @@ public class InsertProgramServlet extends HttpServlet {
         }
 
         // ✅ DB에 저장할 경로는 upload 루트 기준 상대 경로만 저장 (ex: 1/1/1.png)
+        // 이제는 그냥 세션에만 저장하는거고 DB 저장은 나중에
         String imagePath = relativePath + "/" + savedFileName;
         
         // 추후에 여러 이미지를 업로드하게 되었을때에 확장 가능한 구조
@@ -99,19 +102,25 @@ public class InsertProgramServlet extends HttpServlet {
                 .comNoRef(comNo)
                 .build();
 
-        // 5. DB 저장
-        int result = ProgramService.getInstance().insertProgram(program); // insert + selectKey로 proNo 설정
+//      // 5. DB 저장
+//      int result = ProgramService.getInstance().insertProgram(program); // insert + selectKey로 proNo 설정
+// 		5. 세션에 보관 → 나중에 회차와 함께 DB insert
+        session.setAttribute("pendingProgram", program);
         
-        // 6. 성공 후 회차 입력 페이지로 이동
-        if (result>0) {
-            int savedProNo = program.getProNo(); 
-         System.out.println("savedProNo 확인 : "+savedProNo);// insert 후 채워졌는지 확인
-            response.sendRedirect(request.getContextPath() + "/round/add-with-detail?proNo=" + savedProNo);
-        } else {
-            request.setAttribute("msg", "프로그램 등록에 실패했습니다.");
-            request.setAttribute("loc", request.getContextPath() + "/program/new");
-            request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-        }
+        
+// 		6. 회차 입력 폼으로 이동
+        response.sendRedirect(request.getContextPath() + "/round/add-with-detail");
+        
+//        // 6. 성공 후 회차 입력 페이지로 이동
+//        if (result>0) {
+//            int savedProNo = program.getProNo(); 
+//         System.out.println("savedProNo 확인 : "+savedProNo);// insert 후 채워졌는지 확인
+//            response.sendRedirect(request.getContextPath() + "/round/add-with-detail?proNo=" + savedProNo);
+//        } else {
+//            request.setAttribute("msg", "프로그램 등록에 실패했습니다.");
+//            request.setAttribute("loc", request.getContextPath() + "/program/new");
+//            request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+//        }
 		
 	}
 
