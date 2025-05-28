@@ -12,8 +12,12 @@
 <%--TODO: 클릭시 프로그램 페이지 이동--%>
 
 <%--programlist servlet 에서 리스트 가져오기--%>
-<% List<Program> programList = (List<Program>) request.getAttribute("programList");%>
-
+<% List<Program> programList = (List<Program>) request.getAttribute("programList");
+int pageNo = (int) request.getAttribute("pageStart");
+int pageEnd = (int) request.getAttribute("pageEnd");
+int totalPage = (int) request.getAttribute("totalPage");
+int cPage = (int) request.getAttribute("cPage");
+String pageUri = (String) request.getAttribute("pageUri");%>
 
 <!-- 검색 섹션 -->
 <section class="text-center mb-5 py-5 ">
@@ -101,7 +105,7 @@
 							}
 						%>
 						<img src="<%= request.getContextPath() + imagePath %>"
-						     class="d-block w-100 object-fit-cover" alt="프로그램 이미지">
+						     class="d-block w-100 object-fit-cover" alt="프로그램 이미지"  loading="lazy">
                              
                     </div>
 
@@ -119,7 +123,7 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-primary"><%=p.getProType()%></button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">
-                                ♥ <%=p.getLikes() != null ? p.getLikes() : "0"%>
+                                ♥ <%=p.getLikeCount()%>
                             </button>
                         </div>
                         <small class="text-muted">ID: <%=p.getProNo()%></small>
@@ -135,6 +139,23 @@
         </div>
         <% } %>
     </div>
+    <%-- 이전 버튼 --%>
+    <li class="page-item <%= (pageNo == 1 ? "disabled" : "") %>">
+        <a class="page-link" href="<%= (pageNo == 1 ? "#" : pageUri + "?cPage=" + (pageNo - 1)) %>">이전</a>
+    </li>
+    <ul class="pagination justify-content-center">
+        <%-- 페이지 번호 출력 --%>
+        <% for (; pageNo <= pageEnd && pageNo <= totalPage; pageNo++) { %>
+        <li class="page-item <%= (pageNo == cPage ? "active" : "") %>">
+            <a class="page-link" href="<%= pageUri %>?cPage=<%= pageNo %>"><%= pageNo %></a>
+        </li>
+        <% } %>
+
+        <%-- 다음 버튼 --%>
+        <li class="page-item <%= (pageNo > totalPage ? "disabled" : "") %>">
+            <a class="page-link" href="<%= (pageNo > totalPage ? "#" : pageUri + "?cPage=" + pageNo) %>">다음</a>
+        </li>
+    </ul>
 </section>
 <script>
     // 프로그램 카드 전체 클릭 시

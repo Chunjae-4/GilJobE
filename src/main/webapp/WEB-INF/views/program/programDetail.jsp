@@ -105,7 +105,7 @@ if (program != null) {
 							<% } else { %>
 							    <button class="btn btn-outline-secondary btn-sm" disabled>참여 불가</button>
 							<% } %>       
-                        <small class="text-muted">🧡 51명</small>
+                        <small class="text-muted">🧡 <%=program.getLikeCount()%>></small>
                         
                         <div id="protime-section">
 	                        <% if (proTimes != null && !proTimes.isEmpty()) { %>
