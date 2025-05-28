@@ -86,7 +86,9 @@
 
                                     <!-- 카테고리 (작은 글씨, 연한 톤) -->
                                     <div class="text-white-50" style="font-size: 0.95rem;">
-                                        <%= p.getProCategory() %>
+                                        <%=p.getProCategory()%>
+                                        <%=   ProCategory.valueOf(p.getProCategory())%>
+                                        <%=ProCategory.valueOf(p.getProCategory()).getSubcategories().toString()%>
                                     </div>
                                 </div>
                             </div>
