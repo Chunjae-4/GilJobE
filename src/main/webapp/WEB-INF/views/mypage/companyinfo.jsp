@@ -5,38 +5,38 @@
 	Company loginCompany = (Company)session.getAttribute("company");
 %>
 <section class="form-wrapper">
-	<form action="<%=request.getContextPath()%>/company/Company"
-		method="post" onsubmit="return validateForm()">
+	<form action="<%=request.getContextPath()%>/company/updateCompany"
+		method="post" onsubmit="return validateForm()">	
 		<div class="mb-3">
-			<label for="name" class="form-label">기업명<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyName" placeholder="개명하셨나요?" value="<%=loginCompany.getComName() %>" required>
-		</div>
-		<div class="mb-3">
-			<label for="id" class="form-label">아이디<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyId" id="userId"
+			<label for="id" class="form-label">아이디<span 
+				style="color: red">*</span></label> <input type="text" class="form-control" 
+				name="companyId" id="companyId"
 				value="<%=loginCompany.getComId() %>" readonly>
 		</div>
 		<div class="mb-3">
+			<label for="name" class="form-label">기업명<span
+				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="20"
+				name="companyName" id="companyName" placeholder="개명하셨나요?" value="<%=loginCompany.getComName() %>" required>
+		</div>
+		<div class="mb-3">
 			<label for="phone" class="form-label">전화번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyPhone" placeholder="'-'제외하고 입력" id="companyPhone" value="<%=loginCompany.getComPhone() %>" required>
+				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="11"
+				name="companyPhone" id="companyPhone" placeholder="'-'제외하고 입력" id="companyPhone" value="<%=loginCompany.getComPhone() %>" required>
 		</div>
 		<div class="mb-3">
 			<label for="binNo" class="form-label">사업자 등록번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
+				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="10"
 				name="companyBinNo" id="companyBinNo" value="<%=loginCompany.getComBinNo() %>"
 				placeholder="-제외 입력" required>
 		</div>
 		<div class="mb-3">
 			<label for="email" class="form-label">이메일<span
-				style="color: red">*</span></label> <input type="email" class="form-control"
+				style="color: red">*</span></label> <input type="email" class="form-control" maxlength="20"
 				name="companyEmail" placeholder="company@email.com" value="<%=loginCompany.getComEmail() %>" required>
 		</div>
-		<input type="submit" value="회원 정보 수정" id="submitBtn"> <input type="submit" id="pwsubmitBtn"
-				value="비밀번호수정"> 
+		<input type="submit" value="회원 정보 수정" id="submitBtn"> 
 	</form>
+	<input type="button" id="pwsubmitBtn" value="비밀번호수정"> 
 </section>
 <script>
 	const numonly = /[^0-9]/g; //문자가 있니 없니

@@ -1,6 +1,7 @@
 package com.giljobe.program.controller;
 
 import com.giljobe.common.Constants;
+import com.giljobe.common.LoggerUtil;
 import com.giljobe.common.ProCategory;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
@@ -18,25 +19,50 @@ import java.util.List;
 public class ProgramSearchFormServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LoggerUtil.start("ProgramSearchForm doGet");
         String keyword = request.getParameter("keyword");
+
+        //TODO: programcount 말고 검색 결과기준 programcount..
+        int totalCount = ProgramService.getInstance().countProgramByTitleKeyword(keyword);
+        int cPage;
+        try {
+            cPage = Integer.parseInt(request.getParameter("cPage"));
+        } catch (NumberFormatException e) {
+            cPage = 1;
+        }
+
+        int numPerPage = 6;
+        int totalPage = (int)Math.ceil((double)totalCount / numPerPage);
+        int pageBarSize = 5;
+        int pageStart = ((cPage - 1) / pageBarSize) * pageBarSize + 1;
+        int pageEnd = pageStart + pageBarSize -1;
+
+        request.setAttribute("pageStart", pageStart);
+        request.setAttribute("pageEnd", pageEnd);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("cPage", cPage);
+        request.setAttribute("pageUri", request.getRequestURI());
+
         if (keyword != null && !keyword.isEmpty()) {
 //          TODO: 카테고리 SelectBox Value
 //          TODO: Input 값
 //            String[] subs = ProCategory.BUSINESS_OFFICE.getSubcategories();
-            List<Program> programList = ProgramService.getInstance().searchProgramByTitleKeyword(keyword);
-            System.out.println("ProgramSearchForm Servlet: " + programList);
+            List<Program> programList = ProgramService.getInstance().searchProgramByTitleKeyword(keyword, cPage, numPerPage);
+            LoggerUtil.debug("Search Program By Title Keyword: " + keyword);
             boolean isExist = !programList.isEmpty();
 
             //프로그램 이름에 키워드 포함되는지 확인하고 정보 가져와서 세팅
             System.out.println(isExist);
             if (isExist) {
                 request.setAttribute("programList", programList);
-                System.out.println("programSearchForm Exist keyword: " + keyword);
+                LoggerUtil.debug("Search Program Exist keyword " + keyword);
                 request.getRequestDispatcher(Constants.WEB_VIEWS + "/program/programList.jsp").forward(request, response);
             } else {
-                System.out.println("programSearchForm NONExist keyword: " + keyword);
+                LoggerUtil.debug("Search Program NON Exist keyword " + keyword);
+                request.getRequestDispatcher(Constants.WEB_VIEWS + "/program/programList.jsp").forward(request, response);
             }
         }
+        LoggerUtil.end("ProgramSearchForm doGet");
     }
 
     @Override

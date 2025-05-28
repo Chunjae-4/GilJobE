@@ -124,10 +124,20 @@ public class UserDao {
 
 		int result = 0;
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("updateUser"));
+			pstmt=conn.prepareStatement(sql.getProperty("updateUserInfo"));
+			pstmt.setString(1, u.getUserName());
+			pstmt.setString(2, u.getUserPhone());
+			pstmt.setString(3, u.getUserNickName());
+			pstmt.setString(4, u.getUserEmail());
+			pstmt.setDate(5, u.getUserBirth());
+			pstmt.setString(6, u.getUserId());
+			result = pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			close(pstmt);
 		}
 		return result;
 	}

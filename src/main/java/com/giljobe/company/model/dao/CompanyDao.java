@@ -109,5 +109,24 @@ public class CompanyDao {
 		
 		return c;
 	}
+	public int updateCompany(Connection conn, Company c) {
+		int result = 0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("updateCompanyInfo"));
+			pstmt.setString(1, c.getComName());
+			pstmt.setString(2, c.getComPhone());
+			pstmt.setInt(3, c.getComBinNo());
+			pstmt.setString(4, c.getComEmail());
+			pstmt.setString(5, c.getComId());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 	
 }

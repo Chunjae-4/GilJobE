@@ -17,15 +17,8 @@ public class AppInitListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         LoggerUtil.start("AppInitListener Start");
        try{
-           List<Program> randomRecommendProgramList = new ArrayList<>();
+           List<Program> randomRecommendProgramList = ProgramService.getInstance().searchProgramsInfo();
 
-           for(int i = 1; i <= 3; i++) {
-               Program p = null;
-               p = ProgramService.getInstance().selectProgramByNo(i);
-               if (p != null) {
-                   randomRecommendProgramList.add(p);
-               }
-           }
            ServletContext context = sce.getServletContext();
            context.setAttribute("randomRecommend", randomRecommendProgramList);
            LoggerUtil.debug("AppInitListener Ready:" + !randomRecommendProgramList.isEmpty());

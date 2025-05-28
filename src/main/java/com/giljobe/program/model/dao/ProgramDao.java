@@ -57,11 +57,32 @@ public class ProgramDao {
         return programList;
     }
 
-    public List<Program> searchProgramByTitleKeyword(Connection conn, String keyword) {
+    public List<Program> selectRandomRecommendedPrograms(Connection conn) {
+        List<Program> programList = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("selectRandomRecommendedPrograms"));
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Program p = getSimpleProgram(rs);
+                programList.add(p);
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return programList;
+    }
+
+
+    public List<Program> searchProgramByTitleKeyword(Connection conn, String keyword, int cPage, int numPerPage) {
         List<Program> programList = new ArrayList<>();
         try {
             pstmt = conn.prepareStatement(sql.getProperty("searchProgramByTitleKeyword"));
             pstmt.setString(1, keyword);
+            pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+            pstmt.setInt(3, cPage * numPerPage);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Program p = getProgram(rs);
@@ -101,6 +122,25 @@ public class ProgramDao {
         int result = 0;
         try {
             pstmt = conn.prepareStatement(sql.getProperty("programCount"));
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+
+    public int countProgramByTitleKeyword(Connection conn, String keyword)
+    {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("countProgramByTitleKeyword"));
+            pstmt.setString(1, keyword);
             rs = pstmt.executeQuery();
             if(rs.next()){
                 result = rs.getInt(1);
@@ -167,6 +207,15 @@ public class ProgramDao {
             close(pstmt);
         }
         return result;
+    }
+    public Program getSimpleProgram(ResultSet rs) throws SQLException {
+        int proNo = rs.getInt("pro_no");
+        return Program.builder()
+                .proNo(proNo)
+                .proName(rs.getString("pro_name"))
+                .proCategory(rs.getString("pro_category"))
+                .proImageUrl(rs.getString("pro_image_url"))
+                .build();
     }
 
     public Program getProgram(ResultSet rs) throws SQLException {

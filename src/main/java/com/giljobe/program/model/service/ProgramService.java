@@ -26,13 +26,21 @@ public class ProgramService {
 
     private ProgramDao dao = ProgramDao.getInstance();
 
+
     public int programCount() {
         Connection conn = getConnection();
         int totalCount = dao.programCount(conn);
         close(conn);
         return totalCount;
     }
-    
+
+    public int countProgramByTitleKeyword(String keyword) {
+        Connection conn = getConnection();
+        int totalCount = dao.countProgramByTitleKeyword(conn, keyword);
+        close(conn);
+        return totalCount;
+    }
+
     public int getNextProNo() {
         Connection conn = getConnection();
         int nextProNo = dao.getNextProNo(conn);
@@ -90,7 +98,14 @@ public class ProgramService {
         close(conn);
         return programList;
     }
-    
+
+    public List<Program> searchProgramsInfo() {
+        Connection conn = getConnection();
+        List<Program> programList = dao.selectRandomRecommendedPrograms(conn);
+        close(conn);
+        return programList;
+    }
+
     public Program selectProgramByNo(int proNo) {
         Connection conn = getConnection();
         Program program = ProgramDao.getInstance().selectProgramByNo(conn, proNo);
@@ -105,9 +120,9 @@ public class ProgramService {
 		close(conn);
 		return programs;
 	}
-    public List<Program> searchProgramByTitleKeyword(String keyword){
+    public List<Program> searchProgramByTitleKeyword(String keyword, int cPage, int numPerPage){
         Connection conn=getConnection();
-        List<Program> programs = ProgramDao.getInstance().searchProgramByTitleKeyword(conn,keyword);
+        List<Program> programs = ProgramDao.getInstance().searchProgramByTitleKeyword(conn,keyword, cPage, numPerPage);
         close(conn);
         return programs;
     }

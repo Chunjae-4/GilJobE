@@ -43,6 +43,21 @@ public class CompanyService {
 		close(conn);
 		return c;
 	}
+	public int updateCompany(Company c) {
+		
+		conn=getConnection();
+		int result = CompanyDao.companyDao().updateCompany(conn,c);
+		close(conn);
+		if(result>0) {
+			//성공
+			commit(conn);
+		}else {
+			//실패
+			rollback(conn);
+			close(conn);
+		}
+		return result;
+	}
 	
 	
 	

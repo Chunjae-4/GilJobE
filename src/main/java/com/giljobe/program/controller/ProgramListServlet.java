@@ -25,9 +25,8 @@ public class ProgramListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 전체 데이터 수 가져오기
-		int totalCount = ProgramService.getInstance().programCount();
 		LoggerUtil.start("ProgramListServlet doGet");
-
+		int totalCount = ProgramService.getInstance().programCount();
 		int cPage;
 		try {
 			cPage = Integer.parseInt(request.getParameter("cPage"));
@@ -46,7 +45,7 @@ public class ProgramListServlet extends HttpServlet {
 		request.setAttribute("cPage", cPage);
 		request.setAttribute("pageUri", request.getRequestURI());
 
-		//2. DB All ProgramList
+		//2. DB ProgramList
 		List<Program> programList = ProgramService.getInstance().searchAllPrograms(cPage, numPerPage);
 		request.setAttribute("programList", programList);
 		LoggerUtil.end("ProgramListServlet doGet");
