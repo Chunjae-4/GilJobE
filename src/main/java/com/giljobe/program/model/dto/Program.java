@@ -35,7 +35,6 @@ public class Program {
 	private List<Round> rounds;	// 회차 정보
 	private List<QNA> qnas; // 문의 정보
 	private List<Chat> chats;
-	private List<Love> likes;
 	private int	likeCount;
 	private List<Application> applications;
 	// 건물이름은 이미 작성이 되었으니, 그 뒤에 혹시 몇층, 몇호,
