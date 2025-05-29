@@ -128,4 +128,22 @@ public class CompanyDao {
 		return result;
 	}
 	
+	public Company searchCompanyByNo(Connection conn, int comNo) {
+        Company result = null;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("searchCompanyByNo"));
+            pstmt.setInt(1, comNo);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = getCompany(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+	
 }

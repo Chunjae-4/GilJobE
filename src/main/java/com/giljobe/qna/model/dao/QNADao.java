@@ -72,5 +72,72 @@ public class QNADao {
 					.build();
 	}
 	
+	public List<QNA> searchQNAByProNo(Connection conn, int proNo) {
+	    List<QNA> list = new ArrayList<>();
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("searchQNAByProNo"));
+	        pstmt.setInt(1, proNo);
+	        rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            list.add(getQNA(rs));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+	    return list;
+	}
+
+	public int insertQna(Connection conn, QNA qna) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("insertQna"));
+	        pstmt.setInt(1, qna.getQnaNo());
+	        pstmt.setInt(2, qna.getUserNoRef());
+	        pstmt.setInt(3, qna.getProNoRef());
+	        pstmt.setString(4, qna.getQnaContent());
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+	public int deleteQna(Connection conn, int qnaNo) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("deleteQnaByNo"));
+	        pstmt.setInt(1, qnaNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+	public int updateAnswer(Connection conn, int qnaNo, String answer) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("updateAnswer"));
+	        pstmt.setString(1, answer);
+	        pstmt.setInt(2, qnaNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+	
 	
 }

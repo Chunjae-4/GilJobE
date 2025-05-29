@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" 
 		 import="com.giljobe.common.Constants"%>
-<%@ page import="com.giljobe.program.model.dto.*,
+<%@ page import="com.giljobe.program.model.dto.*, 
+				com.giljobe.qna.model.dto.*,
+				com.giljobe.company.model.dto.*,				
 				java.util.List" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <% 
@@ -105,11 +107,11 @@ if (loginUser != null) {
 							    <% } %>
 							</ul>
 						</div>                 
-                            <% if (selectedRound != null) { %>
+                            <%-- <% if (selectedRound != null) { %>
 							    <button class="btn btn-outline-primary btn-sm">참여하기</button>
 							<% } else { %>
 							    <button class="btn btn-outline-secondary btn-sm" disabled>참여 불가</button>
-							<% } %>   
+							<% } %>   --%> 
 							    
                         <button type="button"
 						        class="btn btn-sm <%= isLiked ? "btn-danger" : "btn-outline-secondary" %>"
@@ -189,7 +191,16 @@ if (loginUser != null) {
 	<!-- Q&A 영역 -->
 	<div class="program-qna">
 	    <h3>Q&A</h3>
-	    <div class="qna-placeholder">※ Q&A 기능은 추후 구현 예정 ※</div>
+	    <%
+	    	Company company = com.giljobe.company.model.service.CompanyService.companyService().searchCompanyByNo(program.getComNoRef());
+	    	request.setAttribute("company", company);
+		    request.setAttribute("loginUser",loginUser);
+		    request.setAttribute("program",program);
+	    	List<QNA> qnaList = com.giljobe.qna.model.service.QNAService.qnaService().searchQNAByProNo(program.getProNo());
+		    request.setAttribute("qnaList", qnaList);
+		%>
+		<jsp:include page="/WEB-INF/views/program/qnaComponent.jsp" />
+
 	</div>
     
 </section>

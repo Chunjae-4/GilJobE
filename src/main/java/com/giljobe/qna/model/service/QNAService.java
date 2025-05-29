@@ -25,6 +25,43 @@ public class QNAService {
 		return qnas;
 	}	
 	
-	
+	public List<QNA> searchQNAByProNo(int proNo) {
+        Connection conn = getConnection();
+        List<QNA> result = qnadao.searchQNAByProNo(conn, proNo);
+        close(conn);
+        return result;
+    }
+
+    public int insertQna(QNA qna) {
+        Connection conn = getConnection();
+        int result = qnadao.insertQna(conn, qna);
+        if (result > 0) commit(conn); else rollback(conn);
+        close(conn);
+        return result;
+    }
+
+    public int deleteQna(int qnaNo) {
+        Connection conn = getConnection();
+        int result = qnadao.deleteQna(conn, qnaNo);
+        if (result > 0) commit(conn); else rollback(conn);
+        close(conn);
+        return result;
+    }
+
+    public int updateAnswer(int qnaNo, String answer) {
+        Connection conn = getConnection();
+        int result = qnadao.updateAnswer(conn, qnaNo, answer);
+        if (result > 0) commit(conn); else rollback(conn);
+        close(conn);
+        return result;
+    }
+
+    public int deleteAnswer(int qnaNo) {
+        Connection conn = getConnection();
+        int result = qnadao.updateAnswer(conn, qnaNo, null); // null 처리로 삭제
+        if (result > 0) commit(conn); else rollback(conn);
+        close(conn);
+        return result;
+    }
 	
 }

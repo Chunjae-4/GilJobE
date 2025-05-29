@@ -59,6 +59,11 @@ public class CompanyService {
 		return result;
 	}
 	
-	
+	public Company searchCompanyByNo(int comNo) {
+        Connection conn = getConnection();
+        Company c = comDao.searchCompanyByNo(conn, comNo);
+        close(conn);
+        return c;
+    }
 	
 }
