@@ -14,7 +14,7 @@
 <%--programlist servlet 에서 리스트 가져오기--%>
 <% 
 List<Program> programList = (List<Program>) request.getAttribute("programList");
-int pageNo = (int) request.getAttribute("pageStart");
+int pageStart = (int) request.getAttribute("pageStart");
 int pageEnd = (int) request.getAttribute("pageEnd");
 int totalPage = (int) request.getAttribute("totalPage");
 int cPage = (int) request.getAttribute("cPage");
