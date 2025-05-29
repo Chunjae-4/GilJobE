@@ -5,11 +5,11 @@ import java.text.SimpleDateFormat;
 public class LoggerUtil {
 
     public static void start(String message) {
-        String now = new SimpleDateFormat("HH시 mm분 ss초").format(System.currentTimeMillis());
+        String now = new SimpleDateFormat("HH시 mm분 ss초 SSS").format(System.currentTimeMillis());
         System.out.println(LogMessage.START + message + " " + now);
     }
     public static void end(String message) {
-        String now = new SimpleDateFormat("HH시 mm분 ss초").format(System.currentTimeMillis());
+        String now = new SimpleDateFormat("HH시 mm분 ss초 SSS").format(System.currentTimeMillis());
         System.out.println(LogMessage.END + message + " " + now);
     }
     public static void status(String message) {
