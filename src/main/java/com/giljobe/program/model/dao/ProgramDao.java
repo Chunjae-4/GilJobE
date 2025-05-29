@@ -263,7 +263,7 @@ public class ProgramDao {
     public Program getProgram(ResultSet rs) throws SQLException {
         int proNo = rs.getInt("pro_no");
         int likeCount = 0;
-//        likeCount = LoveService.getInstance().countLoveByProgram(proNo);
+        likeCount = LoveService.getInstance().countLoveByProgram(proNo);
 
         return Program.builder()
                 .proNo(proNo)
