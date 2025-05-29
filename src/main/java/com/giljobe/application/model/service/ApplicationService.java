@@ -27,4 +27,11 @@ public class ApplicationService {
 		close(conn);
 		return apps;
 	}
+	public int removeApplication(int timeNo, int userNo) {
+
+		conn=getConnection();
+		int result = appprodao.removeApplication(conn, timeNo, userNo);
+		close(conn);
+		return result;
+	}
 }

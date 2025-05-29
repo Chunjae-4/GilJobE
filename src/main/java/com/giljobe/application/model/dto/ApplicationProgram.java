@@ -18,5 +18,6 @@ public class ApplicationProgram {
 	private Date startTime;
 	private Date endTime;
 	private int proNo;
+	private int timeNo;
 	
 }

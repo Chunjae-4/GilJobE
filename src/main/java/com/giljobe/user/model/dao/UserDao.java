@@ -79,8 +79,8 @@ public class UserDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		
 		

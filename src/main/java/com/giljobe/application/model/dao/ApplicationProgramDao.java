@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
+import static com.giljobe.common.JDBCTemplate.*;
 import com.giljobe.application.model.dto.ApplicationProgram;
 
 public class ApplicationProgramDao {
@@ -47,9 +47,28 @@ public class ApplicationProgramDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {	
+			close(rs);
+			close(pstmt);
 		}
 		
 		return apppro;
+	}
+	
+	public int removeApplication(Connection conn, int timeNo, int userNo) {
+		int result = 0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("deleteAppByNo"));
+			pstmt.setInt(1, timeNo);
+			pstmt.setInt(2, userNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
 	}
 	
 	public ApplicationProgram getApplicationProgramDao(ResultSet rs) throws SQLException {
@@ -60,6 +79,7 @@ public class ApplicationProgramDao {
 								.startTime(rs.getDate("start_time"))
 								.endTime(rs.getDate("end_time"))
 								.proNo(rs.getInt("pro_no"))
+								.timeNo(rs.getInt("time_no"))
 								.build();
 	}
 

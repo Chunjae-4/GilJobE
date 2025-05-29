@@ -60,8 +60,8 @@ public class CompanyDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		
 		return c;
@@ -84,7 +84,6 @@ public class CompanyDao {
 			e.printStackTrace();
 		}finally {
 			close(pstmt);
-			close(rs);
 		}
 		
 		return result;
@@ -103,8 +102,8 @@ public class CompanyDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		
 		return c;

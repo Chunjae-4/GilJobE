@@ -8,7 +8,7 @@
 %>
 <ul>
 <%for(Program p : programs){%>
-	<li id="proNo-<%=p.getProNo()%>"><%=p.getProNo()%><%=p.getProName() %><button onclick="cancelLove(<%=p.getProNo()%>,'<%=user.getUserNo()%>')">좋지 않아요</button></li>
+	<li id="proNo-<%=p.getProNo()%>"><%=p.getProName() %><button onclick="cancelLove(<%=p.getProNo()%>,'<%=user.getUserNo()%>')">좋지 않아요</button></li>
 <%}%>
 </ul>
 <script>
