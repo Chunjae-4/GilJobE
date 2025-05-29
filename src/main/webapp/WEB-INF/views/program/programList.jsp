@@ -41,7 +41,7 @@ String pageUri = (String) request.getAttribute("pageUri");%>
         </div>
 
         <!-- 숨겨진 input (선택된 카테고리 전송용) -->
-        <input type="hidden" name="category" id="selectedCategoryInput">
+        <input type="hidden" name="procategory" id="selectedCategoryInput">
 
         <!-- 카테고리 버튼들 -->
         <div class="d-flex flex-wrap justify-content-center gap-2 mt-3"
@@ -190,6 +190,7 @@ String pageUri = (String) request.getAttribute("pageUri");%>
                     this.classList.remove('btn-outline-secondary');
                     this.classList.add('active', 'btn-primary');
                     hiddenInput.value = this.getAttribute('data-category');
+                    console.log(hiddenInput);
                 } else {
                     hiddenInput.value = ''; // 선택 해제
                 }
