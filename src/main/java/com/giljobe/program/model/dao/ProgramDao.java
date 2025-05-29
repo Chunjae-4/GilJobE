@@ -57,6 +57,27 @@ public class ProgramDao {
         return programList;
     }
 
+    public List<Program> searchProgramListByCategory(Connection conn, String proCategory, int cPage, int numPerPage){
+        List<Program> programList = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("searchProgramListByCategory"));
+            pstmt.setString(1, proCategory);
+            pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+            pstmt.setInt(3, cPage * numPerPage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Program p = getProgram(rs);
+                programList.add(p);
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return programList;
+    }
+
     public List<Program> selectRandomRecommendedPrograms(Connection conn) {
         List<Program> programList = new ArrayList<>();
         try {
@@ -122,6 +143,27 @@ public class ProgramDao {
         int result = 0;
         try {
             pstmt = conn.prepareStatement(sql.getProperty("programCount"));
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+
+
+
+    public int countProgramListByCategory(Connection conn, String proCategory)
+    {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("countProgramListByCategory"));
+            pstmt.setString(1, proCategory);
             rs = pstmt.executeQuery();
             if(rs.next()){
                 result = rs.getInt(1);
@@ -221,7 +263,7 @@ public class ProgramDao {
     public Program getProgram(ResultSet rs) throws SQLException {
         int proNo = rs.getInt("pro_no");
         int likeCount = 0;
-        likeCount = LoveService.getInstance().countLoveByProgram(proNo);
+//        likeCount = LoveService.getInstance().countLoveByProgram(proNo);
 
         return Program.builder()
                 .proNo(proNo)

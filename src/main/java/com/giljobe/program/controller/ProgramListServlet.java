@@ -26,14 +26,28 @@ public class ProgramListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 전체 데이터 수 가져오기
 		LoggerUtil.start("ProgramListServlet doGet");
-		int totalCount = ProgramService.getInstance().programCount();
+		String proCategory = request.getParameter("procategory");
+		LoggerUtil.debug("ProgramListServlet proCategory " + proCategory);
+
+		int totalCount;
+		List<Program> programList = null;
+		int numPerPage = 6;
 		int cPage;
 		try {
 			cPage = Integer.parseInt(request.getParameter("cPage"));
 		} catch (NumberFormatException e) {
 			cPage = 1;
 		}
-		int numPerPage = 6;
+
+		if (proCategory == null) {
+			totalCount = ProgramService.getInstance().programCount();
+			programList = ProgramService.getInstance().searchAllPrograms(cPage, numPerPage);
+		} else {
+			totalCount = ProgramService.getInstance().countProgramListByCategory(proCategory);
+			programList = ProgramService.getInstance().searchProgramListByCategory(proCategory, cPage, numPerPage);
+		}
+
+
 		int totalPage = (int)Math.ceil((double)totalCount / numPerPage);
 		int pageBarSize = 5;
 		int pageStart = ((cPage - 1) / pageBarSize) * pageBarSize + 1;
@@ -45,11 +59,9 @@ public class ProgramListServlet extends HttpServlet {
 		request.setAttribute("cPage", cPage);
 		request.setAttribute("pageUri", request.getRequestURI());
 
-		//2. DB ProgramList
-		List<Program> programList = ProgramService.getInstance().searchAllPrograms(cPage, numPerPage);
 		request.setAttribute("programList", programList);
 		LoggerUtil.end("ProgramListServlet doGet");
-		//3. set page
+
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programList.jsp").forward(request, response);
 
 	}

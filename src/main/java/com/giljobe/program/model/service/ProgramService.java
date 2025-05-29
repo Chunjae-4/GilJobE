@@ -41,6 +41,14 @@ public class ProgramService {
         return totalCount;
     }
 
+    public int countProgramListByCategory(String proCategory) {
+        Connection conn = getConnection();
+        int totalCount = dao.countProgramListByCategory(conn, proCategory);
+        close(conn);
+        return totalCount;
+    }
+
+
     public int getNextProNo() {
         Connection conn = getConnection();
         int nextProNo = dao.getNextProNo(conn);
@@ -95,6 +103,12 @@ public class ProgramService {
     public List<Program> searchAllPrograms(int cPage, int numPerPage) {
         Connection conn = getConnection();
         List<Program> programList = dao.searchAllProgram(conn, cPage, numPerPage);
+        close(conn);
+        return programList;
+    }
+    public List<Program> searchProgramListByCategory(String proCategory, int cPage, int numPerPage) {
+        Connection conn = getConnection();
+        List<Program> programList = dao.searchProgramListByCategory(conn, proCategory, cPage, numPerPage);
         close(conn);
         return programList;
     }
