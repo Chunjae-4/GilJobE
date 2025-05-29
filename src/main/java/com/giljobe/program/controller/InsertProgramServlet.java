@@ -42,8 +42,8 @@ public class InsertProgramServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         // 로그인된 기업 회원 정보
-//        int comNo = ((Company) session.getAttribute("loginCompany")).getComNo();
-        int comNo = 1;
+        int comNo = ((Company) session.getAttribute("company")).getComNo();
+//        int comNo = 1;
         
         // 1. 폼 파라미터 수집
         String proName = request.getParameter("proName");
