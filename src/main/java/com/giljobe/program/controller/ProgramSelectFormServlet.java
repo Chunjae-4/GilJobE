@@ -22,9 +22,9 @@ public class ProgramSelectFormServlet extends HttpServlet {
     	
     	HttpSession session = request.getSession();
     	// 세션에서 로그인한 기업 회원의 정보를 아래와 같이 받아온다고 가정한 것.
-    	Company loginCompany = (Company) session.getAttribute("loginCompany");
-//    	int comNo = loginCompany.getComNo();
-    	int comNo = 1;
+    	Company loginCompany = (Company) session.getAttribute("company");
+    	int comNo = loginCompany.getComNo();
+//    	int comNo = 1;
 
     	// DAO 통해 comNo 기준 등록 프로그램 목록 가져오기
     	List<Program> programList = ProgramService.getInstance().selectProgramsByComNo(comNo);
