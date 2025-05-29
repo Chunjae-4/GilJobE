@@ -3,7 +3,7 @@
 <%@ page import="com.giljobe.program.model.dto.*, 
 				com.giljobe.qna.model.dto.*,
 				com.giljobe.company.model.dto.*,				
-				java.util.List" %>
+				java.util.List, java.util.Comparator" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <% 
 Program program = (Program)request.getAttribute("program");
@@ -13,6 +13,9 @@ List<Round> availableRounds = (List<Round>)request.getAttribute("availableRounds
 List<Round> expiredRounds = (List<Round>)request.getAttribute("expiredRounds");
 boolean noAvailableRounds = availableRounds.isEmpty();
 List<ProTime> proTimes = (List<ProTime>) request.getAttribute("proTimes");
+if (proTimes != null) {
+    proTimes.sort(Comparator.comparing(ProTime::getStartTime));
+}
 java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("HH:mm");
 String imageUrl = "/resources/images/logo.png"; // 기본 이미지
 if (program != null) {
@@ -150,6 +153,26 @@ if (loginUser != null) {
    	} else { %>
         <p>프로그램 정보가 없습니다.</p>
     <% } %>
+
+<!-- 회차 정보 드롭다운 -->    
+<style>
+.round-dropdown-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+</style>
+
+<!-- 모든 회차 만료되었다면 protime 버튼 비활성화 -->
+<script>
+$(function() {
+    $(document).on("click", "#protime-section button", function(e) {
+        <% if (noAvailableRounds) { %>
+        e.preventDefault();
+        return;
+        <% } %>
+    });
+});
+</script>
     
     <% if (selectedRound != null) { %>
 	<div class="card mb-4">
