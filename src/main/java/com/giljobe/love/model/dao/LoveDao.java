@@ -65,5 +65,42 @@ public class LoveDao {
         }
         return result;
 	}
+	
+	public boolean hasLoved(Connection conn, int userNo, int proNo) {
+	    boolean result = false;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("hasLoved"));
+	        pstmt.setInt(1, userNo);
+	        pstmt.setInt(2, proNo);
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            result = rs.getInt(1) > 0;
+	        }
+	    } catch (SQLException e) {
+	        LoggerUtil.error("LoveDao.hasLoved Error: " + e.getMessage(), e);
+	    } finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+	
+	public int addLove(Connection conn, int proNo, int userNo) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("insertLove"));
+	        pstmt.setInt(1, userNo);
+	        pstmt.setInt(2, proNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        LoggerUtil.error("LoveDao.addLove Error: " + e.getMessage(), e);
+	    } finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+
 
 }

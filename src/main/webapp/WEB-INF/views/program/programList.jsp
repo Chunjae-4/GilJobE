@@ -12,12 +12,14 @@
 <%--TODO: 클릭시 프로그램 페이지 이동--%>
 
 <%--programlist servlet 에서 리스트 가져오기--%>
-<% List<Program> programList = (List<Program>) request.getAttribute("programList");
+<% 
+List<Program> programList = (List<Program>) request.getAttribute("programList");
 int pageNo = (int) request.getAttribute("pageStart");
 int pageEnd = (int) request.getAttribute("pageEnd");
 int totalPage = (int) request.getAttribute("totalPage");
 int cPage = (int) request.getAttribute("cPage");
-String pageUri = (String) request.getAttribute("pageUri");%>
+String pageUri = (String) request.getAttribute("pageUri");
+%>
 
 <!-- 검색 섹션 -->
 <section class="text-center mb-5 py-5 ">
@@ -122,9 +124,20 @@ String pageUri = (String) request.getAttribute("pageUri");%>
                     <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-primary"><%=p.getProType()%></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">
-                                ♥ <%=p.getLikeCount()%>
-                            </button>
+                            
+                            <%
+								boolean isLiked = false;
+								if (loginUser != null) {
+								    isLiked = com.giljobe.love.model.service.LoveService.getInstance().hasLoved(
+								        loginUser.getUserNo(), p.getProNo());
+								}
+							%>
+							<button type="button"
+							        class="btn btn-sm <%= isLiked ? "btn-danger" : "btn-outline-secondary" %>"
+							        data-prono="<%= p.getProNo() %>">
+							    ♥ <span class="like-count"><%= p.getLikeCount() %></span>
+							</button>
+						
                         </div>
                         <small class="text-muted">ID: <%=p.getProNo()%></small>
                     </div>
@@ -172,17 +185,22 @@ String pageUri = (String) request.getAttribute("pageUri");%>
 
     });
 
-    // 내부 버튼 클릭 시, 이벤트 전파 방지
-    $(".programDetail button").click(e => {
-        e.stopPropagation(); // 이벤트가 상위로 전파되지 않게 함
+ 	// 내부 버튼 클릭 시, 이벤트 전파 방지
+    $(".programDetail").on("click", "button", function(e) {
+        // 버튼이 disabled 상태여도 전파를 막음
+        // 좋아요 버튼 빠르게 클릭할 때 발생하는 거 대비
+        /* e.stopPropagation(); */
+        e.preventDefault();
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function (e) {
         const buttons = document.querySelectorAll('.category-btn');
         const hiddenInput = document.getElementById('selectedCategoryInput');
 
         buttons.forEach(btn => {
-            btn.addEventListener('click', function () {
+            btn.addEventListener('click', function (e) {
+            	e.stopPropagation();
+            	console.log(e.target);
                 const isActive = this.classList.contains('active');
 
                 // 모든 버튼 초기화
@@ -206,4 +224,10 @@ String pageUri = (String) request.getAttribute("pageUri");%>
         cursor: pointer;
     }
 </style>
+
+<!-- loveToggle, 좋아요 버튼 반영 -->
+<script>
+    const contextPath = "<%= request.getContextPath() %>";
+</script>
+<script src="<%= request.getContextPath() %>/resources/js/loveToggle.js"></script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

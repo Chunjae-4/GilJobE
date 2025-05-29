@@ -19,6 +19,11 @@ if (program != null) {
         imageUrl = Constants.DEFAULT_UPLOAD_PATH + dbImage; // ex: /resources/upload/1/4/1.png
     }
 }
+boolean isLiked = false;
+if (loginUser != null) {
+    isLiked = com.giljobe.love.model.service.LoveService.getInstance().hasLoved(
+        loginUser.getUserNo(), program.getProNo());
+}
 %>
 <section class="container py-5">
     
@@ -104,8 +109,13 @@ if (program != null) {
 							    <button class="btn btn-outline-primary btn-sm">참여하기</button>
 							<% } else { %>
 							    <button class="btn btn-outline-secondary btn-sm" disabled>참여 불가</button>
-							<% } %>       
-                        <small class="text-muted">🧡 <%=program.getLikeCount()%>></small>
+							<% } %>   
+							    
+                        <button type="button"
+						        class="btn btn-sm <%= isLiked ? "btn-danger" : "btn-outline-secondary" %>"
+						        data-prono="<%= program.getProNo() %>">
+						    ♥ <span class="like-count"><%= program.getLikeCount() %></span>
+						</button>
                         
                         <div id="protime-section">
 	                        <% if (proTimes != null && !proTimes.isEmpty()) { %>
@@ -235,4 +245,9 @@ $(function() {
 });
 </script>
 
+<!-- loveToggle, 좋아요 버튼 반영 -->
+<script>
+    const contextPath = "<%= request.getContextPath() %>";
+</script>
+<script src="<%= request.getContextPath() %>/resources/js/loveToggle.js"></script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
