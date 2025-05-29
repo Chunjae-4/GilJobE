@@ -29,13 +29,22 @@ public class LoveToggleServlet extends HttpServlet {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
-
-		HttpSession session = request.getSession(false);
-		User loginUser = (User) session.getAttribute("user");
-
 		Map<String, Object> resultMap = new java.util.HashMap<>();
 
-		// 로그인 확인
+		HttpSession session = request.getSession(false);
+		
+		// ✅ 세션 존재 확인 먼저
+	    if (session == null) {
+	        resultMap.put("success", false);
+	        resultMap.put("message", "세션이 만료되었거나 로그인 상태가 아닙니다.");
+	        new Gson().toJson(resultMap, response.getWriter());
+	        return;
+	    }
+		
+		User loginUser = (User) session.getAttribute("user");
+
+
+		// ✅ 로그인 사용자 확인
 		if (loginUser == null) {
 			resultMap.put("success", false);
 			resultMap.put("message", "로그인이 필요합니다.");
@@ -60,7 +69,7 @@ public class LoveToggleServlet extends HttpServlet {
 		resultMap.put("success", result > 0);
 		resultMap.put("liked", !hasLiked);
 		resultMap.put("likeCount", likeCount);
-
+		
 		new Gson().toJson(resultMap, response.getWriter());
 		
 //		 programList.jsp와 programDetail.jsp에 있는 ♥ 버튼에 이벤트를 연결하고,

@@ -1,15 +1,17 @@
+let debounceMap = {};
+
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("button[data-prono]").forEach(button => {
         button.addEventListener("click", function (e) {
             e.stopPropagation();
-			console.log(e.target);
             const btn = this;
-
-            // ✅ 중복 요청 방지
-           /* if (btn.disabled) return;
-            btn.disabled = true;*/
-
             const proNo = btn.dataset.prono;
+
+            // ✅ debounce 중이면 무시
+            if (debounceMap[proNo]) return;
+
+            // ✅ debounce 플래그 설정
+            debounceMap[proNo] = true;
 
             fetch(contextPath + "/ajax/love/toggle", {
                 method: "POST",
@@ -31,14 +33,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         btn.innerHTML = `♥ <span class="like-count">${data.likeCount}</span>`;
                     }
                 } else {
-                    alert(data.message || "로그인이 필요합니다.");
+                    alert(data.message);
                 }
             })
             .finally(() => {
-                // ✅ 요청 완료 후 다시 활성화 (짧게 기다릴 수도 있음)
+                // ✅ debounce 해제 (0.8초 뒤에 다시 클릭 가능)
                 setTimeout(() => {
-                    //btn.disabled = false;
-                }, 500); // 0.5초 정도 여유
+                    debounceMap[proNo] = false;
+                }, 800);
             });
         });
     });
