@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <% 
 Program program = (Program)request.getAttribute("program");
-List<Round> rounds = program.getRounds();
+List<Round> rounds = (List<Round>)request.getAttribute("rounds");
 Round selectedRound = (Round)request.getAttribute("selectedRound");
 List<Round> availableRounds = (List<Round>)request.getAttribute("availableRounds");
 List<Round> expiredRounds = (List<Round>)request.getAttribute("expiredRounds");

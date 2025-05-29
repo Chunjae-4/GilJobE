@@ -57,7 +57,7 @@ public class ProgramDetailServlet extends HttpServlet {
 			return;
 		}
 		List<Round> rounds = RoundService.getInstance().selectRoundsByProgramNo(proNo);
-		program.setRounds(rounds);
+		request.setAttribute("rounds", rounds);
 		
 		LocalDate today = LocalDate.now();
 		Round selectedRound = null;
