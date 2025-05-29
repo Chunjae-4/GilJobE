@@ -12,14 +12,9 @@
 <%--TODO: 클릭시 프로그램 페이지 이동--%>
 
 <%--programlist servlet 에서 리스트 가져오기--%>
-<<<<<<< HEAD
 <% 
 List<Program> programList = (List<Program>) request.getAttribute("programList");
 int pageNo = (int) request.getAttribute("pageStart");
-=======
-<% List<Program> programList = (List<Program>) request.getAttribute("programList");
-int pageStart = (int) request.getAttribute("pageStart");
->>>>>>> branch 'dev' of https://github.com/Chunjae-4/GilJobE.git
 int pageEnd = (int) request.getAttribute("pageEnd");
 int totalPage = (int) request.getAttribute("totalPage");
 int cPage = (int) request.getAttribute("cPage");
