@@ -23,15 +23,14 @@ public class LoveService {
 		
 		Connection conn= getConnection();
 		int result = dao.removelove(conn, proNo, userNo);
-		close(conn);
 		if(result>0) {
 			//성공
 			commit(conn);
 		}else {
 			//실패
 			rollback(conn);
-			close(conn);
 		}
+		close(conn);
 		return result;
 	}
 	

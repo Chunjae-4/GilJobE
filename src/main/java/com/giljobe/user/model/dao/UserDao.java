@@ -141,5 +141,22 @@ public class UserDao {
 		}
 		return result;
 	}
+	public int updateUserPw(Connection conn, int userNo, String currentPw, String newPw) {
+
+		int result = 0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("updateUserPassword"));
+			pstmt.setString(1, newPw);
+			pstmt.setInt(2, userNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 	
 }

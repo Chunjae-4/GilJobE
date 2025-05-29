@@ -57,12 +57,40 @@
 		<!-- 버튼 -->
 		<div class="col-12 d-flex justify-content-end gap-2 mt-3">
 			<button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">정보 수정</button>
-			<a href="<%=request.getContextPath()%>/user/updatePw"
-			   class="btn btn-outline-secondary px-4 py-2 rounded-pill">비밀번호 변경</a>
+			<button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill"
+      		  data-bs-toggle="modal" data-bs-target="#changePwModal">비밀번호 변경</button>
 		</div>
 	</div>
 </form>
-
+<!-- 비밀번호 변경 모달 -->
+<div class="modal fade" id="changePwModal" tabindex="-1" aria-labelledby="changePwModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="<%=request.getContextPath()%>/user/updatePw" method="post" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePwModalLabel">비밀번호 변경</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="currentPw" class="form-label">현재 비밀번호</label>
+          <input type="password" class="form-control" id="currentPw" name="currentPw" required>
+        </div>
+        <div class="mb-3">
+          <label for="newPw" class="form-label">새 비밀번호</label>
+          <input type="password" class="form-control" id="newPw" name="newPw" required>
+        </div>
+        <div class="mb-3">
+          <label for="confirmPw" class="form-label">새 비밀번호 확인</label>
+          <input type="password" class="form-control" id="confirmPw" name="confirmPw" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">변경</button>
+        <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill" data-bs-dismiss="modal">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
 <script>
 	const numonly = /[^0-9]/g; //문자가 있니 없니
 	

@@ -25,16 +25,9 @@ public class CompanyService {
 	public int enrollCompany(Company c) {
 		conn=getConnection();
 		int result = comDao.enrollCompany(conn,c);
-		close(conn);
-		if(result>0) {
-			//성공
-			commit(conn);
-		}else {
-			//실패
-			rollback(conn);
-			close(conn);
-		}
-		
+		if (result > 0) commit(conn);
+	    else rollback(conn);
+	    close(conn);
 		return result;
 	}
 	public Company loginCompany(String id, String pw) {
@@ -47,15 +40,9 @@ public class CompanyService {
 		
 		conn=getConnection();
 		int result = CompanyDao.companyDao().updateCompany(conn,c);
-		close(conn);
-		if(result>0) {
-			//성공
-			commit(conn);
-		}else {
-			//실패
-			rollback(conn);
-			close(conn);
-		}
+		if (result > 0) commit(conn);
+	    else rollback(conn);
+	    close(conn);
 		return result;
 	}
 	

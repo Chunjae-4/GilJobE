@@ -20,16 +20,14 @@ public class UserService {
 		// TODO Auto-generated method stub
 		conn=getConnection();
 		int result = userDao.enrollUser(conn,user);//근데 로그인 성공 실패를 분기 처리 해야하나
-		close(conn);
 		if(result>0) {
 			//성공
 			commit(conn);
 		}else {
 			//실패
 			rollback(conn);
-			close(conn);
 		}
-		
+		close(conn);
 		return result;
 		
 	}
@@ -52,15 +50,28 @@ public class UserService {
 		
 		conn=getConnection();
 		int result = UserDao.userDao().updateUser(conn, u);
-		close(conn);
 		if(result>0) {
 			//성공
 			commit(conn);
 		}else {
 			//실패
 			rollback(conn);
-			close(conn);
 		}
+		close(conn);
+		return result;
+	}
+	public int updateUserPw(int userNo, String currentPw, String newPw) {
+		// TODO Auto-generated method stub
+		conn = getConnection();
+		int result = userDao.updateUserPw(conn, userNo, currentPw, newPw);
+		if(result>0) {
+			//성공
+			commit(conn);
+		}else {
+			//실패
+			rollback(conn);
+		}
+		close(conn);
 		return result;
 	}
 	
