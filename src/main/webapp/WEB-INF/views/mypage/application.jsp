@@ -12,14 +12,14 @@
 <ul>
 <%for(ApplicationProgram a : apppro){%>
 	<li id="proNo-<%=a.getProNo()%>">
-	<a href="<%=request.getContextPath()%>/program/detail?proNo=<%=a.getTimeNo()%>"> <%=a.getProNo()%>  <%=a.getProName() %>   </a>
-	<button onclick="cancelLove(<%=a.getProNo()%>,'<%=user.getUserNo()%>')">좋지 않아요</button>
+	<a href="<%=request.getContextPath()%>/program/detail?proNo=<%=a.getProNo()%>"> <%=a.getProNo()%>  <%=a.getProName() %>   </a>
+	<button onclick="cancelLove(<%=a.getTimeNo()%>,'<%=user.getUserNo()%>',<%=a.getProNo()%>)">좋지 않아요</button>
 	</li>
 <%}%>
 </ul>
 <script>
 
-	const cancelLove=(timeNo,userNo)=>{
+	const cancelApp=(timeNo,userNo,proNo)=>{
 
 		if(confirm("정말 취소하시겠습니까?")){
 			//취소하겠다
