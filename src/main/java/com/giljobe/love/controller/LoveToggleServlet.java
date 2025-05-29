@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.giljobe.company.model.dto.Company;
 import com.giljobe.love.model.service.LoveService;
 import com.giljobe.user.model.dto.User;
 import com.google.gson.Gson;
@@ -41,10 +42,17 @@ public class LoveToggleServlet extends HttpServlet {
 	        return;
 	    }
 		
-		User loginUser = (User) session.getAttribute("user");
-
-
+	    // ✅ 로그인 기업회원 확인
+ 		Company loginCompany = (Company) session.getAttribute("company");
+ 		if (loginCompany != null) {
+ 			resultMap.put("success", false);
+ 			resultMap.put("message", "일반 이용자만 이용 가능합니다.");
+ 			new Gson().toJson(resultMap, response.getWriter());
+ 			return;
+ 		}
+	 		
 		// ✅ 로그인 사용자 확인
+		User loginUser = (User) session.getAttribute("user");
 		if (loginUser == null) {
 			resultMap.put("success", false);
 			resultMap.put("message", "로그인이 필요합니다.");
