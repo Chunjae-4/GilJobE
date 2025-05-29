@@ -40,9 +40,9 @@ public class QNAService {
         return result;
     }
 
-    public int deleteQna(int qnaNo) {
+    public int deleteQnaByNo(int qnaNo) {
         Connection conn = getConnection();
-        int result = qnadao.deleteQna(conn, qnaNo);
+        int result = qnadao.deleteQnaByNo(conn, qnaNo);
         if (result > 0) commit(conn); else rollback(conn);
         close(conn);
         return result;

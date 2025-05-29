@@ -94,21 +94,19 @@ public class QNADao {
 	    int result = 0;
 	    try {
 	        pstmt = conn.prepareStatement(sql.getProperty("insertQna"));
-	        pstmt.setInt(1, qna.getQnaNo());
-	        pstmt.setInt(2, qna.getUserNoRef());
-	        pstmt.setInt(3, qna.getProNoRef());
-	        pstmt.setString(4, qna.getQnaContent());
+	        pstmt.setInt(1, qna.getUserNoRef());
+	        pstmt.setInt(2, qna.getProNoRef());
+	        pstmt.setString(3, qna.getQnaContent());
 	        result = pstmt.executeUpdate();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
-	        close(rs);
 	        close(pstmt);
 	    }
 	    return result;
 	}
 
-	public int deleteQna(Connection conn, int qnaNo) {
+	public int deleteQnaByNo(Connection conn, int qnaNo) {
 	    int result = 0;
 	    try {
 	        pstmt = conn.prepareStatement(sql.getProperty("deleteQnaByNo"));

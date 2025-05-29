@@ -190,12 +190,8 @@ if (loginUser != null) {
 	
 	<!-- Q&A 영역 -->
 	<div class="program-qna">
-	    <h3>Q&A</h3>
 	    <%
 	    	Company company = com.giljobe.company.model.service.CompanyService.companyService().searchCompanyByNo(program.getComNoRef());
-	    	request.setAttribute("company", company);
-		    request.setAttribute("loginUser",loginUser);
-		    request.setAttribute("program",program);
 	    	List<QNA> qnaList = com.giljobe.qna.model.service.QNAService.qnaService().searchQNAByProNo(program.getProNo());
 		    request.setAttribute("qnaList", qnaList);
 		%>

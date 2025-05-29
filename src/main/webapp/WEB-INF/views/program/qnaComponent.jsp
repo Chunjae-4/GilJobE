@@ -5,8 +5,8 @@
                  com.giljobe.company.model.dto.*,
                  java.util.List" %>
 <%
-    User loginUser = (User) request.getAttribute("loginUser");
-    Company loginCompany = (Company) request.getAttribute("loginCompany");
+    User loginUser = (User) session.getAttribute("user");
+    Company loginCompany = (Company) session.getAttribute("company");
     Program program = (Program) request.getAttribute("program");
     List<QNA> qnaList = (List<QNA>) request.getAttribute("qnaList");
     String qnaMessage = (String) session.getAttribute("qnaMessage");

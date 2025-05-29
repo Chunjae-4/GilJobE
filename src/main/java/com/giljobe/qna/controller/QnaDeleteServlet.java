@@ -21,7 +21,7 @@ public class QnaDeleteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int qnaNo = Integer.parseInt(request.getParameter("qnaNo"));
         int proNo = Integer.parseInt(request.getParameter("proNo"));
-        QNAService.qnaService().deleteQna(qnaNo);
+        QNAService.qnaService().deleteQnaByNo(qnaNo);
         request.getSession().setAttribute("qnaMessage", "문의가 삭제되었습니다.");
         response.sendRedirect(request.getContextPath() + "/program/detail?proNo=" + proNo);
 	}
