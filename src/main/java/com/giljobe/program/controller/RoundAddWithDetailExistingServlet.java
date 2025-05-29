@@ -1,6 +1,7 @@
 package com.giljobe.program.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +35,9 @@ public class RoundAddWithDetailExistingServlet extends HttpServlet {
         }
 
         request.setAttribute("program", program); // roundAddWithDetail.jsp에서 사용
+        
+        LocalDate today = LocalDate.now();
+		request.setAttribute("todayDate", today.toString()); // yyyy-MM-dd 형식
         request.getRequestDispatcher(Constants.WEB_VIEWS + "/program/roundAddWithDetail.jsp").forward(request, response);
     }
 

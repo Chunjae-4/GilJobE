@@ -1,6 +1,8 @@
 package com.giljobe.program.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,9 @@ public class RoundAddCopyServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		LocalDate today = LocalDate.now();
+		request.setAttribute("todayDate", today.toString()); // yyyy-MM-dd 형식
 		request.getRequestDispatcher(Constants.WEB_VIEWS + "/program/roundAddCopy.jsp")
 	       .forward(request, response);
 	}

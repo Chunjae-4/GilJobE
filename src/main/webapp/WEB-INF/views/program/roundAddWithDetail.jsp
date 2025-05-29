@@ -5,6 +5,8 @@
 <h2 class="my-4">회차 정보 직접 입력</h2>
 
 <%
+	String todayDate = (String)request.getAttribute("todayDate");
+
     String proNoParam = request.getParameter("proNo");
     String actionUrl = (proNoParam != null && !proNoParam.isEmpty())
         ? request.getContextPath() + "/round/insert-with-detail-existing"
@@ -15,12 +17,12 @@
     <% if (proNoParam != null && !proNoParam.isEmpty()) { %>
     <input type="hidden" name="proNo" value="<%= proNoParam %>">
 	<% } %>
-
     <!-- 체험 날짜 -->
-    <div class="mb-3">
-        <label class="form-label">📅 체험 날짜 *</label>
-        <input type="date" name="roundDate" class="form-control" required>
-    </div>
+	<div class="mb-3">
+	    <label class="form-label">📅 체험 날짜 *</label>
+		<input type="date" name="roundDate" class="form-control" required min="<%= todayDate %>">
+	</div>
+    
 
     <!-- 활동 시간 -->
     <div class="mb-3">

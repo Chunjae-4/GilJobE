@@ -11,13 +11,15 @@ roundAddCopy.jsp 페이지로 이동
 선택한 날짜마다 동일한 회차 정보 복제
 복사된 Round, ProTime 들 insert
 등록 완료 후 상세 페이지로 이동 -->
-
+<%
+	String todayDate = (String)request.getAttribute("todayDate");
+%>
 <div class="container mt-5">
     <h4>날짜 선택</h4>
 
     <div class="row mb-3">
         <div class="col-md-4">
-            <input type="date" id="datePicker" class="form-control">
+            <input type="date" id="datePicker" class="form-control" min="<%= todayDate %>">
         </div>
         <div class="col-md-2">
             <button class="btn btn-primary" id="addDateBtn" onclick="addDate()" disabled>추가</button>
