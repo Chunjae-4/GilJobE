@@ -19,7 +19,12 @@ public class NaverGeoUtils {
     static {
         String id = "";
         String secret = "";
-        try (InputStream input = NaverGeoUtils.class.getClassLoader().getResourceAsStream("api/naver.properties")) {
+        try {
+            // ✅ properties 경로가 실제로 잘 불러와지는지 확인
+            URL propUrl = NaverGeoUtils.class.getClassLoader().getResource("api/naver.properties");
+            System.out.println("📁 properties 경로 확인: " + propUrl);
+
+            InputStream input = propUrl.openStream(); // 이렇게 바꾸면 명확하게 확인 가능
             Properties props = new Properties();
             props.load(input);
             id = props.getProperty("naver.map.key");
@@ -31,10 +36,15 @@ public class NaverGeoUtils {
         CLIENT_SECRET = secret;
     }
 
+
     public static double[] getCoordinatesFromAddress(String address) {
         try {
             String query = URLEncoder.encode(address, "UTF-8");
-            String apiURL = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + query;
+            //String apiURL = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + query;
+            String apiURL = "https://maps.apigw.ntruss.com/map-geocode/v2/geocode?query=" + query;
+            System.out.println("🔍 요청 URL: " + apiURL);
+            System.out.println("🔍 CLIENT_ID: " + CLIENT_ID);
+            System.out.println("🔍 CLIENT_SECRET: " + CLIENT_SECRET);
 
             URL url = new URL(apiURL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -42,29 +52,46 @@ public class NaverGeoUtils {
             con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", CLIENT_ID);
             con.setRequestProperty("X-NCP-APIGW-API-KEY", CLIENT_SECRET);
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            String line;
+            // ✅ 여기서 응답 코드 확인
+            int responseCode = con.getResponseCode();
+            if (responseCode == 200) {
+                // 성공한 경우
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
 
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
+                JSONObject json = new JSONObject(sb.toString());
+                JSONArray addresses = json.getJSONArray("addresses");
 
-            br.close();
-            JSONObject json = new JSONObject(sb.toString());
-            JSONArray addresses = json.getJSONArray("addresses");
+                if (addresses.length() > 0) {
+                    JSONObject obj = addresses.getJSONObject(0);
+                    double latitude = obj.getDouble("y");
+                    double longitude = obj.getDouble("x");
+                    return new double[] { latitude, longitude };
+                }
 
-            if (addresses.length() > 0) {
-                JSONObject obj = addresses.getJSONObject(0);
-                double latitude = obj.getDouble("y");
-                double longitude = obj.getDouble("x");
-                return new double[] { latitude, longitude };
+            } else {
+                // ❗ 실패한 경우 (401 등), 에러 메시지를 따로 읽어 출력
+                System.out.println("❌ 응답 코드: " + responseCode);
+                BufferedReader errReader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
+                StringBuilder errMsg = new StringBuilder();
+                String line;
+                while ((line = errReader.readLine()) != null) {
+                    errMsg.append(line);
+                }
+                errReader.close();
+                System.out.println("❌ 에러 메시지: " + errMsg.toString());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new double[] { 0.0, 0.0 };
+        return new double[] { 0.0, 0.0 }; // 실패 시 기본값
     }
+
 }

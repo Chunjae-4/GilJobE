@@ -57,7 +57,8 @@ public class InsertProgramServlet extends HttpServlet {
         double[] coordinates = getCoordinatesFromAddress(proLocation);
         double latitude = coordinates[0];
         double longitude = coordinates[1];
-
+      System.out.println(latitude);
+      System.out.println(longitude);
         
         // 3. 파일 저장
         Part filePart = request.getPart("programImage");
