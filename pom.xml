@@ -52,11 +52,11 @@
 		    <artifactId>gson</artifactId>
 		    <version>2.13.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<!-- https://mvnrepository.com/artifact/org.simplejavamail/simple-java-mail -->
 		<dependency>
-		    <groupId>javax.mail</groupId>
-		    <artifactId>javax.mail-api</artifactId>
-		    <version>1.6.2</version>
+		    <groupId>org.simplejavamail</groupId>
+		    <artifactId>simple-java-mail</artifactId>
+		    <version>8.12.2</version>
 		</dependency>
         <dependency>
             <groupId>javax.websocket</groupId>
