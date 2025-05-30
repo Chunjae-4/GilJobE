@@ -26,13 +26,13 @@ public class CancelApplication extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int timeNo = Integer.parseInt(request.getParameter("timeNo"));
-		int userNo = Integer.parseInt(request.getParameter("userNo"));
-		
-		int result = ApplicationService.applicationService().removeApplication(timeNo,userNo);
-		
-		response.setContentType(Constants.CONTENT_TYPE_JSON);
-		new Gson().toJson(Map.of("result", result), response.getWriter());
+//		int timeNo = Integer.parseInt(request.getParameter("timeNo"));
+//		int userNo = Integer.parseInt(request.getParameter("userNo"));
+//		
+//		int result = ApplicationService.applicationService().removeApplication(timeNo,userNo);
+//		
+//		response.setContentType(Constants.CONTENT_TYPE_JSON);
+//		new Gson().toJson(Map.of("result", result), response.getWriter());
 		
 	}
 

@@ -13,11 +13,11 @@
 <%for(ApplicationProgram a : apppro){%>
 	<li id="proNo-<%=a.getProNo()%>">
 	<a href="<%=request.getContextPath()%>/program/detail?proNo=<%=a.getProNo()%>"> <%=a.getProNo()%>  <%=a.getProName() %>   </a>
-	<button onclick="cancelApp(<%=a.getTimeNo()%>,'<%=user.getUserNo()%>',<%=a.getProNo()%>)">좋지 않아요</button>
+	<%-- <button onclick="cancelApp(<%=a.getTimeNo()%>,'<%=user.getUserNo()%>',<%=a.getProNo()%>)">좋지 않아요</button> --%>
 	</li>
 <%}%>
 </ul>
-<script>
+<%-- <script>
 
 	const cancelApp=(timeNo,userNo,proNo)=>{
 
@@ -51,4 +51,4 @@
 		}
 	}
 
-</script>
+</script> --%>

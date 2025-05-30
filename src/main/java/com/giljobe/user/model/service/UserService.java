@@ -64,6 +64,8 @@ public class UserService {
 		// TODO Auto-generated method stub
 		conn = getConnection();
 		int result = userDao.updateUserPw(conn, userNo, currentPw, newPw);
+		
+		
 		if(result>0) {
 			//성공
 			commit(conn);

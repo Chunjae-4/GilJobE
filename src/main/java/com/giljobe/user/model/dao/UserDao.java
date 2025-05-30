@@ -158,5 +158,7 @@ public class UserDao {
 		
 		return result;
 	}
-	
+//	public User getUserPwByUserNo(Connection conn, int userNo) {
+//			return Use
+//	}
 }

@@ -55,21 +55,21 @@ public class ApplicationProgramDao {
 		return apppro;
 	}
 	
-	public int removeApplication(Connection conn, int timeNo, int userNo) {
-		int result = 0;
-		try {
-			pstmt=conn.prepareStatement(sql.getProperty("deleteAppByNo"));
-			pstmt.setInt(1, timeNo);
-			pstmt.setInt(2, userNo);
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			close(pstmt);
-		}
-		return result;
-	}
+//	public int removeApplication(Connection conn, int timeNo, int userNo) {
+//		int result = 0;
+//		try {
+//			pstmt=conn.prepareStatement(sql.getProperty("deleteAppByNo"));
+//			pstmt.setInt(1, timeNo);
+//			pstmt.setInt(2, userNo);
+//			result = pstmt.executeUpdate();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}finally {
+//			close(pstmt);
+//		}
+//		return result;
+//	}
 	
 	public ApplicationProgram getApplicationProgramDao(ResultSet rs) throws SQLException {
 		

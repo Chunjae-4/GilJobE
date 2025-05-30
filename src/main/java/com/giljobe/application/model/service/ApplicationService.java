@@ -27,13 +27,13 @@ public class ApplicationService {
 		close(conn);
 		return apps;
 	}
-	public int removeApplication(int timeNo, int userNo) {
-
-		conn=getConnection();
-		int result = appprodao.removeApplication(conn, timeNo, userNo);
-		if (result > 0) commit(conn);
-	    else rollback(conn);
-	    close(conn);
-		return result;
-	}
+//	public int removeApplication(int timeNo, int userNo) {
+//
+//		conn=getConnection();
+//		int result = appprodao.removeApplication(conn, timeNo, userNo);
+//		if (result > 0) commit(conn);
+//	    else rollback(conn);
+//	    close(conn);
+//		return result;
+//	}
 }
