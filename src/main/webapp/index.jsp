@@ -28,7 +28,7 @@
             </div>
         </form>
     </section>
-    <section class="rounded-4 container-fluid bg-opacity-10 text-center py-3 shadow-sm mb-3" style="background-color:	rgba(246, 233, 215, 0.2)">
+    <section class="container-fluid bg-opacity-10 text-center py-3 mb-3" style="background-color:	rgba(246, 233, 215, 0.2)">
         <p class="fst-italic fs-4 fw-semibold mt-1 mb-1">“작은 체험이 인생의 방향을 바꿉니다.”</p>
         <p class="text-muted">청소년 진로 탐색의 첫걸음은 체험입니다</p>
     </section>
