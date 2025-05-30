@@ -8,7 +8,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <% List<Program> randomRecommend = (List<Program>) application.getAttribute("randomRecommend");%>
-<div class="container-fluid px-4 py-2 ">
+<div class="container-fluid px-4 py-2 mb-5">
     <!-- ✅ 검색 섹션 -->
     <section class="text-center py-5 mb-5">
         <div class="mb-4">
