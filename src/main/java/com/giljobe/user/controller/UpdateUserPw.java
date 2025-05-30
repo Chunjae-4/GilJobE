@@ -31,7 +31,7 @@ public class UpdateUserPw extends HttpServlet {
 		User u = (User)session.getAttribute("user");
 		String userPw = request.getParameter("userPw");
 	    String newPw = request.getParameter("newPw");
-//	    String confirmPw = request.getParameter("confirmPw");
+//	    String confirmPw = request.getParameter("confirmPw"); 세션엔 비밀번호 없어
 	    
 	    int userNo = u.getUserNo();
 	    

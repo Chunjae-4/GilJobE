@@ -52,5 +52,25 @@ public class CompanyService {
         close(conn);
         return c;
     }
+	public int updateCompanyPw(int comNo, String companyPw, String newPw) {
+		// TODO Auto-generated method stub
+		conn = getConnection();
+		Company company = comDao.updateCompanyPw(conn, comNo);
+		if(company == null || !company.getComPw().equals(companyPw)) {
+			return -1;
+		}
+		int result = comDao.updateCompanyPw(conn, comNo, newPw);
+		
+		
+		if(result>0) {
+			//성공
+			commit(conn);
+		}else {
+			//실패
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
 	
 }
