@@ -49,4 +49,32 @@
     <button type="submit" class="btn btn-success">회차 입력으로 이동 →</button>
 </form>
 
+<script src="https://unpkg.com/@egjs/jquery-pa" defer></script>
+<!-- 네이버 주소 검색 API -->
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+<script>
+    function openAddressSearch() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 기본 주소 (도로명/지번 중 선택된 것)
+                let fullAddr = data.roadAddress || data.jibunAddress;
+
+                // 건물명 추가
+                if (data.buildingName !== '') {
+                    fullAddr += ' ' + data.buildingName;
+                }
+
+                document.querySelector("input[name='proLocation']").value = fullAddr;
+            }
+        }).open();
+    }
+
+    // 주소 input 클릭 시 팝업 실행
+    document.addEventListener("DOMContentLoaded", function() {
+        const locationInput = document.querySelector("input[name='proLocation']");
+        locationInput.setAttribute("readonly", true); // 수동 입력 방지
+        locationInput.addEventListener("click", openAddressSearch);
+    });
+</script>
+
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
