@@ -8,13 +8,11 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <% List<Program> randomRecommend = (List<Program>) application.getAttribute("randomRecommend");%>
-
-<div class="container-fluid px-4 py-5 ">
+<div class="container-fluid px-4 py-2 ">
     <!-- ✅ 검색 섹션 -->
     <section class="text-center py-5 mb-5">
         <div class="mb-4">
             <h1 class="fw-semibold mb-2">체험 프로그램 검색</h1>
-            <p class="lead text-muted">원하시는 체험을 찾아보세요.</p>
         </div>
         <p></p>
         <form role="search" action="<%=request.getContextPath()%>/program/programsearchform" method="get">
@@ -22,7 +20,7 @@
                 <div class="input-group" style="max-width: 600px;">
                     <input type="search" name="keyword"
                            class="form-control form-control-lg rounded-start-pill"
-                           placeholder="검색어를 입력하세요" aria-label="Search">
+                           placeholder="검색어를 입력해서 원하는 체험을 찾아보세요." aria-label="Search">
                     <button class="btn btn-primary btn-lg rounded-end-pill" type="submit">
                         🔍 검색
                     </button>
@@ -30,9 +28,12 @@
             </div>
         </form>
     </section>
-
+    <section class="container-fluid bg-opacity-10 text-center py-3 shadow-sm " style="background-color:	rgba(246, 233, 215, 0.2)">
+        <p class="fst-italic fs-4 fw-semibold mt-1 mb-1">“작은 체험이 인생의 방향을 바꿉니다.”</p>
+        <p class="text-muted">청소년 진로 탐색의 첫걸음은 체험입니다</p>
+    </section>
     <!-- ✅ 랜덤 추천 섹션 -->
-    <section class="bg-light rounded-4 shadow-sm py-5 px-4 mt-5"> <!-- mt-5로 위 여백 추가 -->
+    <section class="bg-light rounded-4 shadow-sm py-5 px-4 "> <!-- mt-5로 위 여백 추가 -->
         <div class="row align-items-center g-5">
             <!-- 텍스트 영역 -->
             <div class="col-lg-4 text-center text-lg-start">
@@ -65,8 +66,8 @@
                                  style="font-size: 1.05rem; font-weight: 300; max-width: 70%;">
                                 <div class="fw-semibold fs-5 mb-1"><%= p.getProName() %></div>
                                 <div class="text-white-50 small">
-                                    <%=p.getProCategory()%> |
-                                    <%= ProCategory.valueOf(p.getProCategory()).getSubcategories().toString() %>
+                                    <%=ProCategory.valueOf(p.getProCategory()).getSubcategoriesStr()%>
+                                    | <%=p.getProCategory()%>
                                 </div>
                             </div>
                         </div>
@@ -89,6 +90,7 @@
         </div>
     </section>
 </div>
+
 
 <script>
     // 프로그램 카드 전체 클릭 시
@@ -131,20 +133,6 @@
     .programDetail {
         cursor: pointer;
     }
+
 </style>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-
-<%--            <!-- 숨겨진 input (선택된 카테고리 전송용) -->--%>
-<%--            <input type="hidden" name="category" id="selectedCategoryInput">--%>
-
-<%--            <!-- 카테고리 버튼들 -->--%>
-<%--            <div class="d-flex flex-wrap justify-content-center gap-2 mt-3" style="max-width: 700px; margin: 0 auto;">--%>
-<%--                <% for (ProCategory sc : ProCategory.values()) {%>--%>
-<%--                <%   Optional<String> result = java.util.Arrays.stream(sc.getSubcategories()).reduce((prev, next) -> prev + " · " + next); %>--%>
-<%--                <button type="button"--%>
-<%--                        class="btn btn-outline-secondary category-btn px-3 py-2"--%>
-<%--                        data-category="<%= result.get() %>">--%>
-<%--                    <%= result.get() %>--%>
-<%--                </button>--%>
-<%--                <% } %>--%>
-<%--            </div>--%>

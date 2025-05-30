@@ -27,5 +27,7 @@ public enum ProCategory {
     public String[] getSubcategories() {
         return subcategories;
     }
-
+    public String getSubcategoriesStr() {
+        return String.join(", ", subcategories);
+    }
 }
