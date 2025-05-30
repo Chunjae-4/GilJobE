@@ -1,11 +1,11 @@
 package com.giljobe.program.controller;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.io.FileInputStream;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
@@ -13,7 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.giljobe.application.model.dto.Application;
+import com.giljobe.application.model.service.ApplicationService;
 import com.giljobe.common.Constants;
 import com.giljobe.program.model.dto.ProTime;
 import com.giljobe.program.model.dto.Program;
@@ -21,6 +24,7 @@ import com.giljobe.program.model.dto.Round;
 import com.giljobe.program.model.service.ProTimeService;
 import com.giljobe.program.model.service.ProgramService;
 import com.giljobe.program.model.service.RoundService;
+import com.giljobe.user.model.dto.User;
 
 
 @WebServlet("/program/detail")
@@ -110,6 +114,15 @@ public class ProgramDetailServlet extends HttpServlet {
 		    request.setAttribute("naverMapKey", apiKey); // naverMapKey 전달
 		} catch (IOException e) {
 		    e.printStackTrace();
+		}
+		
+		HttpSession session = request.getSession();
+		User loginUser = (User) session.getAttribute("user");
+
+		if (loginUser != null) {
+		    List<Application> apps = ApplicationService.applicationService()
+		                                               .searchAppsOfUser(loginUser.getUserNo());
+		    loginUser.setApplications(apps); // ✅ 사용자 객체에 직접 담아줌
 		}
 
 		// JSP로 forward

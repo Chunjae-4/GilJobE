@@ -2,7 +2,8 @@
 		 import="com.giljobe.common.Constants"%>
 <%@ page import="com.giljobe.program.model.dto.*, 
 				com.giljobe.qna.model.dto.*,
-				com.giljobe.company.model.dto.*,				
+				com.giljobe.company.model.dto.*,
+				com.giljobe.application.model.dto.*,							
 				java.util.List, java.util.Comparator" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <% 
@@ -13,6 +14,7 @@ List<Round> availableRounds = (List<Round>)request.getAttribute("availableRounds
 List<Round> expiredRounds = (List<Round>)request.getAttribute("expiredRounds");
 boolean noAvailableRounds = availableRounds.isEmpty();
 List<ProTime> proTimes = (List<ProTime>) request.getAttribute("proTimes");
+List<Application> userApps = (loginUser != null) ? loginUser.getApplications() : java.util.Collections.emptyList();
 if (proTimes != null) {
     proTimes.sort(Comparator.comparing(ProTime::getStartTime));
 }
@@ -28,6 +30,10 @@ boolean isLiked = false;
 if (loginUser != null) {
     isLiked = com.giljobe.love.model.service.LoveService.getInstance().hasLoved(
         loginUser.getUserNo(), program.getProNo());
+}
+boolean isMyProgram = false;
+if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
+    isMyProgram = true;
 }
 %>
 <section class="container py-5">
@@ -128,10 +134,20 @@ if (loginUser != null) {
 							        <div class="card-header fw-bold">체험 가능 시간</div>
 							        <div class="card-body">
 							            <div class="d-flex flex-wrap gap-2">
-							                <% for (ProTime pt : proTimes) { %>
-							                    <button type="button" class="btn btn-outline-secondary">
-							                        <%= timeFormat.format(pt.getStartTime()) %> ~ <%= timeFormat.format(pt.getEndTime()) %>
-							                    </button>
+							                <% for (ProTime pt : proTimes) { 
+								                   boolean applied = false;
+											       for (Application app : userApps) {
+											           if (app.getTimeNoRef() == pt.getTimeNo() && app.isApplyState()) {
+											               applied = true;
+											               break;
+											           }
+											       }
+		       								%>
+							                    <button type="button"
+							                    		class="btn <%= applied ? "btn-success" : "btn-outline-secondary" %> protime-btn"
+											            data-timeno="<%= pt.getTimeNo() %>">
+											        <%= timeFormat.format(pt.getStartTime()) %> ~ <%= timeFormat.format(pt.getEndTime()) %>
+											    </button>
 							                <% } %>
 							            </div>
 							        </div>
@@ -260,9 +276,14 @@ $(function() {
                                 <div class="card-header fw-bold">체험 가능 시간</div>
                                 <div class="card-body">
                                     <div class="d-flex flex-wrap gap-2">`;
-                    data.proTimes.forEach(e=> {
-                        html += `<button class="btn btn-outline-secondary">\${e.start} ~ \${e.end}</button>`;
+         
+                    data.proTimes.forEach(e => {
+                        html += `<button class="btn btn-outline-secondary protime-btn"
+                                         data-timeno="\${e.timeNo}">
+                                     \${e.start} ~ \${e.end}
+                                 </button>`;
                     });
+
                     html += `</div></div></div>`;
                 } else {
                     html = `<p class="text-muted">시간 정보가 없습니다.</p>`;
@@ -272,6 +293,51 @@ $(function() {
             }
         });
     });
+});
+</script>
+
+<!-- 프로그램 신청과 관련하여 -->
+<script>
+$(document).on("click", ".protime-btn", function(e) {
+    const timeNo = $(this).data("timeno");
+
+    <%-- Case 1: 로그인하지 않은 사용자 --%>
+    <% if (loginUser == null && loginCompany == null) { %>
+        alert("로그인이 필요합니다.");
+        return;
+    <% } %>
+
+    <%-- Case 2: 일반 사용자 --%>
+    <% if (loginUser != null) { %>
+        $.get(contextPath + "/ajax/app/check", { timeNo }, function(hasApplied) {
+            if (hasApplied) {
+                if (confirm("신청을 취소할까요?")) {
+                    $.post(contextPath + "/ajax/app/cancel", { timeNo }, function(success) {
+                        if (success) {
+                            alert("신청이 취소되었습니다.");
+                            $("button[data-timeno='" + timeNo + "']").removeClass("btn-success").addClass("btn-outline-secondary");
+                        }
+                    });
+                }
+            } else {
+                if (confirm("신청할까요?")) {
+                    $.post(contextPath + "/ajax/app/apply", { timeNo }, function(success) {
+                        if (success) {
+                            alert("신청되었습니다.");
+                            $("button[data-timeno='" + timeNo + "']").removeClass("btn-outline-secondary").addClass("btn-success");
+                        }
+                    });
+                }
+            }
+        });
+    <% } %>
+
+    <%-- Case 3: 기업회원 (본인 프로그램일 때) --%>
+    <% if (loginCompany != null && isMyProgram) { %>
+        $.get(contextPath + "/ajax/app/count", { timeNo }, function(count) {
+            alert("현재까지 신청한 인원: " + count + "명");
+        });
+    <% } %>
 });
 </script>
 

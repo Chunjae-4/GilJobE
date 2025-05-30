@@ -36,4 +36,45 @@ public class ApplicationService {
 //	    close(conn);
 //		return result;
 //	}
+	
+
+	public boolean existsAppForTimeAndUser(int timeNo, int userNo) {
+	    conn = getConnection();
+	    boolean result = appdao.existsAppForTimeAndUser(conn, timeNo, userNo);
+	    close(conn);
+	    return result;
+	}
+
+	public boolean insertApp(int timeNo, int userNo) {
+	    conn = getConnection();
+	    int result = appdao.insertApp(conn, timeNo, userNo);
+	    if (result > 0) commit(conn);
+	    else rollback(conn);
+	    close(conn);
+	    return result > 0;
+	}
+
+	public boolean deleteApp(int timeNo, int userNo) {
+	    conn = getConnection();
+	    int result = appdao.deleteApp(conn, timeNo, userNo);
+	    if (result > 0) commit(conn);
+	    else rollback(conn);
+	    close(conn);
+	    return result > 0;
+	}
+
+	public int countAppByTimeNo(int timeNo) {
+	    conn = getConnection();
+	    int count = appdao.countAppByTimeNo(conn, timeNo);
+	    close(conn);
+	    return count;
+	}
+	
+	public List<Application> searchAppsOfUser(int userNo) {
+	    conn = getConnection();
+	    List<Application> list = appdao.searchAppsOfUser(conn, userNo);
+	    close(conn);
+	    return list;
+	}
+
 }
