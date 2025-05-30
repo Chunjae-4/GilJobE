@@ -60,11 +60,19 @@ public class UserService {
 		close(conn);
 		return result;
 	}
-	public int updateUserPw(int userNo, String currentPw, String newPw) {
+	public int updateUserPw(int userNo, String userPw, String newPw) {
 		// TODO Auto-generated method stub
 		conn = getConnection();
-		int result = userDao.updateUserPw(conn, userNo, currentPw, newPw);
 		
+		User user = userDao.getUserPwByNo(conn, userNo);
+		//유저비밀번호만 유저에 담아서 String 말고 걍 유저에 담음
+		if(user==null || !user.getUserPw().equals(userPw)) {
+			//원래 있던 비번이랑 자기 비번이랍시고 입력한 비번과 다르면 -1 반환
+			return -1;
+		}
+		
+		int result = userDao.updateUserPw(conn, userNo, newPw);
+		//위의 조건문으로 안빠지면 업데이트
 		
 		if(result>0) {
 			//성공

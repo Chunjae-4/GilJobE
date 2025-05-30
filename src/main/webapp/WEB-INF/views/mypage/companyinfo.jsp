@@ -4,71 +4,116 @@
 <%
 	Company loginCompany = (Company)session.getAttribute("company");
 %>
-<section class="form-wrapper">
-	<form action="<%=request.getContextPath()%>/company/updateCompany"
-		method="post" onsubmit="return validateForm()">	
-		<div class="mb-3">
-			<label for="id" class="form-label">아이디<span 
-				style="color: red">*</span></label> <input type="text" class="form-control" 
-				name="companyId" id="companyId"
-				value="<%=loginCompany.getComId() %>" readonly>
+
+<h4 class="fw-bold mb-2">내 정보 수정</h4>
+<p class="text-muted mb-4" style="font-size: 0.95rem;">회원가입 시 입력한 정보를 확인하고 수정할 수 있어요.</p>
+
+<form action="<%=request.getContextPath()%>/company/updateCompany" method="post" onsubmit="return validateForm()">
+	<div class="row gy-4">
+
+		<!-- 아이디 -->
+		<div class="col-12">
+			<label for="companyId" class="form-label">아이디 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="companyId" id="companyId"
+				   value="<%=loginCompany.getComId() %>" readonly>
+			<div class="form-text text-muted">아이디는 변경할 수 없습니다.</div>
 		</div>
-		<div class="mb-3">
-			<label for="name" class="form-label">기업명<span
-				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="20"
-				name="companyName" id="companyName" placeholder="개명하셨나요?" value="<%=loginCompany.getComName() %>" required>
+
+		<!-- 이름 -->
+		<div class="col-12">
+			<label for="companyName" class="form-label">기업명 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="companyName" maxlength="5"
+				   value="<%=loginCompany.getComName() %>" required>
 		</div>
-		<div class="mb-3">
-			<label for="phone" class="form-label">전화번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="11"
-				name="companyPhone" id="companyPhone" placeholder="'-'제외하고 입력" id="companyPhone" value="<%=loginCompany.getComPhone() %>" required>
+
+		<!-- 전화번호 -->
+		<div class="col-12">
+			<label for="companyPhone" class="form-label">전화번호 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="companyPhone" maxlength="11"
+				   placeholder="예: 01012345678"
+				   value="<%=loginCompany.getComPhone() %>" required>
 		</div>
-		<div class="mb-3">
-			<label for="binNo" class="form-label">사업자 등록번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control" maxlength="10"
-				name="companyBinNo" id="companyBinNo" value="<%=loginCompany.getComBinNo() %>"
-				placeholder="-제외 입력" required>
+
+		<!-- 사업자 등록번호 -->
+		<div class="col-12">
+			<label for="companyBinNo" class="form-label">닉네임 <span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="companyBinNo" maxlength="10"
+				   value="<%=loginCompany.getComBinNo() %>" required>
 		</div>
-		<div class="mb-3">
-			<label for="email" class="form-label">이메일<span
-				style="color: red">*</span></label> <input type="email" class="form-control" maxlength="20"
-				name="companyEmail" placeholder="company@email.com" value="<%=loginCompany.getComEmail() %>" required>
+
+		<!-- 이메일 -->
+		<div class="col-12">
+			<label for="companyEmail" class="form-label">이메일 <span class="text-danger">*</span></label>
+			<input type="email" class="form-control" name="companyEmail"
+				   value="<%=loginCompany.getComEmail() %>" required>
 		</div>
-		<input type="submit" value="회원 정보 수정" id="submitBtn"> 
-	</form>
-	<input type="button" id="pwsubmitBtn" value="비밀번호수정"> 
-</section>
+
+		<!-- 버튼 -->
+		<div class="col-12 d-flex justify-content-end gap-2 mt-3">
+			<button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">정보 수정</button>
+			<button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill"
+      		  data-bs-toggle="modal" data-bs-target="#changePwModal">비밀번호 변경</button>
+		</div>
+	</div>
+</form>
+<!-- 비밀번호 변경 모달 -->
+<div class="modal fade" id="changePwModal" tabindex="-1" aria-labelledby="changePwModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="<%=request.getContextPath()%>/user/updatePw" method="post" class="modal-content" onsubmit="return PwvalidationForm()">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePwModalLabel">비밀번호 변경</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="companyPw" class="form-label">현재 비밀번호</label>
+          <input type="password" class="form-control" id="companyPw" name="companyPw" required>
+        </div>
+        <div class="mb-3">
+          <label for="newPw" class="form-label">새 비밀번호</label>
+          <input type="password" class="form-control" id="newPw" name="newPw" required>
+        </div>
+        <div class="mb-3">
+          <label for="confirmPw" class="form-label">새 비밀번호 확인</label>
+          <input type="password" class="form-control" id="checkPw" name="checkPw" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">변경</button>
+        <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill" data-bs-dismiss="modal">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
 <script>
 	const numonly = /[^0-9]/g; //문자가 있니 없니
+	const pwReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]).{8,}$/;
 	
 	const validateForm=()=>{
 				const companyPhone = $("#companyPhone").val().trim();
-				const binNo = $("#companyBinNo").val().trim();
+				
 				if(numonly.test(companyPhone)){ // 문자 없으면 false 잘썻으면 false !때문에 true
 					alert("전화번호 형식에 맞지 않습니다. -를 제외한 숫자만 입력해주세요.");
 					$("#companyPhone").focus();
 					return false;
 				}
-				if(numonly.test(binNo)){
-					alert("사업자 등록번호 형식에 맞지 않습니다. -를 제외한 숫자만 입력해주세요.");
-					$("#companyBinNo").focus();
-					return false;
-				}
+				
 				return true;
 		}
+	const PwvalidationForm=()=>{
+		const newPw = $("#newPw").val().trim();
+		const checkPw = $("#checkPw").val().trim();
+		if(!pwReg.test(newPw)){
+			 alert("비밀번호는 영문, 숫자, 특수문자를 하나씩 포함한 8자 이상이어야 합니다.");
+			 $("#newPw").focus();
+			 return false;
+		}
+		if(newPw !== checkPw){
+			 alert("비밀번호 확인이 일치하지 않습니다.");
+			 $("#checkPw").focus();		
+			 return false;
+		}
+		return true;
+	}
 		
 </script>
-
-<style>
-.form-wrapper {
-  max-width: 500px;
-  margin: 0 auto;
-  min-height: calc(100vh - 210px); /* 화면 전체 높이 - (header+footer 높이) */
-  background-color: #f9f9f9;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-</style>

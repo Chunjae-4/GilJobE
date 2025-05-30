@@ -65,23 +65,23 @@
 <!-- 비밀번호 변경 모달 -->
 <div class="modal fade" id="changePwModal" tabindex="-1" aria-labelledby="changePwModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form action="<%=request.getContextPath()%>/user/updatePw" method="post" class="modal-content">
+    <form action="<%=request.getContextPath()%>/user/updatePw" method="post" class="modal-content" onsubmit="return PwvalidationForm()">
       <div class="modal-header">
         <h5 class="modal-title" id="changePwModalLabel">비밀번호 변경</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label for="currentPw" class="form-label">현재 비밀번호</label>
-          <input type="password" class="form-control" id="currentPw" name="currentPw" required>
+          <label for="userPw" class="form-label">현재 비밀번호</label>
+          <input type="password" class="form-control" id="userPw" name="userPw" required>
         </div>
         <div class="mb-3">
           <label for="newPw" class="form-label">새 비밀번호</label>
           <input type="password" class="form-control" id="newPw" name="newPw" required>
         </div>
         <div class="mb-3">
-          <label for="confirmPw" class="form-label">새 비밀번호 확인</label>
-          <input type="password" class="form-control" id="confirmPw" name="confirmPw" required>
+          <label for="checkPw" class="form-label">새 비밀번호 확인</label>
+          <input type="password" class="form-control" id="checkPw" name="checkPw" required>
         </div>
       </div>
       <div class="modal-footer">
@@ -93,6 +93,7 @@
 </div>
 <script>
 	const numonly = /[^0-9]/g; //문자가 있니 없니
+	const pwReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]).{8,}$/;
 	
 	const validateForm=()=>{
 				const userPhone = $("#userPhone").val().trim();
@@ -105,6 +106,21 @@
 				
 				return true;
 		}
+	const PwvalidationForm=()=>{
+		const newPw = $("#newPw").val().trim();
+		const checkPw = $("#checkPw").val().trim();
+		if(!pwReg.test(newPw)){
+			 alert("비밀번호는 영문, 숫자, 특수문자를 하나씩 포함한 8자 이상이어야 합니다.");
+			 $("#newPw").focus();
+			 return false;
+		}
+		if(newPw !== checkPw){
+			 alert("비밀번호 확인이 일치하지 않습니다.");
+			 $("#checkPw").focus();		
+			 return false;
+		}
+		return true;
+	}
 		
 </script>
 
