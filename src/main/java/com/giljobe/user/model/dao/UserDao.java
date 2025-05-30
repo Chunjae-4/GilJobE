@@ -141,7 +141,7 @@ public class UserDao {
 		}
 		return result;
 	}
-	public int updateUserPw(Connection conn, int userNo, String currentPw, String newPw) {
+	public int updateUserPw(Connection conn, int userNo, String newPw) {
 
 		int result = 0;
 		try {
@@ -158,7 +158,27 @@ public class UserDao {
 		
 		return result;
 	}
-//	public User getUserPwByUserNo(Connection conn, int userNo) {
-//			return Use
-//	}
+	public User getUserPwByNo(Connection conn, int userNo) {
+		// TODO Auto-generated method stub
+		User user = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("searchUserPwByUserNo"));
+			pstmt.setInt(1, userNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				user = User.builder()
+	                    .userPw(rs.getString("user_pw"))
+	                    .build();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return user;
+	}
 }

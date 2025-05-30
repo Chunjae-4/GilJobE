@@ -13,7 +13,7 @@ import com.giljobe.user.model.dto.User;
 import com.giljobe.user.model.service.UserService;
 
 
-@WebServlet("/user/updatePw")
+@WebServlet(urlPatterns = "/user/updatePw", name="UpdateUserPwServlet")
 public class UpdateUserPw extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -29,27 +29,29 @@ public class UpdateUserPw extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		User u = (User)session.getAttribute("user");
-		String currentPw = request.getParameter("currentPw");
+		String userPw = request.getParameter("userPw");
 	    String newPw = request.getParameter("newPw");
-	    String confirmPw = request.getParameter("confirmPw");
+//	    String confirmPw = request.getParameter("confirmPw");
 	    
 	    int userNo = u.getUserNo();
 	    
 	    String msg;
 	    String loc;
 	    
-	    if(newPw.equals(confirmPw)) {
-	    	msg="새 비밀번호가 일치하지 않습니다.";
-	    	loc="/mypage/mypageview";
-	    	request.getRequestDispatcher(Constants.MSG).forward(request, response);
-	    }
+//	    if(newPw.equals(confirmPw)) {
+//	    	msg="새 비밀번호가 일치하지 않습니다.";
+//	    	loc="/mypage/mypageview";
+//	    	request.getRequestDispatcher(Constants.MSG).forward(request, response);
+//	    }
 	    
-	    int result = UserService.userService().updateUserPw(userNo,currentPw, newPw);
+	    int result = UserService.userService().updateUserPw(userNo,userPw, newPw);
 	    
-	    if(result>0) {
+	    if(result==-1) {
+			//비밀번호 다름
+			msg=" 현재 비밀번호를 정확하게 입력하세요";
+		}else if(result>0) {
 			//성공
 			msg="비밀번호 수정완료";
-			
 		}else {
 			//실패
 			msg="비밀번호 수정실패";

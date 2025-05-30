@@ -6,17 +6,31 @@
 <%
 	List<ApplicationProgram> apppro =(List<ApplicationProgram>)request.getAttribute("applicationProgram");
 	User user = (User)session.getAttribute("user");
-	
 
 %>
-<ul>
-<%for(ApplicationProgram a : apppro){%>
-	<li id="proNo-<%=a.getProNo()%>">
-	<a href="<%=request.getContextPath()%>/program/detail?proNo=<%=a.getProNo()%>"> <%=a.getProNo()%>  <%=a.getProName() %>   </a>
-	<%-- <button onclick="cancelApp(<%=a.getTimeNo()%>,'<%=user.getUserNo()%>',<%=a.getProNo()%>)">좋지 않아요</button> --%>
-	</li>
-<%}%>
-</ul>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<table class="table table-bordered table-hover table-striped align-middle">
+  <thead class="table-light">
+    <tr>
+      <th scope="col">프로그램 이름</th>
+      <th scope="col">회차</th>
+      <th scope="col">시작 날짜</th>
+      <th scope="col">종료 날짜</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(ApplicationProgram a : apppro) { %>
+    <tr>
+      <td><a href="<%=request.getContextPath()%>/program/detail?proNo=<%=a.getProNo()%>"><%= a.getProName() %></a></td>
+      <td><%= a.getRoundCount() %></td>
+      <td><%= a.getStartTime() %></td>
+      <td><%= a.getEndTime() %></td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>
+
 <%-- <script>
 
 	const cancelApp=(timeNo,userNo,proNo)=>{
