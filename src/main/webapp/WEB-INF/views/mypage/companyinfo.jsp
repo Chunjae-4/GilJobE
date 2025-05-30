@@ -22,7 +22,7 @@
 		<!-- 이름 -->
 		<div class="col-12">
 			<label for="companyName" class="form-label">기업명 <span class="text-danger">*</span></label>
-			<input type="text" class="form-control" name="companyName" maxlength="5"
+			<input type="text" class="form-control" name="companyName" maxlength="50"
 				   value="<%=loginCompany.getComName() %>" required>
 		</div>
 
@@ -36,7 +36,7 @@
 
 		<!-- 사업자 등록번호 -->
 		<div class="col-12">
-			<label for="companyBinNo" class="form-label">닉네임 <span class="text-danger">*</span></label>
+			<label for="companyBinNo" class="form-label">사업자 등록번호 <span class="text-danger">*</span></label>
 			<input type="text" class="form-control" name="companyBinNo" maxlength="10"
 				   value="<%=loginCompany.getComBinNo() %>" required>
 		</div>
@@ -44,7 +44,7 @@
 		<!-- 이메일 -->
 		<div class="col-12">
 			<label for="companyEmail" class="form-label">이메일 <span class="text-danger">*</span></label>
-			<input type="email" class="form-control" name="companyEmail"
+			<input type="email" class="form-control" name="companyEmail" maxlength="100"
 				   value="<%=loginCompany.getComEmail() %>" required>
 		</div>
 
@@ -59,7 +59,7 @@
 <!-- 비밀번호 변경 모달 -->
 <div class="modal fade" id="changePwModal" tabindex="-1" aria-labelledby="changePwModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form action="<%=request.getContextPath()%>/user/updatePw" method="post" class="modal-content" onsubmit="return PwvalidationForm()">
+    <form action="<%=request.getContextPath()%>/company/updatePw" method="post" class="modal-content" onsubmit="return PwvalidationForm()">
       <div class="modal-header">
         <h5 class="modal-title" id="changePwModalLabel">비밀번호 변경</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>

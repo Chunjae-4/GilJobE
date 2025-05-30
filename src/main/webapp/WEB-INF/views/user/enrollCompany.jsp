@@ -10,7 +10,7 @@
 		<div class="mb-3">
 			<label for="name" class="form-label">기업명<span 
 				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyName" maxlength="5" placeholder="기업명을 입력해주세요" required>
+				name="companyName" maxlength="50" placeholder="기업명을 입력해주세요" required>
 		</div>
 		<div class="mb-3">
 			<label for="binNo" class="form-label">사업자 등록번호<span
@@ -21,7 +21,7 @@
 		<div class="mb-3">
 			<label for="email" class="form-label">이메일<span
 				style="color: red">*</span></label> <input type="email" class="form-control"
-				name="companyEmail" maxlength="20" placeholder="company@email.com" required>
+				name="companyEmail" maxlength="100" placeholder="company@email.com" required>
 		</div>
 		<div class="mb-3">
 			<label for="id" class="form-label">아이디<span
@@ -32,7 +32,7 @@
 		<div class="mb-3">
 			<label for="password" class="form-label">비밀번호<span
 				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="companyPw" id="companyPw" maxlength="20"
+				class="form-control" name="companyPw" id="companyPw"
 				placeholder="8자리 이상 영문 대소문자, 숫자, 특수문자" required>
 		</div>
 		<div class="mb-3">

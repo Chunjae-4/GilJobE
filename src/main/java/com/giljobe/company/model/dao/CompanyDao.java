@@ -145,5 +145,42 @@ public class CompanyDao {
         }
         return result;
     }
+	public Company updateCompanyPw(Connection conn, int comNo) {
+		// TODO Auto-generated method stub
+		Company company = null;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("searchCompanyPwByComNo"));
+			pstmt.setInt(1, comNo);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				company = Company.builder().comPw(rs.getString("com_pw")).build();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return company;
+	}
+	public int updateCompanyPw(Connection conn, int comNo, String newPw) {
+		
+		int result = 0;
+		try {
+		pstmt=conn.prepareStatement(sql.getProperty("updateCompanyPassword"));
+		pstmt.setString(1, newPw);
+		pstmt.setInt(2, comNo);
+		result = pstmt.executeUpdate();
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
 	
-}
+	}

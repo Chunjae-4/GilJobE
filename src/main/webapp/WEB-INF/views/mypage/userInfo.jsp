@@ -43,7 +43,7 @@
 		<!-- 이메일 -->
 		<div class="col-12">
 			<label for="userEmail" class="form-label">이메일 <span class="text-danger">*</span></label>
-			<input type="email" class="form-control" name="userEmail"
+			<input type="email" class="form-control" name="userEmail" maxlength="100"
 				   value="<%=loginUser.getUserEmail()%>" required>
 		</div>
 

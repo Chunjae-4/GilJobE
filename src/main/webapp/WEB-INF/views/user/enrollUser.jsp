@@ -21,7 +21,7 @@
 		<div class="mb-3">
 			<label for="password" class="form-label">비밀번호<span
 				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="userPw" id="userPw" maxlength="20"
+				class="form-control" name="userPw" id="userPw" 
 				placeholder="8자리 이상 영문 대소문자, 숫자, 특수문자" required>
 		</div>
 		<div class="mb-3">
@@ -43,7 +43,7 @@
 		<div class="mb-3">
 			<label for="email" class="form-label">이메일<span
 				style="color: red">*</span></label> <input type="email" class="form-control"
-				name="userEmail" maxlength="20" placeholder="user@email.com" required>
+				name="userEmail" maxlength="100" placeholder="user@email.com" required>
 		</div>
 		<div class="mb-3">
 			<label for="birth" class="form-label">생년월일<span

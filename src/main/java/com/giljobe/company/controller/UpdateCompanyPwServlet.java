@@ -1,8 +1,6 @@
 package com.giljobe.company.controller;
 
 import java.io.IOException;
-import java.sql.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,54 +13,48 @@ import com.giljobe.company.model.dto.Company;
 import com.giljobe.company.model.service.CompanyService;
 
 
-@WebServlet("/company/updateCompany")
-public class CompanyUpdateServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/company/updatePw" , name="UpdateCompanyPwServlet")
+public class UpdateCompanyPwServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    
-    public CompanyUpdateServlet() {
+
+    public UpdateCompanyPwServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
-HttpSession session = request.getSession();
-		
-		String comId=request.getParameter("companyId");
-		String newname=request.getParameter("companyName");
-		String newphone=request.getParameter("companyPhone");
-		int newBinNo =Integer.parseInt(request.getParameter("companyBinNo"));
-		String newemail=request.getParameter("companyEmail");
-		
-		Company c = Company.builder()
-							.comName(newname)
-							.comPhone(newphone)
-							.comBinNo(newBinNo)
-							.comEmail(newemail)
-							.comId(comId)
-							.build();
-		
-		int result= CompanyService.companyService().updateCompany(c);
-		
-		String msg;
-		String loc;
-		
-		if(result>0) {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		HttpSession session = request.getSession();
+		Company c = (Company)session.getAttribute("company");
+		String companyPw = request.getParameter("companyPw");
+	    String newPw = request.getParameter("newPw");
+	    int comNo = c.getComNo();
+	    
+	    String msg;
+	    String loc;
+int result = CompanyService.companyService().updateCompanyPw(comNo,companyPw, newPw);
+	    
+	    if(result==-1) {
+			//비밀번호 다름
+			msg=" 현재 비밀번호를 정확하게 입력하세요";
+		}else if(result>0) {
 			//성공
-			msg="회원정보 수정완료";
-			session.setAttribute("company", c );
+			msg="비밀번호 수정완료";
 		}else {
 			//실패
-			msg="회원정보 수정 실패";
+			msg="비밀번호 수정실패";
+			
 		}
 		loc="/mypage/companymypageview";
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);
 		request.getRequestDispatcher(Constants.MSG).forward(request, response);
-	
+		
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
