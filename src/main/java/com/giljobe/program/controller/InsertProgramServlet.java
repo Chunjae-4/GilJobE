@@ -18,6 +18,7 @@ import com.giljobe.common.Constants;
 import com.giljobe.company.model.dto.Company;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
+import static com.giljobe.common.NaverGeoUtils.*;
 
 @WebServlet("/program/insert")
 @MultipartConfig(
@@ -51,10 +52,13 @@ public class InsertProgramServlet extends HttpServlet {
         String proLocation = request.getParameter("proLocation");
         String proCategory = request.getParameter("proCategory");
 
-        // 2. 주소로부터 위도/경도 변환 (지금은 더미 값으로 처리)
-        double latitude = 37.478668;
-        double longitude = 126.884986;
+        // 2. 주소로부터 위도/경도 변환
+        // 주소 → 위도 경도 변환 (Naver API 사용)
+        double[] coordinates = getCoordinatesFromAddress(proLocation);
+        double latitude = coordinates[0];
+        double longitude = coordinates[1];
 
+        
         // 3. 파일 저장
         Part filePart = request.getPart("programImage");
         String tempProNo = "temp_" + System.currentTimeMillis(); // DB에 안 넣으므로 임시값
