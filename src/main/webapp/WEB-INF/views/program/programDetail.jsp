@@ -333,11 +333,18 @@ $(document).on("click", ".protime-btn", function(e) {
     <% } %>
 
     <%-- Case 3: 기업회원 (본인 프로그램일 때) --%>
-    <% if (loginCompany != null && isMyProgram) { %>
-        $.get(contextPath + "/ajax/app/count", { timeNo }, function(count) {
-            alert("현재까지 신청한 인원: " + count + "명");
-        });
-    <% } %>
+    <% if (loginCompany != null) { %>
+	    <% if (isMyProgram) { %>
+	        // ✅ 자기 회사 프로그램이면 신청자 수 조회
+	        $.get(contextPath + "/ajax/app/count", { timeNo }, function(count) {
+	            alert("현재까지 신청한 인원: " + count + "명");
+	        });
+	    <% } else { %>
+	        // ❌ 타기업 프로그램이면 알림 표시만
+	        alert("타기업의 신청 명단 확인은 불가합니다.");
+	    <% } %>
+	<% } %>
+    
 });
 </script>
 
