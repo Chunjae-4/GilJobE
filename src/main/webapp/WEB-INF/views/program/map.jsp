@@ -1,4 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" 
+import="com.giljobe.common.Constants,
+		com.google.gson.Gson,
+		java.util.List,
+		com.giljobe.program.model.dto.Program"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %> <%-- 공통 헤더 파일 포함 (메뉴, CSS 등) --%>
 
@@ -32,107 +36,99 @@
 
 <script>
     let map; // 지도 객체를 외부에서도 접근 가능하도록 전역 변수로 선언
+    //let programMarkers = []; // 모든 마커를 저장할 배열 - 줌 수준에 따라 다르게 보여주려고 했지만 시연할 때에는 다 보여주는게 좋을 듯 하여 일단 주석처리
+
+   	const contextPath = "<%= request.getContextPath() %>"
+    const programList = <%= new com.google.gson.Gson().toJson(request.getAttribute("programList")) %>;
+    console.log(programList);
 
     // 클라이언트가 위치정보 사용을 허용했는지 확인
     if (navigator.geolocation) {
-        // 위치정보를 가져오는 함수
         navigator.geolocation.getCurrentPosition(function (position) {
-            // 위치 허용한 경우: 현재 좌표를 중심으로 지도 생성
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
-            
-         	// 네이버 지도 옵션 설정
+
             const mapOptions = {
-                    center: new naver.maps.LatLng(lat, lng),
-                    zoom: 16,
-                    zoomControl: true, // 줌 컨트롤 표시 (+, - 버튼)
-                    zoomControlOptions: {
-                        position: naver.maps.Position.RIGHT_BOTTOM // 오른쪽 아래에 위치
-                    }
-                };
+                center: new naver.maps.LatLng(lat, lng),
+                zoom: 16,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: naver.maps.Position.RIGHT_BOTTOM
+                }
+            };
 
-         	// 네이버 지도 객체 생성 (현재 위치를 중심으로)
-            const map = new naver.maps.Map("map", mapOptions);
+            map = new naver.maps.Map("map", mapOptions);
 
-            // 현재 위치에 마커 추가
             new naver.maps.Marker({
                 position: new naver.maps.LatLng(lat, lng),
                 map: map,
+                icon: {
+                    url: contextPath+'/resources/images/newMyLocationMarker.png',
+                    size: new naver.maps.Size(40, 40),
+                    scaledSize: new naver.maps.Size(40, 40),
+                    origin: new naver.maps.Point(0, 0),
+                    anchor: new naver.maps.Point(20, 40)
+                },
                 title: "내 위치"
             });
 
-            // 체험 프로그램 마커 표시 함수 호출
             addProgramMarkers();
 
         }, function (error) {
-            // 위치 허용을 거부했거나 오류 발생 시: 기본 위치(금천구 마리오아울렛)로 지도 표시
+            // 위치 정보 접근 실패 시 기본 위치
             map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.478113, 126.881508),
                 zoom: 15
             });
-
             addProgramMarkers();
         });
     } else {
-        // 위치정보 기능을 지원하지 않는 브라우저인 경우
         map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(37.478113, 126.881508),
             zoom: 15
         });
-
         addProgramMarkers();
     }
 
-    // 체험 프로그램 마커를 지도에 추가하는 함수
     function addProgramMarkers() {
-        // 예시용 더미 데이터 배열
-        const programList = [
-            { name: "천연비누 만들기", lat: 37.4785, lng: 126.8810, type: "체험A" },
-            { name: "목공예 체험", lat: 37.4780, lng: 126.8820, type: "체험B" },
-            { name: "도예 체험", lat: 37.4790, lng: 126.8805, type: "체험A" }
-        ];
 
-        // 각 프로그램 정보를 기반으로 마커와 이벤트 생성
         programList.forEach(program => {
-            // 지도에 마커 생성
             const marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(program.lat, program.lng),
+                position: new naver.maps.LatLng(program.proLatitude, program.proLongitude),
                 map: map,
-                title: program.name
+                icon: {
+                    url: contextPath+'/resources/images/newProgramMarker.png',
+                    size: new naver.maps.Size(30, 30),
+                    scaledSize: new naver.maps.Size(30, 30),
+                    anchor: new naver.maps.Point(15, 30)
+                },
+                title: program.proName
             });
 
-         	// 툴팁에 표시할 내용: 이름만 표시
             const infoWindow = new naver.maps.InfoWindow({
-                content: `<div style="padding:5px; font-size:12px;">${program.name}</div>`,
-                borderColor: null,                  // 테두리 제거
-                disableAnchor: true                 // ▼ 화살표(꼭짓점) 제거
+                content: `<div style='padding:5px; font-size:12px;'>\${program.proName}</div>`,
+                borderColor: null,
+                disableAnchor: true
             });
 
-            // 마우스 오버 시: 마커 위에 툴팁(정보창) 표시
-            naver.maps.Event.addListener(marker, 'mouseover', () => {
-                infoWindow.open(map, marker);
-            });
+            naver.maps.Event.addListener(marker, 'mouseover', () => infoWindow.open(map, marker));
+            naver.maps.Event.addListener(marker, 'mouseout', () => infoWindow.close());
 
-            // 마우스가 벗어날 경우 툴팁 닫힘
-            naver.maps.Event.addListener(marker, 'mouseout', () => {
-                infoWindow.close();
-            });
-
-            // 마커 클릭 시: 상세 페이지 이동 알림(alert)
+            // 📌 상세 페이지 이동
             naver.maps.Event.addListener(marker, 'click', () => {
-                alert(`'${program.name}' 상세 페이지로 이동합니다 (연결 예정)`);
-                // 나중에 location.href = '/program/detail?id=...' 등으로 대체 가능
+                location.href = contextPath+`/program/detail?proNo=\${program.proNo}`;
             });
 
-            // 툴팁 내부 클릭 시에도 같은 alert 발생
+            // 툴팁 클릭 시도 동일 동작
             naver.maps.Event.addListener(infoWindow, 'domready', () => {
-                const el = infoWindow.getContentElement(); // 툴팁 DOM 요소 가져오기
+                const el = infoWindow.getContentElement();
                 el.addEventListener('click', () => {
-                    alert(`'${program.name}' 상세 페이지로 이동합니다 (연결 예정)`);
+                    location.href = contextPath+`/program/detail?proNo=\${program.proNo}`;
                 });
             });
         });
     }
 </script>
+
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %> <%-- 공통 푸터 포함 --%>

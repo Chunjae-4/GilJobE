@@ -2,6 +2,7 @@ package com.giljobe.program.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.giljobe.common.Constants;
+import com.giljobe.program.model.dto.Program;
+import com.giljobe.program.model.service.ProgramService;
 
 
 @WebServlet("/program/map")
@@ -39,8 +42,11 @@ public class ProgramMapServlet extends HttpServlet {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
-		
-	    // 3. map.jsp로 포워딩
+	    // 3. 프로그램 목록 가져오기
+	    List<Program> programList = ProgramService.getInstance().findAllForMap();
+	    request.setAttribute("programList", programList);
+	    
+	    // 4. map.jsp로 포워딩
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/map.jsp").forward(request, response);
 	}
 

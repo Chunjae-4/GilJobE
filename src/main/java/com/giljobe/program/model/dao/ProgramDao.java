@@ -1,9 +1,6 @@
 package com.giljobe.program.model.dao;
 
-import com.giljobe.common.LoggerUtil;
-import com.giljobe.love.model.dto.Love;
-import com.giljobe.love.model.service.LoveService;
-import com.giljobe.program.model.dto.Program;
+import static com.giljobe.common.JDBCTemplate.close;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static com.giljobe.common.JDBCTemplate.close;
+import com.giljobe.common.JDBCTemplate;
+import com.giljobe.common.LoggerUtil;
+import com.giljobe.love.model.service.LoveService;
+import com.giljobe.program.model.dto.Program;
 
 public class ProgramDao {
     private static ProgramDao programDao = new ProgramDao();
@@ -36,7 +36,33 @@ public class ProgramDao {
     public static ProgramDao getInstance() {
         return programDao;
     }
+    
+    public List<Program> findAllForMap(Connection conn) {
+        List<Program> programList = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("findAllForMap"));
+            rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                Program p = new Program();
+                p.setProNo(rs.getInt("pro_no"));
+                p.setProName(rs.getString("pro_name"));
+                p.setProLatitude(rs.getDouble("pro_latitude"));
+                p.setProLongitude(rs.getDouble("pro_longitude"));
+                p.setProType(rs.getString("pro_type"));
+                programList.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return programList;
+    }
 
+    
+    
     public List<Program> searchAllProgram(Connection conn, int cPage, int numPerPage){
         List<Program> programList = new ArrayList<>();
         try {

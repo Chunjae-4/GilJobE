@@ -26,7 +26,13 @@ public class ProgramService {
 
     private ProgramDao dao = ProgramDao.getInstance();
 
-
+    public List<Program> findAllForMap() {
+    	Connection conn = getConnection();
+        List<Program> programList = dao.findAllForMap(conn);
+        close(conn);
+    	return programList;
+    }
+    
     public int programCount() {
         Connection conn = getConnection();
         int totalCount = dao.programCount(conn);
