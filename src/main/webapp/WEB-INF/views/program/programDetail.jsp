@@ -156,7 +156,10 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
 							    <p class="text-muted">시간 정보가 없습니다.</p>
 							<% } %>
 						</div>
-                        
+                        <!-- 기업 회원의 프로그램 수정과 관련하여 -->
+                        <% if (isMyProgram) { %>
+						    <jsp:include page="/WEB-INF/views/program/editComponent.jsp" />
+						<% } %>
                         
                     </div>
                 </div>
