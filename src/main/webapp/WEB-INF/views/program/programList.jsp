@@ -12,7 +12,7 @@
 <%--TODO: 클릭시 프로그램 페이지 이동--%>
 
 <%--programlist servlet 에서 리스트 가져오기--%>
-<% 
+<%
 List<Program> programList = (List<Program>) request.getAttribute("programList");
 int pageStart = (int) request.getAttribute("pageStart");
 int pageEnd = (int) request.getAttribute("pageEnd");
@@ -22,50 +22,52 @@ String pageUri = (String) request.getAttribute("pageUri");
 %>
 
 <!-- 검색 섹션 -->
-<section class="text-center mb-5 py-5 ">
-    <div class="row py-lg-5">
-        <div class="col-lg-10 col-md-12 mx-auto">
-            <h1 class="fw-normal">진로 체험 프로그램 페이지</h1>
-            <p class="lead text-body-secondary">다양한 체험 프로그램을 만나보세요.</p>
-        </div>
+<section class="text-center py-5 mb-5">
+    <div class="mb-4">
+        <h1 class="fw-semibold mb-2">진로 체험 프로그램 페이지</h1>
+        <p class="lead text-body-secondary">다양한 체험 프로그램을 만나보세요.</p>
     </div>
+    <p></p>
     <form role="search" action="<%=request.getContextPath()%>/program/programsearchform" method="get">
-        <!-- 검색창 -->
-        <div class="d-flex justify-content-center mb-3">
+        <div class="d-flex justify-content-center">
             <div class="input-group" style="max-width: 600px;">
                 <input type="search" name="keyword"
                        class="form-control form-control-lg rounded-start-pill"
-                       placeholder="검색어를 입력하세요" aria-label="Search">
+                       placeholder="검색어를 입력해서 원하는 체험을 찾아보세요." aria-label="Search">
                 <button class="btn btn-primary btn-lg rounded-end-pill" type="submit">
                     🔍 검색
                 </button>
             </div>
         </div>
-
-        <!-- 숨겨진 input (선택된 카테고리 전송용) -->
-        <input type="hidden" name="procategory" id="selectedCategoryInput">
-
-        <!-- 카테고리 버튼들 -->
-        <div class="d-flex flex-wrap justify-content-center gap-2 mt-3"
-             style="max-width: 700px; margin: 0 auto;">
-            <% for (ProCategory sc : ProCategory.values()) {
-                Optional<String> result = java.util.Arrays.stream(sc.getSubcategories())
-                        .reduce((prev, next) -> prev + " · " + next); %>
-            <button type="button"
-                    class="btn btn-outline-secondary category-btn px-3 py-2"
-                    data-category="<%= result.get() %>">
-                <%= result.get() %>
-            </button>
-            <% } %>
-        </div>
     </form>
 </section>
+<form method="get" action="<%=request.getContextPath()%>/program/programlist" id="filterForm" class="my-4">
+    <div class="d-flex justify-content-end flex-wrap gap-3 align-items-center pe-3">
+        <!-- 드롭다운 필터 -->
+        <label for="categorySelect" class="form-label mb-0 fw-semibold text-secondary">카테고리 선택</label>
 
-<%--<%if(company && login){%>--%>
+        <select class="form-select w-auto rounded-pill px-3 py-2" name="pro-category" id="categorySelect"
+                onchange="document.getElementById('filterForm').submit();">
+            <option value="" disabled selected>무슨 직업들이 있을까요?</option>
+            <% for (ProCategory sc : ProCategory.values()) {
+                String categoryVal = sc.getSubcategoriesStr();
+                %>
+            <option value="<%= sc %>">
+                <%= categoryVal %>
+            </option>
+            <% } %>
+        </select>
 
-<%--<%}%>--%>
+        <!-- 전체 보기 버튼 -->
+        <a href="<%=request.getContextPath()%>/program/programlist"
+           class="btn btn-outline-dark rounded-pill px-3 py-2">
+            전체 보기
+        </a>
+    </div>
+</form>
+
+
 <%--TODO: 프로그램 등록은 기업회원이 로그인 되어있지 않으면 보이지않도록 분기점 추가 필요--%>
-<%--loginUser로 처리해두고, 나중에 기업 회원 추가되면 그때 수정 ㄱㄱ--%>
 <% if(loginCompany != null) { %>
 <section class="container my-5">
     <div class="p-4 p-md-5 bg-light rounded-3 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -90,7 +92,7 @@ String pageUri = (String) request.getAttribute("pageUri");
     <div class="container">
         <p class="mb-4 text-muted"><%=cPage%> 페이지입니다. </p>
 
-        <% if (!programList.isEmpty()) { %>
+        <% if (programList != null && !programList.isEmpty()) { %>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
             <% for (Program p : programList) { %>
             <div class="col programDetail" data-prono="<%=p.getProNo()%>">
@@ -108,7 +110,7 @@ String pageUri = (String) request.getAttribute("pageUri");
 						%>
 						<img src="<%= request.getContextPath() + imagePath %>"
 						     class="d-block w-100 object-fit-cover" alt="프로그램 이미지"  loading="lazy">
-                             
+
                     </div>
 
                     <!-- 카드 바디 -->
@@ -124,7 +126,7 @@ String pageUri = (String) request.getAttribute("pageUri");
                     <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center my-3">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-primary"><%=p.getProType()%></button>
-                            
+
                             <%
 								boolean isLiked = false;
 								if (loginUser != null) {
@@ -137,7 +139,7 @@ String pageUri = (String) request.getAttribute("pageUri");
 							        data-prono="<%= p.getProNo() %>">
 							    ♥ <span class="like-count"><%= p.getLikeCount() %></span>
 							</button>
-						
+
                         </div>
                         <small class="text-muted">ID: <%=p.getProNo()%></small>
                     </div>
@@ -183,6 +185,7 @@ String pageUri = (String) request.getAttribute("pageUri");
 
 
 <script>
+
     // 프로그램 카드 전체 클릭 시
     $(".programDetail").click(e => {
         const proNo = $(e.currentTarget).data("prono");
@@ -199,6 +202,7 @@ String pageUri = (String) request.getAttribute("pageUri");
     });
 
     document.addEventListener("DOMContentLoaded", function (e) {
+
         const buttons = document.querySelectorAll('.category-btn');
         const hiddenInput = document.getElementById('selectedCategoryInput');
 
@@ -216,7 +220,6 @@ String pageUri = (String) request.getAttribute("pageUri");
                     this.classList.remove('btn-outline-secondary');
                     this.classList.add('active', 'btn-primary');
                     hiddenInput.value = this.getAttribute('data-category');
-                    console.log(hiddenInput);
                 } else {
                     hiddenInput.value = ''; // 선택 해제
                 }
@@ -229,6 +232,16 @@ String pageUri = (String) request.getAttribute("pageUri");
     .programDetail {
         cursor: pointer;
     }
+
+     select.form-select {
+         min-width: 220px;
+     }
+
+    #filterForm label {
+        font-size: 1rem;
+    }
+</style>
+
 </style>
 
 <!-- loveToggle, 좋아요 버튼 반영 -->

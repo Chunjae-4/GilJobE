@@ -26,8 +26,6 @@ public class ProgramListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 전체 데이터 수 가져오기
 		LoggerUtil.start("ProgramListServlet doGet");
-		String proCategory = request.getParameter("procategory");
-		LoggerUtil.debug("ProgramListServlet proCategory " + proCategory);
 
 		int totalCount;
 		List<Program> programList = null;
@@ -38,6 +36,8 @@ public class ProgramListServlet extends HttpServlet {
 		} catch (NumberFormatException e) {
 			cPage = 1;
 		}
+		String proCategory = request.getParameter("pro-category");
+		LoggerUtil.debug("ProgramListServlet proCategory " + proCategory);
 
 		if (proCategory == null) {
 			totalCount = ProgramService.getInstance().programCount();
@@ -61,7 +61,6 @@ public class ProgramListServlet extends HttpServlet {
 
 		request.setAttribute("programList", programList);
 		LoggerUtil.end("ProgramListServlet doGet");
-
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"program/programList.jsp").forward(request, response);
 
 	}
