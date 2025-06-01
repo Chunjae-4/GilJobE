@@ -1,0 +1,47 @@
+package com.giljobe.user.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+
+@WebServlet("/user/checkAuthNum")
+public class CheckAuthenticServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    
+    public CheckAuthenticServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		PrintWriter out = response.getWriter();
+		HttpSession session = request.getSession();
+		String authenticNum = (String) session.getAttribute("authenticNum");//세션에 저장된 정보들 가져와
+		//js에서 <%=request.get으로 받아서 ajax로 넘기는건 보안상 위험하대
+		String authenticUserId = (String) session.getAttribute("authenticUserId");
+		String verifyCode = request.getParameter("verifyCode");
+		if(authenticNum==null||verifyCode==null||!authenticNum.equals(verifyCode)) {
+			//인증번호 불일치시 혹은 값이 없을때
+			out.print("fail");
+		}else {
+				session.removeAttribute("authenticNum");
+			    out.print("success");
+		}
+	    out.close();
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

@@ -181,4 +181,45 @@ public class UserDao {
 		
 		return user;
 	}
+	public User searchUserByIdAndEmail(Connection conn, String userId, String userEmail) {
+		
+		User user = null;
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("searchUserByIdAndEmail"));
+			pstmt.setString(1, userId);
+			pstmt.setString(2, userEmail);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				user=getUser(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		
+		return user;
+	}
+	public int updateUserPwById(Connection conn, String userId, String resetPw) {
+		
+		int result = 0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("updateUserPasswordById"));
+			pstmt.setString(1, resetPw);
+			pstmt.setString(2, userId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
 }

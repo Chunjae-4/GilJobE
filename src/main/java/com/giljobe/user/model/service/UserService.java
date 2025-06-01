@@ -84,5 +84,27 @@ public class UserService {
 		close(conn);
 		return result;
 	}
+	public User searchUserByIdAndEmail(String userId, String userEmail) {
+		conn=getConnection();
+		User user = userDao.searchUserByIdAndEmail(conn,userId,userEmail);
+		close(conn);
+		return user;
+	}
+	public int updateUserPwById(String userId, String resetPw) {
+
+		conn = getConnection();
+		
+		int result = userDao.updateUserPwById(conn, userId, resetPw);
+		
+		if(result>0) {
+			//성공
+			commit(conn);
+		}else {
+			//실패
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
 	
 }
