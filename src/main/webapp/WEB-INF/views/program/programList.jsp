@@ -117,15 +117,17 @@ String pageUri = (String) request.getAttribute("pageUri");
                     <div class="card-body">
                         <h5 class="card-title mb-2"><%=p.getProName()%></h5>
                         <p class="card-text text-muted small">
-                            <%-- 간단 설명이 있으면 여기에 --%>
-                            <%=p.getProCategory()%> / <%=p.getProLocation()%>
+                            <%=p.getProCategory()%>  | <%=ProCategory.valueOf(p.getProCategory()).getSubcategoriesStr()%>
+                        </p>
+                        <p class="card-text text-muted small">
+                            <%=p.getProLocation()%>
                         </p>
                     </div>
 
                     <!-- 하단 버튼 그룹 -->
                     <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center my-3">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-primary"><%=p.getProType()%></button>
+                            <button type="button" disabled class="btn btn-sm btn-outline-primary"><%=p.getProType()%></button>
 
                             <%
 								boolean isLiked = false;

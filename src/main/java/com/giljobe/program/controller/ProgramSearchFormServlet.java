@@ -44,15 +44,10 @@ public class ProgramSearchFormServlet extends HttpServlet {
         request.setAttribute("pageUri", request.getRequestURI());
 
         if (keyword != null && !keyword.isEmpty()) {
-//          TODO: 카테고리 SelectBox Value
-//          TODO: Input 값
-//            String[] subs = ProCategory.BUSINESS_OFFICE.getSubcategories();
             List<Program> programList = ProgramService.getInstance().searchProgramByTitleKeyword(keyword, cPage, numPerPage);
-            LoggerUtil.debug("Search Program By Title Keyword: " + keyword);
             boolean isExist = !programList.isEmpty();
 
             //프로그램 이름에 키워드 포함되는지 확인하고 정보 가져와서 세팅
-            System.out.println(isExist);
             if (isExist) {
                 request.setAttribute("programList", programList);
                 LoggerUtil.debug("Search Program Exist keyword " + keyword);
