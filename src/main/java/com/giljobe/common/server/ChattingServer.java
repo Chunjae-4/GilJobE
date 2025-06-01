@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Logger;
 
-@ServerEndpoint(value = "/chatting", encoders = {MessageSerializer.class}, decoders =  {MessageDeSerializer.class})
+@ServerEndpoint(value = "/program/detail", encoders = {MessageSerializer.class}, decoders =  {MessageDeSerializer.class})
 public class ChattingServer {
     @OnOpen
     public void onOpen(Session session) {

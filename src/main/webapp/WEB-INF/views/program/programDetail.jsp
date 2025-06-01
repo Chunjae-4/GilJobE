@@ -227,7 +227,8 @@ $(function() {
 	<!-- 채팅방 영역 -->
 	<div class="program-chat">
 	    <h3>단체 채팅방</h3>
-	    <div class="chat-placeholder">※ 이 영역은 웹소켓 적용 예정 ※</div>
+		<jsp:include page="/WEB-INF/views/program/chat.jsp" />
+	    <div class="chat-placeholder">※ 프로그램 번호에 따른 채팅방 영역은 조만간 할 에정.. ※</div>
 	</div>
 	
 	<!-- Q&A 영역 -->

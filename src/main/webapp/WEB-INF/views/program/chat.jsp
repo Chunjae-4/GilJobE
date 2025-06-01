@@ -54,20 +54,32 @@
 <script src="${pageContext.request.contextPath}/resources/js/chatting/model/Message.js"></script>
 <script>
     let contextPath = "<%=request.getContextPath()%>";
-    let socket = new WebSocket("ws://" + location.host + contextPath + "/chatting")
-
-    const sender = "<%=loginUser.getUserId()%>";
+    let socket = new WebSocket("ws://" + location.host + contextPath + "/program/detail");
+    let sender = "";
     let roomId = 1;
+
+    <%if(loginUser != null){%>
+        sender = "<%=loginUser.getUserNickName()%>";
+    <%} else {%>
+        sender = "Guest";
+        $("#msg").attr('placeholder', '로그인을 하면 이용할 수 있어요.');
+        $("#msg").attr('readonly', 'readonly');
+    <%}%>
+    //TODO: roomId 세팅, pro_No마다 할당
 
     //버튼 이벤트시 sendMessage()함수로 가도록
     $("#send-btn").on("click", (e) => {
-        console.log(e);
-        const message = $("#msg").val();
-        if (message.trim() !== '') {
-            sendMessage(message);
-            //초기화
-            $("#msg").val('');
+        if (loginUser != null && sender != "Guest") {
+            const message = $("#msg").val();
+            if (message.trim() !== '') {
+                sendMessage(message);
+                //초기화
+                $("#msg").val('');
+            }
+        } else if (loginUser == null && sender == "Guest") {
+            $("#send-btn").off("click");
         }
+
 
     })
 
