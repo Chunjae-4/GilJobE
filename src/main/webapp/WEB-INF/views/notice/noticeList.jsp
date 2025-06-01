@@ -4,7 +4,13 @@
 <%@ page import="java.util.List" %>
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<% List<Notice> noticeList = (List<Notice>) request.getAttribute("noticeList");%>
+<% List<Notice> noticeList = (List<Notice>) request.getAttribute("noticeList");
+	int pageStart = (int) request.getAttribute("pageStart");
+	int pageEnd = (int) request.getAttribute("pageEnd");
+	int totalPage = (int) request.getAttribute("totalPage");
+	int cPage = (int) request.getAttribute("cPage");
+	String pageUri = (String) request.getAttribute("pageUri");
+%>
 <section class="bg-body-tertiary py-5">
 	<div class="container">
 		<!-- 상단 제목 + 버튼 -->
@@ -43,6 +49,7 @@
 				<span class="text-muted small"><%= n.getNoticeDate() %></span>
 			</a>
 			<% } %>
+
 		</div>
 
 		<% } else { %>
@@ -59,6 +66,34 @@
 		</div>
 		<% } %>
 	</div>
+
+
+	<section class="my-3">
+		<ul class="pagination justify-content-center">
+			<% if (totalPage == 1){%>
+			<%-- 1페이지면 안보여줄거임! --%>
+			<% } else {%>
+
+			<%-- 이전 버튼 --%>
+			<li class="page-item <%= (pageStart == 1 ? "disabled" : "") %>">
+				<a class="page-link" href="<%= (pageStart == 1 ? "#" : pageUri + "?cPage=" + (pageStart - 1)) %>">이전</a>
+			</li>
+
+			<%-- 페이지 번호 출력 --%>
+			<% for (; pageStart <= pageEnd && pageStart <= totalPage; pageStart++) { %>
+			<li class="page-item <%= (pageStart == cPage ? "active" : "") %>">
+				<a class="page-link" href="<%= pageUri %>?cPage=<%= pageStart %>"><%= pageStart %></a>
+			</li>
+			<% } %>
+			<%-- 다음 버튼 --%>
+			<li class="page-item <%= (pageStart > totalPage ? "disabled" : "") %>">
+				<a class="page-link" href="<%= (pageStart > totalPage ? "#" : pageUri + "?cPage=" + pageStart) %>">다음</a>
+			</li>
+			<% } %>
+
+		</ul>
+	</section>
+
 </section>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

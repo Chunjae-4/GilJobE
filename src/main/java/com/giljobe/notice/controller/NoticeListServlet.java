@@ -36,13 +36,18 @@ public class NoticeListServlet extends HttpServlet {
 
 		int totalPage = (int)Math.ceil((double)totalCount / numPerPage);
 		int pageBarSize = 5;
-		int pageNo = ((cPage - 1) / pageBarSize) * pageBarSize + 1;
-		int pageEnd = pageNo + pageBarSize -1;
+		int pageStart = ((cPage - 1) / pageBarSize) * pageBarSize + 1;
+		int pageEnd = pageStart + pageBarSize -1;
 
-		//2. DB All NoticeList
+		request.setAttribute("pageStart", pageStart);
+		request.setAttribute("pageEnd", pageEnd);
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("cPage", cPage);
+		request.setAttribute("pageUri", request.getRequestURI());
+
 		List<Notice> noticeList = NoticeService.getInstance().searchAllNotice(cPage, numPerPage);
 		request.setAttribute("noticeList", noticeList);
-		//3. set page
+
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"notice/noticeList.jsp").forward(request, response);
 	}
 

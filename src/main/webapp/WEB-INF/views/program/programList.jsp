@@ -161,13 +161,21 @@ String pageUri = (String) request.getAttribute("pageUri");
             <%-- 1페이지면 안보여줄거임! --%>
         <% } else {%>
 
+            <%-- 이전 버튼 --%>
+            <li class="page-item <%= (pageStart == 1 ? "disabled" : "") %>">
+                <a class="page-link" href="<%= (pageStart == 1 ? "#" : pageUri + "?cPage=" + (pageStart - 1)) %>">이전</a>
+            </li>
+
             <%-- 페이지 번호 출력 --%>
             <% for (; pageStart <= pageEnd && pageStart <= totalPage; pageStart++) { %>
             <li class="page-item <%= (pageStart == cPage ? "active" : "") %>">
                <a class="page-link" href="<%= pageUri %>?cPage=<%= pageStart %>"><%= pageStart %></a>
             </li>
             <% } %>
-
+            <%-- 다음 버튼 --%>
+            <li class="page-item <%= (pageStart > totalPage ? "disabled" : "") %>">
+                <a class="page-link" href="<%= (pageStart > totalPage ? "#" : pageUri + "?cPage=" + pageStart) %>">다음</a>
+            </li>
         <% } %>
 
     </ul>
