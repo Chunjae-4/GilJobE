@@ -209,5 +209,20 @@ public class ProgramService {
 
         return result;
     }
+    
+    public void updateProgramImagePath(int proNo, String newPath) {
+        Connection conn = getConnection();
+        try {
+            int result = dao.updateProgramImagePath(conn, proNo, newPath);
+            if (result > 0) commit(conn);
+            else rollback(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollback(conn);
+        } finally {
+            close(conn);
+        }
+    }
+
 
 }

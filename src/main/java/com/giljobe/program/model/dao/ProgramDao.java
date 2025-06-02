@@ -376,6 +376,22 @@ public class ProgramDao {
 	    return result;
 	}
 
+	public int updateProgramImagePath(Connection conn, int proNo, String path) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("updateProgramImagePath"));
+	        pstmt.setString(1, path);
+	        pstmt.setInt(2, proNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        LoggerUtil.error(e.getMessage(), e);
+	    } finally {
+	    	close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
 
 	
 }
