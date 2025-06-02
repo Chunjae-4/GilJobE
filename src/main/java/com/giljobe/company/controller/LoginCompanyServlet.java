@@ -56,6 +56,7 @@ public class LoginCompanyServlet extends HttpServlet {
 			//DB에 일치하는 유저 정보가 있어서 user에 넣었다면
 			HttpSession session = request.getSession();//세션 생성
 			session.setAttribute("company", company);//세션에 유저 담기
+			session.setAttribute("userType", "company");
 			response.sendRedirect(request.getContextPath());//세션에 넣은채로 메인화면 jsp로 보내
 				
 		}else {
