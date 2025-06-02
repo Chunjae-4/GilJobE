@@ -32,11 +32,9 @@ public class ChattingServer {
         Set<Session> clients = session.getOpenSessions();
         Message msg = new Gson().fromJson(data, Message.class);
         sendMessage(clients, msg);
-        LoggerUtil.debug("Chat Server onMessage: " + msg);
     }
 
     private void sendMessage(Set<Session> clients, Message data){
-
         for (Session client : clients) {
             try {
                 LoggerUtil.debug("Chat Server sendMessage: " + data);
@@ -45,7 +43,5 @@ public class ChattingServer {
                 e.printStackTrace();
             }
         }
-
-
     }
 }

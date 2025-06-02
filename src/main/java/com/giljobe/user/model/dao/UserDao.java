@@ -222,4 +222,27 @@ public class UserDao {
 		return result;
 		
 	}
+	public User searchUserByNameAndEmail(Connection conn, String userName, String userEmail) {
+
+		User user = null;
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("searchUserByNameAndEmail"));
+			pstmt.setString(1, userName);
+			pstmt.setString(2, userEmail);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				user=getUser(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		
+		return user;
+	}
 }
