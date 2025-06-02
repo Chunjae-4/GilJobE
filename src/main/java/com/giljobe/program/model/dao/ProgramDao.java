@@ -163,7 +163,30 @@ public class ProgramDao {
 
         return program;
     }
+    
+    public int updateProgram(Connection conn, Program program) {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("updateProgram"));
+            pstmt.setString(1, program.getProName());
+            pstmt.setString(2, program.getProType());
+            pstmt.setString(3, program.getProLocation());
+            pstmt.setDouble(4, program.getProLatitude());
+            pstmt.setDouble(5, program.getProLongitude());
+            pstmt.setString(6, program.getProCategory());
+            pstmt.setString(7, program.getProImageUrl());
+            pstmt.setInt(8, program.getProNo());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
 
+    
     public int programCount(Connection conn)
     {
         int result = 0;

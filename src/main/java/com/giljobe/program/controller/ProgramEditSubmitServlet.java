@@ -5,6 +5,7 @@ import static com.giljobe.common.NaverGeoUtils.getCoordinatesFromAddress;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
 
 @WebServlet("/program/edit-submit")
+@MultipartConfig // programEditForm.jsp 에서 enctype="multipart/form-data" 하면 해줘야 하는 어노테이션
 public class ProgramEditSubmitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -23,8 +25,9 @@ public class ProgramEditSubmitServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO: 수정 처리 후 리다이렉트
 		request.setCharacterEncoding("UTF-8");
+
+		System.out.println("proNo param: " + request.getParameter("proNo")); // 디버깅용
 
         int proNo = Integer.parseInt(request.getParameter("proNo"));
         String proName = request.getParameter("proName");
@@ -32,24 +35,28 @@ public class ProgramEditSubmitServlet extends HttpServlet {
         String proLocation = request.getParameter("proLocation");
         String proCategory = request.getParameter("proCategory");
 
-        // 주소 → 위도 경도 변환 (Naver API 사용)
+        // 1. 기존 이미지 정보 가져오기
+        Program original = ProgramService.getInstance().selectProgramByNo(proNo);
+        String existingImagePath = original.getProImageUrl();
+
+        // 2. 주소 → 위경도 변환
         double[] coordinates = getCoordinatesFromAddress(proLocation);
         double latitude = coordinates[0];
         double longitude = coordinates[1];
 
-        // 이미지 업로드 처리
+        // 3. 이미지 업로드 처리
         Part imagePart = request.getPart("proImage");
         String savePath = request.getServletContext().getRealPath("/resources/upload/");
         String fileName = imagePart.getSubmittedFileName();
 
-        String newImagePath = null;
+        String newImagePath = existingImagePath; // 기본은 기존 이미지 유지
         if (fileName != null && !fileName.isEmpty()) {
             String ext = fileName.substring(fileName.lastIndexOf("."));
             newImagePath = String.format("1/%d/1%s", proNo, ext);
             imagePart.write(savePath + "/" + newImagePath);
         }
 
-        // DB 업데이트
+        // 4. DTO 구성
         Program updated = Program.builder()
                 .proNo(proNo)
                 .proName(proName)
@@ -58,13 +65,15 @@ public class ProgramEditSubmitServlet extends HttpServlet {
                 .proLatitude(latitude)
                 .proLongitude(longitude)
                 .proCategory(proCategory)
-                .proImageUrl(newImagePath) // null이면 기존 이미지 유지 처리해야 함
+                .proImageUrl(newImagePath)
                 .build();
 
-//        ProgramService.getInstance().updateProgram(updated);
+        // 5. DB 반영
+        ProgramService.getInstance().updateProgram(updated);
 
+        // 6. 상세 페이지로 리다이렉트
         response.sendRedirect(request.getContextPath() + "/program/detail?proNo=" + proNo);
-	}
+    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

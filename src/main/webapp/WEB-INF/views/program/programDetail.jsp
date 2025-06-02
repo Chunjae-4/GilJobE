@@ -47,8 +47,12 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
             <!-- 프로그램 이미지 -->
             <div class="col-md-5">
 				<!-- 이미지 -->
-				<img src="<%=request.getContextPath() + imageUrl %>"
-					 class="w-100 h-100 object-fit-cover" alt="프로그램 이미지">
+				<%-- <img src="<%=request.getContextPath() + imageUrl %>"
+					 class="w-100 h-100 object-fit-cover" alt="프로그램 이미지"> --%>
+				<!-- 프로그램 수정 후에 이미지 캐시 무력화용 -->
+				<img src="<%=request.getContextPath() + imageUrl %>?v=<%=System.currentTimeMillis()%>"
+    			 class="w-100 h-100 object-fit-cover" alt="프로그램 이미지">
+				
             </div>
             <!-- 텍스트 정보 -->
             <div class="col-md-7">
@@ -224,12 +228,12 @@ $(function() {
 	</div>
 	
 	
-	<!-- 채팅방 영역 -->
+	<%-- <!-- 채팅방 영역 -->
 	<div class="program-chat">
 	    <h3>단체 채팅방</h3>
 		<jsp:include page="/WEB-INF/views/program/chat.jsp" />
 	    <div class="chat-placeholder">※ 프로그램 번호에 따른 채팅방 영역은 조만간 할 에정.. ※</div>
-	</div>
+	</div> --%>
 	
 	<!-- Q&A 영역 -->
 	<div class="program-qna">

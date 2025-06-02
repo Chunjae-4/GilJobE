@@ -33,6 +33,19 @@ public class ProgramService {
     	return programList;
     }
     
+    public int updateProgram(Program program) {
+        Connection conn = getConnection();
+        int result = dao.updateProgram(conn, program);
+        if (result > 0) {
+            commit(conn);
+        } else {
+            rollback(conn);
+        }
+        close(conn);
+        return result;
+    }
+
+    
     public int programCount() {
         Connection conn = getConnection();
         int totalCount = dao.programCount(conn);
