@@ -11,12 +11,16 @@
     <h2>회차 수정 및 삭제</h2>
     <form action="<%=request.getContextPath()%>/round/edit-form" method="get">
         <input type="hidden" name="proNo" value="<%=proNo%>">
-        <% for (Round r : rounds) { %>
-            <div class="form-check mb-2">
-                <input type="radio" name="roundNo" class="form-check-input" value="<%=r.getRoundNo()%>">
-                <label class="form-check-label"><%=r.getRoundCount()%>회차 - <%=r.getRoundDate()%></label>
-            </div>
-        <% } %>
+        <% if (rounds == null || rounds.isEmpty()) { %>
+		    <p class="text-muted">등록된 회차가 없습니다.</p>
+		<% } else { %>
+		    <% for (Round r : rounds) { %>
+		        <div class="form-check mb-2">
+		            <input type="radio" name="roundNo" class="form-check-input" value="<%=r.getRoundNo()%>" required>
+		            <label class="form-check-label"><%=r.getRoundCount()%>회차 - <%=r.getRoundDate()%></label>
+		        </div>
+		    <% } %>
+		<% } %>
 
         <div class="mt-3 d-flex gap-2">
             <button type="submit" class="btn btn-warning">수정</button>

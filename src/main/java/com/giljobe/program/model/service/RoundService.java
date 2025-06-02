@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.giljobe.application.model.dao.ApplicationDao;
 import com.giljobe.program.model.dao.ProTimeDao;
 import com.giljobe.program.model.dao.RoundDao;
 import com.giljobe.program.model.dto.ProTime;
@@ -29,6 +30,16 @@ public class RoundService {
         close(conn);
         return rounds;
     }
+    
+    public int updateRound(Round round) {
+        Connection conn = getConnection();
+        int result = dao.updateRound(conn, round);
+        if (result > 0) commit(conn);
+        else rollback(conn);
+        close(conn);
+        return result;
+    }
+
     
     public int insertRound(Round round) {
         Connection conn = getConnection();
@@ -85,6 +96,54 @@ public class RoundService {
         return result;
     }
     
+    public boolean deleteRoundWithProTimesAndApplications(int roundNo) {
+        Connection conn = getConnection();
+        boolean result = false;
+
+        try {
+            List<ProTime> proTimes = ProTimeDao.getInstance().selectProTimesByRoundNo(conn, roundNo);
+
+            // 1. 각 ProTime에 연결된 Apply 삭제
+            for (ProTime pt : proTimes) {
+                ApplicationDao.applicationDao().deleteByOnlyTimeNo(conn, pt.getTimeNo());
+            }
+
+            // 2. ProTime 삭제
+            ProTimeDao.getInstance().deleteByRoundNo(conn, roundNo);
+
+            // 3. Round 삭제
+            int deleted = dao.deleteRound(conn, roundNo);
+
+            if (deleted > 0) {
+                commit(conn);
+                result = true;
+            } else {
+                rollback(conn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollback(conn);
+        } finally {
+            close(conn);
+        }
+
+        return result;
+    }
+
     
+    public List<Round> attachProTimes(List<Round> rounds) {
+        for (Round r : rounds) {
+            List<ProTime> times = ProTimeService.getInstance().selectProTimesByRoundNo(r.getRoundNo());
+            r.setProTimes(times);
+        }
+        return rounds;
+    }
     
+    public Round selectRoundByNo(int roundNo) {
+        Connection conn = getConnection();
+        Round result = dao.selectRoundByNo(conn, roundNo);
+        close(conn);
+        return result;
+    }
+
 }

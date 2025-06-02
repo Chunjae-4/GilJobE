@@ -1,5 +1,6 @@
 package com.giljobe.program.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -15,12 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.giljobe.common.Constants;
 import com.giljobe.program.model.dto.ProTime;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.dto.Round;
-import com.giljobe.program.model.service.ProTimeService;
 import com.giljobe.program.model.service.ProgramService;
-import com.giljobe.program.model.service.RoundService;
 
 @WebServlet("/round/insert-with-detail")
 public class RoundInsertWithDetailServlet extends HttpServlet {
@@ -107,6 +107,27 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
         boolean result = ProgramService.getInstance()
                 .insertProgramWithRoundAndProTimes(program, round, proTimeList);
         
+        // 이미지 경로 수정 작업 (temp_xxxx → proNo 기반으로 이동)
+        String tempDirPath = (String) session.getAttribute("pendingImageTempPath");
+        String tempRelativePath = (String) session.getAttribute("pendingImageRelativePath");
+        int comNo = program.getComNoRef();
+        int proNo = program.getProNo();
+        String newRelativePath = comNo + "/" + proNo;
+        String newImagePath = newRelativePath + "/1" + getFileExtension(program.getProImageUrl());
+        String realDirPath = getServletContext().getRealPath(Constants.DEFAULT_UPLOAD_PATH + newRelativePath);
+        File tempDir = new File(tempDirPath);
+        File realDir = new File(realDirPath);
+        // 디렉토리 이름 변경 (rename)
+        if (tempDir.exists() && tempDir.isDirectory()) {
+            boolean moved = tempDir.renameTo(realDir);
+            if (moved) {
+                program.setProImageUrl(newImagePath);
+                ProgramService.getInstance().updateProgramImagePath(proNo, newImagePath); // DB 반영
+            } else {
+                System.err.println("❌ 이미지 디렉토리 이동 실패: " + tempDirPath + " → " + realDirPath);
+            }
+        }
+        
         // 5. 세션에서 임시 객체 제거
         session.removeAttribute("pendingProgram");
         
@@ -122,6 +143,11 @@ public class RoundInsertWithDetailServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	private String getFileExtension(String path) {
+	    int dotIndex = path.lastIndexOf(".");
+	    return dotIndex != -1 ? path.substring(dotIndex) : "";
 	}
 
 }

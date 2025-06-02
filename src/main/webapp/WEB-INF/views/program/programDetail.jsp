@@ -307,7 +307,13 @@ $(function() {
 <!-- 프로그램 신청과 관련하여 -->
 <script>
 $(document).on("click", ".protime-btn", function(e) {
-    const timeNo = $(this).data("timeno");
+	<%-- Case 0: 유효한 회차가 하나도 없으면 신청 불가 --%>
+    <% if (noAvailableRounds) { %>
+        alert("현재 회차는 이미 날짜가 지나서 신청할 수 없습니다.");
+        return;
+    <% } %>
+	
+	const timeNo = $(this).data("timeno");
 
     <%-- Case 1: 로그인하지 않은 사용자 --%>
     <% if (loginUser == null && loginCompany == null) { %>
@@ -317,28 +323,57 @@ $(document).on("click", ".protime-btn", function(e) {
 
     <%-- Case 2: 일반 사용자 --%>
     <% if (loginUser != null) { %>
-        $.get(contextPath + "/ajax/app/check", { timeNo }, function(hasApplied) {
-            if (hasApplied) {
-                if (confirm("신청을 취소할까요?")) {
-                    $.post(contextPath + "/ajax/app/cancel", { timeNo }, function(success) {
-                        if (success) {
-                            alert("신청이 취소되었습니다.");
-                            $("button[data-timeno='" + timeNo + "']").removeClass("btn-success").addClass("btn-outline-secondary");
-                        }
-                    });
-                }
-            } else {
-                if (confirm("신청할까요?")) {
-                    $.post(contextPath + "/ajax/app/apply", { timeNo }, function(success) {
-                        if (success) {
-                            alert("신청되었습니다.");
-                            $("button[data-timeno='" + timeNo + "']").removeClass("btn-outline-secondary").addClass("btn-success");
-                        }
-                    });
-                }
-            }
-        });
-    <% } %>
+	    // 1️ 현재 시간과 프로그램 타임 시작 시간 비교
+	    const today = new Date().toISOString().split('T')[0];
+	    const roundDate = "<%= selectedRound.getRoundDate() %>";
+	    if (today === roundDate) {
+	        const now = new Date();
+	        const targetBtn = $(this);
+	        const startText = targetBtn.text().split("~")[0].trim();  // e.g., "14:00"
+	        const [startHour, startMin] = startText.split(":").map(Number);
+	        const startTime = new Date();
+	        startTime.setHours(startHour, startMin, 0, 0);
+	
+	        if (now > startTime) {
+	            alert("이미 시간이 지나서 신청이 불가합니다.");
+	            return;
+	        } else {
+	            alert("※ 해당 체험은 당일에 이루어지는 것입니다. 참고바랍니다.");
+	        }
+	    }
+	
+	    // 2️ 현재 신청 인원 수 확인 후 최대인원 비교
+	    $.get(contextPath + "/ajax/app/count", { timeNo }, function(currentCount) {
+	        const maxPeople = <%= selectedRound.getRoundMaxPeople() %>;
+	        if (currentCount >= maxPeople) {
+	            alert("신청 가능한 최대 인원이 이미 찼습니다.");
+	            return;
+	        }
+	
+	        // 3️ 실제 신청 로직
+	        $.get(contextPath + "/ajax/app/check", { timeNo }, function(hasApplied) {
+	            if (hasApplied) {
+	                if (confirm("신청을 취소할까요?")) {
+	                    $.post(contextPath + "/ajax/app/cancel", { timeNo }, function(success) {
+	                        if (success) {
+	                            alert("신청이 취소되었습니다.");
+	                            $("button[data-timeno='" + timeNo + "']").removeClass("btn-success").addClass("btn-outline-secondary");
+	                        }
+	                    });
+	                }
+	            } else {
+	                if (confirm("신청할까요?")) {
+	                    $.post(contextPath + "/ajax/app/apply", { timeNo }, function(success) {
+	                        if (success) {
+	                            alert("신청되었습니다.");
+	                            $("button[data-timeno='" + timeNo + "']").removeClass("btn-outline-secondary").addClass("btn-success");
+	                        }
+	                    });
+	                }
+	            }
+	        });
+	    });
+	<% } %>
 
     <%-- Case 3: 기업회원 (본인 프로그램일 때) --%>
     <% if (loginCompany != null) { %>

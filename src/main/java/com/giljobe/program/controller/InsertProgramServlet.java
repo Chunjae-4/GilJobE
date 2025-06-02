@@ -57,8 +57,6 @@ public class InsertProgramServlet extends HttpServlet {
         double[] coordinates = getCoordinatesFromAddress(proLocation);
         double latitude = coordinates[0];
         double longitude = coordinates[1];
-      System.out.println(latitude);
-      System.out.println(longitude);
         
         // 3. 파일 저장
         Part filePart = request.getPart("programImage");
@@ -111,7 +109,8 @@ public class InsertProgramServlet extends HttpServlet {
 //      int result = ProgramService.getInstance().insertProgram(program); // insert + selectKey로 proNo 설정
 // 		5. 세션에 보관 → 나중에 회차와 함께 DB insert
         session.setAttribute("pendingProgram", program);
-        
+        session.setAttribute("pendingImageTempPath", uploadDir); // 절대경로 저장
+        session.setAttribute("pendingImageRelativePath", relativePath); // 상대경로 저장
         
 // 		6. 회차 입력 폼으로 이동
         response.sendRedirect(request.getContextPath() + "/round/add-with-detail");

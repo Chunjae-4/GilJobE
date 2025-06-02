@@ -4,6 +4,7 @@
 <%@ page import="com.giljobe.user.model.dto.User" %>
 <%@ page import="com.giljobe.company.model.dto.Company" %>
 <%@ page import="com.giljobe.common.LoggerUtil" %>
+<%@ page import="com.giljobe.program.model.dto.Program" %>
 
 
 <section id="chat-section" class="mt-5">
@@ -49,8 +50,14 @@
     }
 </style>
 
-<%User loginUser = (User)session.getAttribute("user");
-Company loginCompany = (Company)session.getAttribute("company");%>
+<%
+    User chatLoginUser = (User)session.getAttribute("user");
+    Company chatLoginCompany = (Company)session.getAttribute("company");
+    Program chatProgram = (Program)request.getAttribute("program");
+    LoggerUtil.debug("chat client chatProgram: " + chatProgram);
+    LoggerUtil.debug("chat client chatLoginCompany: " + chatLoginCompany);
+    LoggerUtil.debug("chat client chatLoginUser: " + chatLoginUser);
+%>
 
 
 <script src="${pageContext.request.contextPath}/resources/js/chatting/model/Message.js"></script>
@@ -59,23 +66,44 @@ Company loginCompany = (Company)session.getAttribute("company");%>
     let contextPath = "<%=request.getContextPath()%>";
     let socket = new WebSocket("ws://" + location.host + contextPath + "/program/detail");
     let sender = "";
-    let roomId = 1;
+    let senderType = "";
     let isUser = false;
+    let msgProgramNo = 1;
+    <% if (chatProgram != null) { %>
+    msgProgramNo = <%= chatProgram.getProNo() %>;
+    <% } else { %>
+    msgProgramNo = 0;
+    <% } %>
+    console.log("msgProgramNo: " + msgProgramNo);
 
-    //유저면 sender 이름을 닉네임으로 지정
-    <%if(loginUser != null){%>
-        sender = "<%=loginUser.getUserNickName()%>";
+    <%--//유저면 sender 이름을 닉네임으로 지정--%>
+    <%if(chatLoginUser != null && chatLoginCompany == null){%>
+    const senderTypeUserNo = <%=chatLoginUser.getUserNo() %>;
+    sender = "<%=chatLoginUser.getUserNickName()%>";
+       if (senderTypeUserNo === 1){
+           senderType = "Admin";
+       } else {
+           senderType = "User";
+       }
+
         isUser = true;
-    //유저 아니면 사용 못하게 막기
+    <%--//기업이면 sender 이름을 기업 이름으로 지정--%>
+    <%} else if (chatLoginUser == null && chatLoginCompany != null) {%>
+        sender = "<%=chatLoginCompany.getComName()%>";
+        senderType = "Company";
+        isUser = true;
+    <%--//유저, 기업 로그인 아니면 사용 못하게 막기--%>
     <%} else {%>
         $("#msg").attr('placeholder', '로그인을 하면 이용할 수 있어요.');
         $("#msg").attr('readonly', 'readonly');
     <%}%>
+    console.log("sender: " + sender);
+    console.log("senderType: " + senderType);
 
-    //TODO: roomId 세팅, pro_No마다 할당
-    //버튼 이벤트시 sendMessage()함수로 가도록
+    <%--//TODO: roomId 세팅, pro_No마다 할당--%>
+    <%--//버튼 이벤트시 sendMessage()함수로 가도록--%>
     $("#send-btn").on("click", (e) => {
-        //유저이고 guest가 아닐때
+    <%--    //유저이고 guest가 아닐때--%>
         if (isUser === true) {
             const message = $("#msg").val();
             if (message.trim() !== '') {
@@ -90,7 +118,6 @@ Company loginCompany = (Company)session.getAttribute("company");%>
 
     })
 
-
     //open 이벤트시
     socket.onopen = (e) => {
         console.log("client onopen");
@@ -99,21 +126,28 @@ Company loginCompany = (Company)session.getAttribute("company");%>
     //onmessage 이벤트시
     socket.onmessage = (e) => {
         console.log("client onmessage");
-        console.log(e.data);
         const message = JSON.parse(e.data);
         msgPrint(message)
     }
-
     const sendMessage = (e) => {
         console.log("sendMessage");
-        const msg = new Message('M', sender, '', e, '');
-        socket.send(msg.msgToJson());
+        console.log("senderType: " + senderType);
+
+        if (senderType === "User" || senderType === "Admin") {
+            const msgUserNo = <%=(chatLoginUser != null ? chatLoginUser.getUserNo() : -1)%>;
+            const chatMessage = new Message(senderType, msgUserNo, -1, sender, '', e, msgProgramNo);
+            socket.send(chatMessage.msgToJson());
+
+        } else if (senderType === "Company") {
+            const msgCompanyNo = <%=chatLoginCompany != null ? chatLoginCompany.getComNo() : 0%>;
+            const chatMessage = new Message(senderType, -1, 0, sender, '', e, msgProgramNo);
+            socket.send(chatMessage.msgToJson());
+        }
     }
 
     const msgPrint = (data) => {
         const align = data.sender === sender ? "text-end" : "text-start";
         const bgClass = data.sender === sender ? "bg-primary text-white" : "bg-white";
-        console.log(align, bgClass, data, data.sen der, data.data);
         const html =  "<div class='mb-2 " + align + "'>" +
         "<div class= 'd-inline-block px-3 py-2 rounded shadow-sm " + bgClass +"'>" +
         "<div class='small'>" + data.sender + "</div>" +
