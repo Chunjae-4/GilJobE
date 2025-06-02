@@ -20,7 +20,7 @@ public class ChattingServer {
     @OnOpen
     public void onOpen(Session session) {
         LoggerUtil.start("Chat Server onOpen");
-
+        LoggerUtil.debug("Chat Server session: " + session);
     }
     @OnClose
     public void onClose(Session session) {
@@ -38,6 +38,7 @@ public class ChattingServer {
         for (Session client : clients) {
             try {
                 LoggerUtil.debug("Chat Server sendMessage: " + data);
+
                 client.getBasicRemote().sendText(data.toJson());
             } catch (IOException e) {
                 e.printStackTrace();

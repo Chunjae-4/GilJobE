@@ -113,7 +113,7 @@ Company loginCompany = (Company)session.getAttribute("company");%>
     const msgPrint = (data) => {
         const align = data.sender === sender ? "text-end" : "text-start";
         const bgClass = data.sender === sender ? "bg-primary text-white" : "bg-white";
-        console.log(align, bgClass, data, data.sender, data.data);
+        console.log(align, bgClass, data, data.sen der, data.data);
         const html =  "<div class='mb-2 " + align + "'>" +
         "<div class= 'd-inline-block px-3 py-2 rounded shadow-sm " + bgClass +"'>" +
         "<div class='small'>" + data.sender + "</div>" +
