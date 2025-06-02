@@ -3,10 +3,10 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
  <form class="find-id-form" method="post" id="searchIdForm">
-        <label for="name">이름 입력</label>
-        <input type="text" placeholder="이름" id="name" name="name" required>
+        <label for="name">사업자 등록번호 입력</label>
+        <input type="text" placeholder="사업자 등록번호" id="comBinNo" name="comBinNo" required>
         <label for="email">이메일 입력</label>
-        <input type="text" placeholder="이메일" id="email" name="email" required>
+        <input type="text" placeholder="이메일" id="comEmail" name="comEmail" required>
         <button type="submit" id="searchIdBtn">아이디 찾기</button>
     </form>
 <script>
@@ -15,16 +15,16 @@ $(document).ready(function() {
 
 		e.preventDefault();
 		
-			const name = $("#name").val().trim();
-			const email = $("#email").val().trim();
+			const comBinNo = $("#comBinNo").val().trim();
+			const comEmail = $("#comEmail").val().trim();
 			
 			$.ajax({
 			
-				url:"<%=request.getContextPath()%>/user/searchIdEnd",
+				url:"<%=request.getContextPath()%>/company/searchIdEnd",
 				type:"post",
 				data:{
-					"userName" : name,
-					"userEmail" : email
+					"comBinNo" : comBinNo,
+					"comEmail" : comEmail
 				},
 				dataType : "json",
 				success : function(response){
@@ -35,7 +35,7 @@ $(document).ready(function() {
 						 
 			            } else {
 			                
-			                $("#userIdText").html("회원님의 아이디는 <strong>"+response.returnId+"</strong> 입니다.")
+			                $("#comIdText").html("회원님의 아이디는 <strong>"+response.returnId+"</strong> 입니다.")
 			                $('#idModal').modal('show');    
 						}
 				},
@@ -58,7 +58,7 @@ $(document).ready(function() {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
       </div>
       <div class="modal-body">
-        <p id="userIdText"></p>
+        <p id="comIdText"></p>
       </div>
       <div class="modal-footer">
         <button type="button" onclick="location.href='<%=request.getContextPath() %>/user/login'" class="btn btn-primary" data-bs-dismiss="modal">확인</button>

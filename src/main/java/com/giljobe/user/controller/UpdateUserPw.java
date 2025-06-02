@@ -31,9 +31,7 @@ public class UpdateUserPw extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		User u = (User)session.getAttribute("user");
-		
-	   
-	    
+
 	    String msg;
 	    String loc;
 	    
@@ -50,19 +48,21 @@ public class UpdateUserPw extends HttpServlet {
 //		    String confirmPw = request.getParameter("confirmPw"); 세션엔 비밀번호 없어
 		    int userNo = u.getUserNo();
 		    int result = UserService.userService().updateUserPw(userNo,userPw, newPw);
-		    
+		    loc="/mypage/mypageview";
 		    if(result==-1) {
 				//비밀번호 다름
 				msg=" 현재 비밀번호를 정확하게 입력하세요";
 			}else if(result>0) {
 				//성공
-				msg="비밀번호 수정완료";
+				msg="비밀번호 수정완료 다시 로그인 하세요";
+				session.invalidate();
+				loc="/user/login";
 			}else {
 				//실패
 				msg="비밀번호 수정실패";
 				
 			}
-			loc="/mypage/mypageview";
+			
 			request.setAttribute("msg", msg);
 			request.setAttribute("loc", loc);
 			request.getRequestDispatcher(Constants.MSG).forward(request, response);

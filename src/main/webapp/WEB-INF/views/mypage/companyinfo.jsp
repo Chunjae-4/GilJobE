@@ -29,7 +29,7 @@
 		<!-- 전화번호 -->
 		<div class="col-12">
 			<label for="companyPhone" class="form-label">전화번호 <span class="text-danger">*</span></label>
-			<input type="text" class="form-control" name="companyPhone" maxlength="11"
+			<input type="text" class="form-control" name="companyPhone" id="companyPhone" maxlength="11"
 				   placeholder="예: 01012345678"
 				   value="<%=loginCompany.getComPhone() %>" required>
 		</div>
@@ -90,8 +90,8 @@
 	const pwReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]).{8,}$/;
 	
 	const validateForm=()=>{
+
 				const companyPhone = $("#companyPhone").val().trim();
-				
 				if(numonly.test(companyPhone)){ // 문자 없으면 false 잘썻으면 false !때문에 true
 					alert("전화번호 형식에 맞지 않습니다. -를 제외한 숫자만 입력해주세요.");
 					$("#companyPhone").focus();

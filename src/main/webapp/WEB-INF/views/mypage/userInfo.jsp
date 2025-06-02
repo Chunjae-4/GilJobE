@@ -28,7 +28,7 @@
 		<!-- 전화번호 -->
 		<div class="col-12">
 			<label for="userPhone" class="form-label">전화번호 <span class="text-danger">*</span></label>
-			<input type="text" class="form-control" name="userPhone" maxlength="11"
+			<input type="text" class="form-control" name="userPhone" id="userPhone" maxlength="11"
 				   placeholder="예: 01012345678"
 				   value="<%=loginUser.getUserPhone()%>" required>
 		</div>

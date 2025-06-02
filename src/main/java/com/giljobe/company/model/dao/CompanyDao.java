@@ -181,6 +181,64 @@ public class CompanyDao {
 		
 		return result;
 	}
+	public Company searchCompanyByBinNoAndEmail(Connection conn, String comBinNO, String comEmail) {
+		
+		Company company = null;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("searchCompanyByBinNoAndEmail"));
+			pstmt.setString(1, comBinNO);
+			pstmt.setString(2, comEmail);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				company=getCompany(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return company;
+	}
+	public int updateComPwById(Connection conn, String authenticComId, String resetPw) {
+		int result = 0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("updateComPwById"));
+			pstmt.setString(1, resetPw);
+			pstmt.setString(2, authenticComId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	public Company searchCompanyByIdAndEmail(Connection conn, String comId, String comEmail) {
+		
+		Company company = null;
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("searchCompanyByIdAndEmail"));
+			pstmt.setString(1, comId);
+			pstmt.setString(2, comEmail);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				company=getCompany(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return company;
+	}
 
 	
 	}

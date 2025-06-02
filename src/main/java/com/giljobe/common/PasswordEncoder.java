@@ -25,6 +25,9 @@ public class PasswordEncoder extends HttpServletRequestWrapper{
 		if(oriPw.equals("resetPw")) {
 			return getSHA512(super.getParameter(oriPw));
 		}
+		if(oriPw.equals("resetCompanyPw")) {
+			return getSHA512(super.getParameter(oriPw));
+		}
 		if(oriPw.equals("companyPw")) {
 			return getSHA512(super.getParameter(oriPw));
 		}

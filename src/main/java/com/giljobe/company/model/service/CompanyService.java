@@ -72,5 +72,32 @@ public class CompanyService {
 		close(conn);
 		return result;
 	}
+	public Company searchCompanyByBinNoAndEmail(String comBinNO, String comEmail) {
+
+	conn=getConnection();
+	Company company = comDao.searchCompanyByBinNoAndEmail(conn,comBinNO,comEmail);
+	close(conn);
+	return company;
+	}
+	public int updateComPwById(String authenticComId, String resetPw) {
+
+		conn = getConnection();
+		int result = comDao.updateComPwById(conn, authenticComId, resetPw);
+		if(result>0) {
+			//성공
+			commit(conn);
+		}else {
+			//실패
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+	public Company searchCompanyByIdAndEmail(String comId, String comEmail) {
+		conn=getConnection();
+		Company company = comDao.searchCompanyByIdAndEmail(conn,comId,comEmail);
+		close(conn);
+		return company;
+	}
 	
 }
