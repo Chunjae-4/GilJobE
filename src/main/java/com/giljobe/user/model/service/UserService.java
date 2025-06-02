@@ -106,5 +106,11 @@ public class UserService {
 		close(conn);
 		return result;
 	}
+	public User searchUserByNameAndEmail(String userName, String userEmail) {
+		conn=getConnection();
+		User user = userDao.searchUserByNameAndEmail(conn,userName,userEmail);
+		close(conn);
+		return user;
+	}
 	
 }
