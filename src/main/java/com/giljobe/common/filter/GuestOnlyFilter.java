@@ -13,18 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.giljobe.user.model.dto.User;
-
 /**
- * Servlet Filter implementation class SessionValidateFilter
+ * Servlet Filter implementation class GuestOnlyFilter
  */
-@WebFilter("/mypage/*")
-public class SessionValidateFilter extends HttpFilter implements Filter {
+@WebFilter(urlPatterns = {"/user/enroll","/user/login"})
+public class GuestOnlyFilter extends HttpFilter implements Filter {
        
     /**
      * @see HttpFilter#HttpFilter()
      */
-    public SessionValidateFilter() {
+    public GuestOnlyFilter() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,46 +42,20 @@ public class SessionValidateFilter extends HttpFilter implements Filter {
 		// place your code here
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
 		HttpServletResponse httpResponse = (HttpServletResponse)response;
-		HttpSession session = httpRequest.getSession();
+		HttpSession session = httpRequest.getSession(false);
 		
-		String userType;
-	
-		if(session!=null) {
-			//세션이 있으면 유저타입을 세션에서 받아오기 없으면 로그인하라고 쫓아내기
-			userType = (String)session.getAttribute("userType");
-			
-			if(userType!=null) {
-				//세션이 있고 그중에서 유저면 
-				if(userType.equals("user")) {
-					//저장된 애가 유저면
-					
-					chain.doFilter(request, response);
-					 return;
-					 
-				}else if(userType.equals("company")) {
-					
-					chain.doFilter(request, response);
-					 return;
-					 
-				}else {
-					
-					httpResponse.sendRedirect(httpRequest.getContextPath());
-					
-					return;
-				}
-			}
-			
-		}else {
-			//세션이 없으면 센드리다이렉트로 서블렛안남기고 바로 주소로 재요청
-			httpResponse.sendRedirect(httpRequest.getContextPath());
-			return;
-		}
-		
-		
-
-		// pass the request along the filter chain
+		//로그인과 회원가입을 매핑했을때
+		if (session != null && session.getAttribute("user") != null) {
+            httpResponse.sendRedirect(httpRequest.getContextPath());
+            return;
+        }
+		if (session != null && session.getAttribute("company") != null) {
+            httpResponse.sendRedirect(httpRequest.getContextPath());
+            return;
+        }
+				
+		chain.doFilter(httpRequest, httpResponse);			
 	}
-
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
