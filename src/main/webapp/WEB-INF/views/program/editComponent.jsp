@@ -54,7 +54,7 @@
         <!-- 프로그램 타임 수정 버튼 -->
         <% if (selectedRound != null) { %>
         <form action="<%=request.getContextPath()%>/protime/edit-form" method="get"
-              onsubmit="return confirm('현재 선택된 <%=selectedRound.getRoundCount()%>회차의 타임 정보를 수정합니다.\n다른 회차를 수정하려면 상세 페이지에서 다시 선택해주세요.')">
+              onsubmit="return confirm('현재 선택된 <%=selectedRound.getRoundCount()%>회차의 타임 정보를 수정합니다.\n다른 회차를 수정하려면 상세 페이지에서 회차 변경 후 다시 선택해주세요.')">
             <input type="hidden" name="roundNo" value="<%=selectedRound.getRoundNo()%>">
             <button type="submit" class="btn btn-outline-success">프로그램 타임 수정</button>
         </form>

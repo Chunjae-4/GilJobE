@@ -361,4 +361,21 @@ public class ProgramDao {
 		return programs;
 	}
 	
+	public int deleteProgram(Connection conn, int proNo) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("deleteProgram"));
+	        pstmt.setInt(1, proNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        LoggerUtil.error(e.getMessage(), e);
+	    } finally {	    	
+	    	close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+
+	
 }

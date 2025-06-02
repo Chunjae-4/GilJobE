@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.giljobe.application.model.dao.ApplicationDao;
 import com.giljobe.program.model.dao.ProTimeDao;
 import com.giljobe.program.model.dao.ProgramDao;
 import com.giljobe.program.model.dao.RoundDao;
@@ -165,4 +166,48 @@ public class ProgramService {
         close(conn);
         return programs;
     }
+    
+    public boolean deleteProgramWithAllData(int proNo) {
+        Connection conn = getConnection();
+        boolean result = false;
+
+        try {
+            // 1. 해당 프로그램의 모든 회차 조회
+            List<Round> rounds = RoundDao.getInstance().selectRoundsByProgramNo(conn, proNo);
+
+            for (Round r : rounds) {
+                int roundNo = r.getRoundNo();
+
+                // 2. 각 회차의 ProTime 조회
+                List<ProTime> proTimes = ProTimeDao.getInstance().selectProTimesByRoundNo(conn, roundNo);
+                for (ProTime pt : proTimes) {
+                    // 3. 각 ProTime의 신청 삭제
+                    ApplicationDao.applicationDao().deleteByOnlyTimeNo(conn, pt.getTimeNo());
+                }
+
+                // 4. ProTime 삭제
+                ProTimeDao.getInstance().deleteByRoundNo(conn, roundNo);
+                // 5. Round 삭제
+                RoundDao.getInstance().deleteRound(conn, roundNo);
+            }
+
+            // 6. Program 삭제
+            int deleted = ProgramDao.getInstance().deleteProgram(conn, proNo);
+
+            if (deleted > 0) {
+                commit(conn);
+                result = true;
+            } else {
+                rollback(conn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollback(conn);
+        } finally {
+            close(conn);
+        }
+
+        return result;
+    }
+
 }
