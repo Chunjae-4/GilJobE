@@ -38,7 +38,6 @@ public class ChattingServer {
         for (Session client : clients) {
             try {
                 LoggerUtil.debug("Chat Server sendMessage: " + data);
-
                 client.getBasicRemote().sendText(data.toJson());
             } catch (IOException e) {
                 e.printStackTrace();

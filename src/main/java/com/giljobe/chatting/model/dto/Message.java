@@ -10,7 +10,10 @@ import lombok.*;
 @ToString
 public class Message {
     //Type: User, Admin, Company
-    private String type;
+    private String senderType;
+    //없으면 -1
+    private int userNo;
+    private int comNo;
     //Type에 따라서 sender 닉네임 저장해야할듯 (Company, User)
     private String sender;
     //receiver는 딱히 머가 없당
@@ -19,7 +22,7 @@ public class Message {
     private String data;
 
     //이건 프로그램 넘버
-    private int roomNo;
+    private int proNo;
 
     public String toJson() {
         return new Gson().toJson(this);
