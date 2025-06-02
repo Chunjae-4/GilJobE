@@ -228,12 +228,12 @@ $(function() {
 	</div>
 	
 	
-	<%-- <!-- 채팅방 영역 -->
+	<!-- 채팅방 영역 -->
 	<div class="program-chat">
 	    <h3>단체 채팅방</h3>
 		<jsp:include page="/WEB-INF/views/program/chat.jsp" />
 	    <div class="chat-placeholder">※ 프로그램 번호에 따른 채팅방 영역은 조만간 할 에정.. ※</div>
-	</div> --%>
+	</div>
 	
 	<!-- Q&A 영역 -->
 	<div class="program-qna">
