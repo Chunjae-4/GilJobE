@@ -353,8 +353,8 @@ $(document).on("click", ".protime-btn", function(e) {
 </script>
 
 <!-- loveToggle, 좋아요 버튼 반영 -->
-<script>
+<%-- <script>
     const contextPath = "<%= request.getContextPath() %>";
-</script>
+</script> --%>
 <script src="<%= request.getContextPath() %>/resources/js/loveToggle.js"></script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
