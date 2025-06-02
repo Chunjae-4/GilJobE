@@ -35,6 +35,22 @@ private static ProTimeDao proTimeDao = new ProTimeDao();
     	return proTimeDao;
     }
 	
+    public int deleteByRoundNo(Connection conn, int roundNo) {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("deleteProTimesByRoundNo"));
+            pstmt.setInt(1, roundNo);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+    
+    
 	public List<ProTime> selectProTimesByRoundNo(Connection conn, int roundNo) {
         List<ProTime> proTimes = new ArrayList<>();
         
@@ -56,6 +72,8 @@ private static ProTimeDao proTimeDao = new ProTimeDao();
         
         return proTimes;
     }
+	
+	
 	
 	//insertProTimes, s 가 붙어있음
 	public int insertProTimes(Connection conn, List<ProTime> list) {

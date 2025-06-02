@@ -90,6 +90,13 @@ public class ProgramDetailServlet extends HttpServlet {
 		} else if (!rounds.isEmpty()) {
 		    selectedRound = rounds.get(0); // fallback
 		}
+		
+		// 각 availableRounds에 proTimes 채워넣기
+		availableRounds = RoundService.getInstance().attachProTimes(availableRounds);
+		// expiredRounds도 동일하게 처리 (JSP에서 검사할 경우를 대비)
+		expiredRounds = RoundService.getInstance().attachProTimes(expiredRounds);
+
+
 
 		// selectedRound의 protimes 를 불러옴
 		List<ProTime> proTimes = new ArrayList<>();

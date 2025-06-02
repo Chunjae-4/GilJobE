@@ -90,6 +90,17 @@ public class ApplicationDao {
 	    }
 	    return result;
 	}
+	
+	public int deleteByOnlyTimeNo(Connection conn, int timeNo) {
+	    int result = 0;
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql.getProperty("deleteByOnlyTimeNo"))) {
+	        pstmt.setInt(1, timeNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return result;
+	}
 
 	public int countAppByTimeNo(Connection conn, int timeNo) {
 	    int count = 0;

@@ -8,6 +8,25 @@
     Program program = (Program) request.getAttribute("program");
     List<Round> availableRounds = (List<Round>) request.getAttribute("availableRounds");
     Round selectedRound = (Round) request.getAttribute("selectedRound");
+    
+ 	// 유효한 회차가 없는 경우 판단: 리스트가 비어있거나
+    boolean noValidRounds = true;
+    long now = System.currentTimeMillis();
+
+    if (availableRounds != null && !availableRounds.isEmpty()) {
+        for (Round r : availableRounds) {
+            if (r.getProTimes() != null && !r.getProTimes().isEmpty()) {
+                for (ProTime pt : r.getProTimes()) {
+                	// 당일이지만 타임이 모두 지나간 회차도 유요하지 않은 회차로 처리되도록
+                    if (pt.getStartTime().getTime() > now) {
+                        noValidRounds = false;
+                        break;
+                    }
+                }
+            }
+            if (!noValidRounds) break;
+        }
+    }
 %>
 
 <div class="card mb-4">
@@ -21,12 +40,16 @@
         </form>
 
         <!-- 회차 수정/삭제 버튼 -->
-        <% if (availableRounds != null && !availableRounds.isEmpty()) { %>
-        <form action="<%=request.getContextPath()%>/round/edit-select" method="get">
+        <form action="<%= noValidRounds ? request.getContextPath() + "/program/selectform" : request.getContextPath() + "/round/edit-select" %>" method="get"
+              onsubmit="return <%= noValidRounds ? "confirm('유효한 회차가 없습니다. 새로운 회차를 추가하는 화면으로 이동합니다.')" : "true" %>">
             <input type="hidden" name="proNo" value="<%=program.getProNo()%>">
+            <% if (noValidRounds) { %>
+            <input type="hidden" name="programType" value="existing">
+            <input type="hidden" name="selectedProNo" value="<%=program.getProNo()%>">
+            <input type="hidden" name="changeDetail" value="yes">
+            <% } %>
             <button type="submit" class="btn btn-outline-warning">회차 수정/삭제</button>
         </form>
-        <% } %>
 
         <!-- 프로그램 타임 수정 버튼 -->
         <% if (selectedRound != null) { %>

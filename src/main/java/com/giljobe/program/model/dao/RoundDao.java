@@ -34,6 +34,41 @@ public class RoundDao {
     public static RoundDao getInstance() {
     	return roundDao;
     }
+    
+    public Round selectRoundByNo(Connection conn, int roundNo) {
+        Round round = null;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("selectRoundByNo"));
+            pstmt.setInt(1, roundNo);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                round = new Round();
+                round.setRoundNo(rs.getInt("round_no"));
+                round.setRoundCount(rs.getInt("round_count"));
+                round.setRoundDate(rs.getDate("round_date"));
+                round.setRoundMaxPeople(rs.getInt("round_max_people"));
+                round.setRoundPrice(rs.getInt("round_price"));
+                round.setDetailLocation(rs.getString("detail_location"));
+                round.setGoal(rs.getString("goal"));
+                round.setNote(rs.getString("note"));
+                round.setSummary(rs.getString("summary"));
+                round.setDetail(rs.getString("detail"));
+                round.setProNoRef(rs.getInt("pro_no"));
+
+                // 필요하다면 더 필드 추가
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error(e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+
+        return round;
+    }
+
+
 	
 	public List<Round> selectRoundsByProgramNo(Connection conn, int proNo) {
         List<Round> rounds = new ArrayList<>();
@@ -105,6 +140,48 @@ public class RoundDao {
         
 	    return null;
 	}
+	
+	public int deleteRound(Connection conn, int roundNo) {
+		int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("deleteRound"));
+	        pstmt.setInt(1, roundNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        LoggerUtil.error("RoundDao.updateRound 오류: " + e.getMessage(), e);
+	    } finally {
+            close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+	
+	public int updateRound(Connection conn, Round round) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sql.getProperty("updateRound"));
+	        pstmt.setDate(1, round.getRoundDate());
+	        pstmt.setInt(2, round.getRoundMaxPeople());
+	        pstmt.setInt(3, round.getRoundPrice());
+	        pstmt.setString(4, round.getDetailLocation());
+	        pstmt.setString(5, round.getGoal());
+	        pstmt.setString(6, round.getNote());
+	        pstmt.setString(7, round.getSummary());
+	        pstmt.setString(8, round.getDetail());
+	        pstmt.setInt(9, round.getRoundNo());
+
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        LoggerUtil.error("RoundDao.updateRound 오류: " + e.getMessage(), e);
+	    } finally {
+            close(rs);
+	        close(pstmt);
+	    }
+	    return result;
+	}
+
+	
 	
 	public int insertRound(Connection conn, Round round) {
 	    int result = 0;

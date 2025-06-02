@@ -20,6 +20,15 @@ public class ProTimeService {
 
     private ProTimeDao dao = ProTimeDao.getInstance();
     
+    public int deleteByRoundNo(int roundNo) {
+        Connection conn = getConnection();
+        int result = dao.deleteByRoundNo(conn, roundNo);
+        if (result >= 0) commit(conn);
+        else rollback(conn);
+        close(conn);
+        return result;
+    }
+    
     public List<ProTime> selectProTimesByRoundNo(int roundNo) {
         Connection conn = getConnection();
         List<ProTime> rounds = dao.selectProTimesByRoundNo(conn, roundNo);
