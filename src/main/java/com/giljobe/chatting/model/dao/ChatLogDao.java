@@ -109,13 +109,14 @@ public class ChatLogDao {
     }
 
     public ChatLog getChatLog(ResultSet rs) throws SQLException {
+
         return ChatLog.builder()
-                .userNo(rs.getInt("userNo"))
-                .proNo(rs.getInt("proNo"))
-                .comNo(rs.getInt("comNo"))
-                .chatContent(rs.getString("chatContent"))
-                .userNickName(rs.getString("userNickName"))
-                .comName(rs.getString("comName"))
+                .userNo(rs.getInt("user_no"))
+                .proNo(rs.getInt("pro_no"))
+                .comNo(rs.getInt("com_no"))
+                .chatContent(rs.getString("chat_content"))
+                .userNickName(rs.getString("sender_nick"))
+                .comName(rs.getString("sender_com"))
                 .build();
     }
 
