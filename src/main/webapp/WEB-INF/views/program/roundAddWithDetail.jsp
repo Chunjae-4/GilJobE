@@ -2,8 +2,6 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-<h2 class="my-4">회차 정보 직접 입력</h2>
-
 <%
 	String todayDate = (String)request.getAttribute("todayDate");
 
@@ -13,88 +11,95 @@
         : request.getContextPath() + "/round/insert-with-detail";
     // 새로운 프로그램에서 오는 것인지, 아니면 기존 프로그램에서 오는 것인지 분기처리
 %>
-<form action="<%= actionUrl %>" method="post">
-    <% if (proNoParam != null && !proNoParam.isEmpty()) { %>
-    <input type="hidden" name="proNo" value="<%= proNoParam %>">
-	<% } %>
-    <!-- 체험 날짜 -->
-	<div class="mb-3">
-	    <label class="form-label">📅 체험 날짜 *</label>
-		<input type="date" name="roundDate" class="form-control" required min="<%= todayDate %>">
-	</div>
-    
-
-    <!-- 활동 시간 -->
-    <div class="mb-3">
-        <label class="form-label">⏳ 체험 시간 (분 단위) *</label>
-        <input type="number" name="duration" class="form-control" min="1" required>
-        
+<section class="container py-5">
+    <div class="mb-4 text-center">
+        <h2 class="fw-bold">회차 정보 직접 입력</h2>
+        <p class="text-muted">회차별 날짜, 시간, 인원, 상세 내용을 설정해주세요.</p>
     </div>
-    
-	<!-- 시작 시간들 -->
-	<div class="mb-3">
-	    <label class="form-label">⏱ 시작 시간 (여러 개 입력 가능)</label>
-	    <div id="startTimeContainer">
-	        <!-- 초기 1개 블록 -->
-	        <div class="d-flex mb-2 start-time-row">
-	            <select name="startHour" class="form-select me-2" style="width:auto;">
-	                <% for (int i = 0; i <= 23; i++) { %>
-	                    <option value="<%=i%>"><%=String.format("%02d", i)%></option>
-	                <% } %>
-	            </select>
-	            <select name="startMinute" class="form-select me-2" style="width:auto;">
-	                <% for (int i = 0; i < 60; i += 5) { %>
-	                    <option value="<%=i%>"><%=String.format("%02d", i)%></option>
-	                <% } %>
-	            </select>
-	            <button type="button" class="btn btn-outline-danger btn-sm remove-time">-</button>
-	        </div>
-	    </div>
-	    <button type="button" class="btn btn-outline-primary btn-sm" onclick="addStartTime()">+ 시간 추가</button>
-	</div>
 
-    
-    <!-- 최대 인원 / 가격 -->
-    <div class="row mb-3">
-        <div class="col">
-            <label class="form-label">👥 최대 인원 *</label>
-            <input type="number" name="roundMaxPeople" class="form-control" min="1" required>
+    <form action="<%= actionUrl %>" method="post" class="bg-white p-4 rounded-4 shadow-sm">
+
+        <% if (proNoParam != null && !proNoParam.isEmpty()) { %>
+        <input type="hidden" name="proNo" value="<%= proNoParam %>">
+        <% } %>
+
+        <!-- 체험 날짜 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">📅 체험 날짜 *</label>
+            <input type="date" name="roundDate" class="form-control" required min="<%= todayDate %>">
         </div>
-        <div class="col">
-            <label class="form-label">💰 가격 (원) *</label>
-            <input type="number" name="roundPrice" class="form-control" min="0" required>
+
+        <!-- 체험 시간 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">⏳ 체험 시간 (분 단위) *</label>
+            <input type="number" name="duration" class="form-control" min="1" required placeholder="예: 60">
         </div>
-    </div>
 
-    <!-- 상세 위치 -->
-    <div class="mb-3">
-        <label class="form-label">📍 상세 위치 *</label>
-        <input type="text" name="detailLocation" class="form-control" required>
-    </div>
+        <!-- 시작 시간들 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">⏱ 시작 시간 (여러 개 입력 가능)</label>
+            <div id="startTimeContainer">
+                <div class="d-flex mb-2 start-time-row">
+                    <select name="startHour" class="form-select me-2" style="width:auto;">
+                        <% for (int i = 0; i <= 23; i++) { %>
+                        <option value="<%=i%>"><%=String.format("%02d", i)%></option>
+                        <% } %>
+                    </select>
+                    <select name="startMinute" class="form-select me-2" style="width:auto;">
+                        <% for (int i = 0; i < 60; i += 5) { %>
+                        <option value="<%=i%>"><%=String.format("%02d", i)%></option>
+                        <% } %>
+                    </select>
+                    <button type="button" class="btn btn-outline-danger btn-sm remove-time">-</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addStartTime()">+ 시간 추가</button>
+        </div>
 
-    <!-- 목표, 요약, 상세, 유의사항 -->
-    <div class="mb-3">
-        <label class="form-label">🎯 체험 목표 *</label>
-        <input type="text" name="goal" class="form-control" required>
-    </div>
+        <!-- 최대 인원 / 가격 -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">👥 최대 인원 *</label>
+                <input type="number" name="roundMaxPeople" class="form-control" min="1" required placeholder="예: 20">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">💰 가격 (원) *</label>
+                <input type="number" name="roundPrice" class="form-control" min="0" required placeholder="예: 15000">
+            </div>
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label">📖 요약 설명 *</label>
-        <input type="text" name="summary" class="form-control" required>
-    </div>
+        <!-- 상세 위치 및 설명 -->
+        <div class="mb-3">
+            <label class="form-label fw-semibold">📍 상세 위치 *</label>
+            <input type="text" name="detailLocation" class="form-control" required>
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label">📝 상세 설명 *</label>
-        <textarea name="detail" class="form-control" rows="3" required></textarea>
-    </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">🎯 체험 목표 *</label>
+            <input type="text" name="goal" class="form-control" required>
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label">⚠️ 유의사항</label>
-        <textarea name="note" class="form-control" rows="2"></textarea>
-    </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">📖 요약 설명 *</label>
+            <input type="text" name="summary" class="form-control" required>
+        </div>
 
-    <button type="submit" class="btn btn-success">회차 등록 완료</button>
-</form>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">📝 상세 설명 *</label>
+            <textarea name="detail" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-semibold">⚠️ 유의사항</label>
+            <textarea name="note" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-success px-4">회차 등록 완료</button>
+        </div>
+    </form>
+</section>
+
 
 <script>
 	

@@ -9,27 +9,18 @@ import="com.giljobe.common.Constants,
 <!-- 네이버 지도 API 스크립트 로드 (ncpKeyId는 네이버 클라우드 콘솔에서 발급받은 API 키 사용) -->
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=<%=request.getAttribute("naverMapKey")%>"></script>
 
-<!-- 지도 영역의 스타일 지정 -->
-
-<!-- 지도 페이지 스타일 -->
-<style>
-    #map {
-        width: 100%;
-        height: 600px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    }
-</style>
-
-<section class="bg-body-tertiary text-center mb-5 py-5 ">
+<section class="bg-body-tertiary text-center py-5 mb-4">
     <div class="container">
-        <div class="row py-lg-5">
-            <div class="col-lg-10 col-md-12 mx-auto">
-                <h1 class="fw-normal">체험 프로그램 지도</h1>
-                <p class="lead text-body-secondary">현재 위치를 기준으로 주변의 체험 프로그램을 확인해보세요.</p>
-            </div>
+        <div class="mb-4">
+            <h1 class="fw-semibold mb-3">체험 프로그램 지도</h1>
+            <p class="lead text-muted fst-italic">현재 위치를 기준으로 주변의 체험 프로그램을 확인해보세요.</p>
         </div>
-        <div id="map"></div>
+
+        <!-- 지도 -->
+        <div id="map"
+             class="rounded-4 border shadow-sm mx-auto"
+             style="width: 100%; max-width: 960px; height: 500px;">
+        </div>
     </div>
 </section>
 

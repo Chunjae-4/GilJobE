@@ -7,50 +7,65 @@
     String changeDetail = request.getParameter("changeDetail");
 %>
 
-<h2 class="my-4">프로그램 등록 방식 선택</h2>
-
-<form method="post" action="<%=request.getContextPath()%>/program/selectsubmit">
-    <!-- 1. 기존/신규 선택 -->
-    <div class="mb-3">
-        <label class="form-label fw-bold">1. 기존/신규 선택 *</label><br>
-        <input type="radio" name="programType" value="existing" id="existingRadio">
-        <label for="existingRadio">기존 프로그램 회차 추가</label>
-        <input type="radio" name="programType" value="new" id="newRadio" checked>
-        <label for="newRadio">새로운 프로그램 추가</label>
+<section class="container py-5">
+    <div class="mb-4 text-center">
+        <h2 class="fw-bold">프로그램 등록 방식 선택</h2>
+        <p class="text-muted">기존 프로그램에 회차를 추가하거나 새 프로그램을 만들 수 있어요.</p>
     </div>
 
-    <!-- 2. 기존 프로그램 리스트 -->
-    <div class="mb-3" id="programListSection" style="display:none;">
-        <label class="form-label fw-bold">2. 프로그램 선택</label><br>
-        <select name="selectedProNo" class="form-select">
-            <%
-                List<Program> programList = (List<Program>) request.getAttribute("programList");
-                if (programList != null && !programList.isEmpty()) {
-                    for (Program p : programList) {
-            %>
+    <form method="post" action="<%=request.getContextPath()%>/program/selectsubmit" class="bg-white p-4 rounded-4 shadow-sm">
+        <!-- 1. 기존/신규 선택 -->
+        <div class="mb-4">
+            <label class="form-label fw-bold d-block mb-2">1. 기존/신규 선택 *</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="programType" value="existing" id="existingRadio">
+                <label class="form-check-label" for="existingRadio">기존 프로그램 회차 추가</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="programType" value="new" id="newRadio" checked>
+                <label class="form-check-label" for="newRadio">새로운 프로그램 추가</label>
+            </div>
+        </div>
+
+        <!-- 2. 기존 프로그램 리스트 -->
+        <div class="mb-4" id="programListSection" style="display:none;">
+            <label class="form-label fw-bold mb-2">2. 프로그램 선택</label>
+            <select name="selectedProNo" class="form-select">
+                <%
+                    List<Program> programList = (List<Program>) request.getAttribute("programList");
+                    if (programList != null && !programList.isEmpty()) {
+                        for (Program p : programList) {
+                %>
                 <option value="<%=p.getProNo()%>"><%=p.getProName()%></option>
-            <%
+                <%
                     }
                 } else {
-            %>
+                %>
                 <option disabled>등록된 프로그램이 없습니다.</option>
-            <%
-                }
-            %>
-        </select>
-    </div>
+                <%
+                    }
+                %>
+            </select>
+        </div>
 
-    <!-- 3. 세부 내용 변경 여부 -->
-    <div class="mb-3" id="changeDetailSection" style="display:none;">
-        <label class="form-label fw-bold">3. 세부 내용(회차 정보) 변경 희망 여부</label><br>
-        <input type="radio" name="changeDetail" value="no" id="changeNo" checked>
-        <label for="changeNo">아니오 - 동일한 내용으로 회차 여러개 생성 가능</label>
-        <input type="radio" name="changeDetail" value="yes" id="changeYes">
-        <label for="changeYes">네 - 내용 변경된 회차 1개 생성 가능</label>
-    </div>
+        <!-- 3. 세부 내용 변경 여부 -->
+        <div class="mb-4" id="changeDetailSection" style="display:none;">
+            <label class="form-label fw-bold d-block mb-2">3. 세부 내용(회차 정보) 변경 희망 여부</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="changeDetail" value="no" id="changeNo" checked>
+                <label class="form-check-label" for="changeNo">아니오 - 동일한 내용으로 회차 여러 개 생성 가능</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="changeDetail" value="yes" id="changeYes">
+                <label class="form-check-label" for="changeYes">네 - 내용 변경된 회차 1개 생성 가능</label>
+            </div>
+        </div>
 
-    <button type="submit" class="btn btn-primary">다음</button>
-</form>
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary px-4">다음</button>
+        </div>
+    </form>
+</section>
 
 <script>
     const existingRadio = document.getElementById("existingRadio");

@@ -7,46 +7,72 @@
 <%@ page import="com.giljobe.program.model.dto.Program" %>
 
 
-<section id="chat-section" class="mt-5">
-    <div class="card shadow-sm rounded-4">
-        <div class="card-header bg-primary bg-opacity-75 text-white fw-semibold">
-            💬 체험자 채팅
-        </div>
+<div id="chat-section" class="card mb-5 border-0 rounded-4 shadow-sm">
+    <div class="card-header bg-white fw-bold">단체 채팅방</div>
+    <div class="card-body text-muted small bg-white">자유롭게 대화할 수 있어요.</div>
 
-        <div class="card-body bg-light" id="chat-container" style="height: 300px; overflow-y: auto;">
-            <!-- 기존 메시지 예시 -->
+    <div class="card-body bg-light px-4 py-3" id="chat-container" style="height: 320px; overflow-y: auto;">
+        <!-- 메시지 출력 영역 -->
+    </div>
 
-        </div>
-
-        <div class="card-footer bg-white d-flex gap-2">
-            <input type="text" id="msg" name="msg" class="form-control" placeholder="메시지를 입력하세요..." required>
-            <button id="send-btn" class="btn btn-outline-primary">전송</button>
-
+    <div class="card-footer bg-white border-top-0 pt-3">
+        <div class="input-group">
+            <input type="text" id="msg" class="form-control rounded-start-pill" placeholder="메시지를 입력하세요..." />
+            <button id="send-btn" class="btn btn-outline-primary rounded-end-pill">전송</button>
         </div>
     </div>
-</section>
+</div>
 
 
 <style>
+
     #chat-container {
         font-size: 0.95rem;
+        padding-bottom: 0.5rem;
     }
 
-    #chat-container .bg-white {
-        max-width: 75%;
+    #chat-container .message-row {
+        display: flex;
+        margin-bottom: 0.5rem;
     }
 
-    #chat-container .bg-primary {
-        max-width: 75%;
+    #chat-container .message-row.text-start {
+        justify-content: flex-start;
+    }
+
+    #chat-container .message-row.text-end {
+        justify-content: flex-end;
+    }
+
+    #chat-container .message-bubble {
+        max-width: 70%;
+        padding: 0.6rem 1rem;
+        border-radius: 1rem;
+        word-break: break-word;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    #chat-container .bg-primary.message-bubble {
+        color: #fff;
+    }
+
+    #chat-container .bg-white.message-bubble {
+        color: #212529;
+        border: 1px solid #dee2e6;
     }
 
     #msg {
         flex: 1;
     }
 
-    #chat-section {
-        max-width: 720px;
-        margin: 0 auto;
+    .card-footer .form-control {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    .card-footer .btn {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
     }
 </style>
 
@@ -83,6 +109,7 @@
     <%--//유저면 sender 이름을 닉네임으로 지정--%>
     <%if(chatLoginUser != null && chatLoginCompany == null){%>
     const senderTypeUserNo = <%=chatLoginUser.getUserNo() %>;
+
     sender = "<%=chatLoginUser.getUserNickName()%>";
        if (senderTypeUserNo === 1){
            senderType = "Admin";
@@ -135,16 +162,20 @@
     socket.onmessage = (e) => {
         console.log("client onmessage");
         const message = JSON.parse(e.data);
+        console.log(message);
         msgPrint(message)
     }
     const sendMessage = (e) => {
         console.log("senderType: " + senderType);
 
-        if (senderType === "User" || senderType === "Admin") {
+        if (senderType === "User") {
             const msgUserNo = <%=(chatLoginUser != null ? chatLoginUser.getUserNo() : -1)%>;
             const chatMessage = new Message(senderType, msgUserNo, -1, sender, '', e, msgProgramNo);
             socket.send(chatMessage.msgToJson());
-
+        } else if (senderType === "Admin") {
+            const msgUserNo = <%=(chatLoginUser != null ? chatLoginUser.getUserNo() : -1)%>;
+            const chatMessage = new Message(senderType, msgUserNo, -1, sender, '', e, msgProgramNo);
+            socket.send(chatMessage.msgToJson());
         } else if (senderType === "Company") {
             const msgCompanyNo = <%=chatLoginCompany != null ? chatLoginCompany.getComNo() : 0%>;
             const chatMessage = new Message(senderType, -1, msgCompanyNo, sender, '', e, msgProgramNo);
@@ -153,14 +184,25 @@
     }
 
     const msgPrint = (data) => {
-        const align = data.sender === sender ? "text-end" : "text-start";
-        const bgClass = data.sender === sender ? "bg-primary text-white" : "bg-white";
-        const html =  "<div class='mb-2 " + align + "'>" +
-        "<div class= 'd-inline-block px-3 py-2 rounded shadow-sm " + bgClass +"'>" +
-        "<div class='small'>" + data.sender + "</div>" +
-        "<div>"+ data.data+ "</div>" +
-        "</div>" +
-        "</div>"
+        const isMine =
+            (data.senderType === senderType) &&
+            (data.sender === sender);
+
+        const align = isMine ? "text-end" : "text-start";
+        const bgClass = isMine ? "bg-primary text-white" : "bg-white";
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        data.sender
+        sender
+        const html =
+            "<div class='message-row " + align + "'>" +
+                "<div class= 'message-bubble " + bgClass +"'>" +
+                    "<div class='small fw-bold mb-1'>" + data.sender + "</div>" +
+                    "<div>"+ data.data+ "</div>" +
+                    "<div class='text-muted small text-end mt-1'>" + timeStr + "</div>" +
+                "</div>" +
+            "</div>"
 
         $('#chat-container').append(html);
         $('#chat-container').scrollTop($('#chat-container')[0].scrollHeight);

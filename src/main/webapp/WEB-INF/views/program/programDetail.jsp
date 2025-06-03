@@ -1,12 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" 
+<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8"
 		 import="com.giljobe.common.Constants"%>
-<%@ page import="com.giljobe.program.model.dto.*, 
+<%@ page import="com.giljobe.program.model.dto.*,
 				com.giljobe.qna.model.dto.*,
 				com.giljobe.company.model.dto.*,
-				com.giljobe.application.model.dto.*,							
+				com.giljobe.application.model.dto.*,
 				java.util.List, java.util.Comparator" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<% 
+<%
 Program program = (Program)request.getAttribute("program");
 List<Round> rounds = (List<Round>)request.getAttribute("rounds");
 Round selectedRound = (Round)request.getAttribute("selectedRound");
@@ -36,13 +36,14 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
     isMyProgram = true;
 }
 %>
+
 <section class="container py-5">
-    
+
    <% if (program != null) {
    if (selectedRound != null) { %>
     <!-- 전체 화면 시작 -->
     <!-- 프로그램 요약 카드 -->
-    <div class="card mb-4 shadow-sm">
+	<div class="bg-body-tertiary card mb-5 shadow-sm border-0 rounded-4 overflow-hidden">
         <div class="row g-0">
             <!-- 프로그램 이미지 -->
             <div class="col-md-5">
@@ -51,120 +52,95 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
 					 class="w-100 h-100 object-fit-cover" alt="프로그램 이미지"> --%>
 				<!-- 프로그램 수정 후에 이미지 캐시 무력화용 -->
 				<img src="<%=request.getContextPath() + imageUrl %>?v=<%=System.currentTimeMillis()%>"
-    			 class="w-100 h-100 object-fit-cover" alt="프로그램 이미지">
-				
+					 class="w-100 object-fit-cover rounded-start"
+					 style="height: 450px;"
+					 alt="프로그램 이미지">
             </div>
             <!-- 텍스트 정보 -->
             <div class="col-md-7">
                 <div class="card-body">
-                	<h3 class="card-title">
-					    <%= program.getProName() %> (
-					    <span id="selected-round-label">
-					        <%= selectedRound != null ? selectedRound.getRoundCount() + "회차" : "회차 정보 없음" %>
-					    </span>
-					    )
+					<h3 class="card-title fw-bold mb-3">
+					    <%= program.getProName() %>
+						<small class="text-muted fs-6">( <%= selectedRound.getRoundCount() %>회차 )</small>
 					</h3>
-                    <p class="card-text">
-                        <strong>주소:</strong> <%=program.getProLocation()%>
-                        <span id="program-descript1">
-	                        <%=selectedRound.getDetailLocation() %><br>
-	                        <strong>체험일:</strong> <%=selectedRound.getRoundDate() %><br>
-	                        <strong>최대모집인원:</strong> <%=selectedRound.getRoundMaxPeople() %><br>
-                        </span>
-                        <strong>직업 유형:</strong> <%=program.getProType() %><br>
-                        <strong>분류:</strong> <%=program.getProCategory() %><br>
-                        <span id="program-descript2">
-	                        <strong>참가비:</strong> 
-	                        <%=selectedRound.getRoundPrice()!=0 ? selectedRound.getRoundPrice() +"원":"무료"  %>
-                   		</span>
-                    </p>
+					<p class="mb-2">
+						<strong>주소:</strong> <%= program.getProLocation() %> <br>
+						<%= selectedRound.getDetailLocation() %><br>
+						<strong>체험일:</strong> <%= selectedRound.getRoundDate() %><br>
+						<strong>최대모집인원:</strong> <%= selectedRound.getRoundMaxPeople() %>
+						<strong>직업 유형:</strong> <%= program.getProType() %><br>
+						<strong>분류:</strong> <%= program.getProCategory() %><br>
+						<strong>참가비:</strong>
+						<%= selectedRound.getRoundPrice()!=0 ? selectedRound.getRoundPrice() +"원":"무료"  %>
+					</p>
 
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                    	<div class="dropdown">
-							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="roundDropdownBtn"
-							          data-bs-toggle="dropdown" aria-expanded="false">
-								  
-								  회차 정보:
-								  <span id="round-dropdown-label">
-								      <%= selectedRound != null ? selectedRound.getRoundCount() + "회차" : "회차 정보 없음" %>
-							      </span>
+					<div class="d-flex flex-wrap gap-2 mt-4">
+						<!-- 회차 드롭다운 -->
+						<div class="dropdown">
+							<button class="btn btn-outline-secondary dropdown-toggle rounded-pill"
+									type="button" data-bs-toggle="dropdown">
+								<span id="round-dropdown-label">
+									<%= selectedRound.getRoundCount() %>회차
+								</span>
 							</button>
-							<ul class="dropdown-menu" aria-labelledby="roundDropdownBtn">
+							<ul class="dropdown-menu">
 								<% if (noAvailableRounds) { %>
-							        <li class="dropdown-item text-muted" style="pointer-events: none;">
-							            ※ 현재 신청 가능한 회차가 없습니다.
-							        </li>
-							        <li><hr class="dropdown-divider"></li>
-							    <% } %>
-							    <!-- ✅ 가능한 회차 -->
-							    <% for (Round r : availableRounds) { %>
-							        <li>
-										<a class="dropdown-item round-option" href="#" data-roundcount="<%= r.getRoundCount() %>">
-							                <%= r.getRoundCount() %>회차 - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
-							            </a>
-							        </li>
-							    <% } %>
-							
-							    <!-- ✅ 구분선 -->
-							    <% if (!(expiredRounds).isEmpty()) { %>
-							        <li><hr class="dropdown-divider"></li>
-							    <% } %>
-							
-							    <!-- ❌ 만료된 회차 -->
-							    <% for (Round r : expiredRounds) { %>
-							        <li>
-							            <span class="dropdown-item text-muted" style="pointer-events: none;">
-							                <%= r.getRoundCount() %>회차 (만료) - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
-							            </span>
-							        </li>
-							    <% } %>
+									<li class="dropdown-item text-muted">※ 현재 신청 가능한 회차 없음</li>
+									<li><hr class="dropdown-divider"></li>
+								<% } %>
+
+								<% for (Round r : availableRounds) { %>
+									<li><a class="dropdown-item round-option" href="#" data-roundcount="<%= r.getRoundCount() %>">
+									<%= r.getRoundCount() %>회차 - <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(r.getRoundDate()) %>
+								</a></li>
+								<% } %>
+
+								<% if (!expiredRounds.isEmpty()) { %>
+									<li><hr class="dropdown-divider"></li>
+									<% for (Round r : expiredRounds) { %>
+									<li><span class="dropdown-item text-muted"><%= r.getRoundCount() %>회차 (만료)</span></li>
+									<% } %>
+								<% } %>
 							</ul>
-						</div>                 
-                            <%-- <% if (selectedRound != null) { %>
-							    <button class="btn btn-outline-primary btn-sm">참여하기</button>
-							<% } else { %>
-							    <button class="btn btn-outline-secondary btn-sm" disabled>참여 불가</button>
-							<% } %>   --%> 
-							    
-                        <button type="button"
-						        class="btn btn-sm <%= isLiked ? "btn-danger" : "btn-outline-secondary" %>"
-						        data-prono="<%= program.getProNo() %>">
-						    ♥ <span class="like-count"><%= program.getLikeCount() %></span>
-						</button>
-                        
-                        <div id="protime-section">
-	                        <% if (proTimes != null && !proTimes.isEmpty()) { %>
-							    <div class="card mb-4">
-							        <div class="card-header fw-bold">체험 가능 시간</div>
-							        <div class="card-body">
-							            <div class="d-flex flex-wrap gap-2">
-							                <% for (ProTime pt : proTimes) { 
-								                   boolean applied = false;
-											       for (Application app : userApps) {
-											           if (app.getTimeNoRef() == pt.getTimeNo() && app.isApplyState()) {
-											               applied = true;
-											               break;
-											           }
-											       }
-		       								%>
-							                    <button type="button"
-							                    		class="btn <%= applied ? "btn-success" : "btn-outline-secondary" %> protime-btn"
-											            data-timeno="<%= pt.getTimeNo() %>">
-											        <%= timeFormat.format(pt.getStartTime()) %> ~ <%= timeFormat.format(pt.getEndTime()) %>
-											    </button>
-							                <% } %>
-							            </div>
-							        </div>
-							    </div>
-							<% } else { %>
-							    <p class="text-muted">시간 정보가 없습니다.</p>
-							<% } %>
 						</div>
-                        <!-- 기업 회원의 프로그램 수정과 관련하여 -->
-                        <% if (isMyProgram) { %>
-						    <jsp:include page="/WEB-INF/views/program/editComponent.jsp" />
+
+						<!-- 좋아요 버튼 -->
+						<button type="button" class="btn btn-sm <%= isLiked ? "btn-danger" : "btn-outline-secondary" %> rounded-pill"
+								data-prono="<%= program.getProNo() %>">
+							♥ <span class="like-count"><%= program.getLikeCount() %></span>
+						</button>
+					</div>
+
+					<!-- 시간 정보 -->
+					<div id="protime-section" class="mt-4">
+						<% if (proTimes != null && !proTimes.isEmpty()) { %>
+						<div class="card border rounded-3">
+							<div class="card-header bg-light fw-semibold">체험 가능 시간</div>
+							<div class="card-body d-flex flex-wrap gap-2">
+								<% for (ProTime pt : proTimes) {
+									boolean applied = false;
+									for (Application app : userApps) {
+										if (app.getTimeNoRef() == pt.getTimeNo() && app.isApplyState()) {
+											applied = true; break;
+										}
+									}
+								%>
+								<button type="button"
+										class="btn <%= applied ? "btn-success" : "btn-outline-secondary" %> protime-btn"
+										data-timeno="<%= pt.getTimeNo() %>">
+									<%= timeFormat.format(pt.getStartTime()) %> ~ <%= timeFormat.format(pt.getEndTime()) %>
+								</button>
+								<% } %>
+							</div>
+						</div>
+						<% } else { %>
+							<p class="text-muted">시간 정보가 없습니다.</p>
 						<% } %>
-                        
+					</div>
+					<!-- 기업 회원의 프로그램 수정과 관련하여 -->
+					<% if (isMyProgram) { %>
+						<jsp:include page="/WEB-INF/views/program/editComponent.jsp" />
+					<% } %>
                     </div>
                 </div>
             </div>
@@ -172,80 +148,84 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
     </div>
     <% } else { %>
     	<p class="text-muted">※ 유효한 회차 정보가 없습니다.</p>
-  	<% } 
+  	<% }
    	} else { %>
         <p>프로그램 정보가 없습니다.</p>
     <% } %>
 
-<!-- 회차 정보 드롭다운 -->    
-<style>
-.round-dropdown-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-</style>
 
-<!-- 모든 회차 만료되었다면 protime 버튼 비활성화 -->
-<script>
-$(function() {
-    $(document).on("click", "#protime-section button", function(e) {
-        <% if (noAvailableRounds) { %>
-        e.preventDefault();
-        return;
-        <% } %>
-    });
-});
-</script>
-    
+	<!-- 모든 회차 만료되었다면 protime 버튼 비활성화 -->
+	<script>
+	$(function() {
+		$(document).on("click", "#protime-section button", function(e) {
+			<% if (noAvailableRounds) { %>
+			e.preventDefault();
+			return;
+			<% } %>
+		});
+	});
+	</script>
+
+	<!-- 프로그램 요약 -->
     <% if (selectedRound != null) { %>
-	<div class="card mb-4">
-	    <div class="card-header fw-bold">프로그램 요약</div>
-	    <div class="card-body" id="program-descript3">
-	        <p><strong>목표:</strong> <%= selectedRound.getGoal() %></p>
-	        <p><strong>프로그램 핵심 요약:</strong> <%= selectedRound.getSummary() %></p>
-	        <p><strong>유의사항:</strong> <%= selectedRound.getNote()!=null?selectedRound.getNote():"없음" %></p>
-	        <p><strong>상세 내용:</strong></p>
-	        <div class="border p-3 bg-light"><%= selectedRound.getDetail() %></div>
-	    </div>
-	</div>
+		<div class="card mb-5 shadow-sm border-0 rounded-4">
+			<div class="card-header bg-white fw-semibold">프로그램 요약</div>
+			<div class="card-body" id="program-descript3">
+				<p><strong>목표:</strong> <%= selectedRound.getGoal() %></p>
+				<p><strong>프로그램 핵심 요약:</strong> <%= selectedRound.getSummary() %></p>
+				<p><strong>유의사항:</strong> <%= selectedRound.getNote()!=null ? selectedRound.getNote() : "없음" %></p>
+				<p><strong>상세 내용:</strong></p>
+				<div class="bg-light p-3 rounded-2 border"><%= selectedRound.getDetail() %></div>
+			</div>
+		</div>
 	<% } %>
-	
-	<!-- 지도 영역 -->
-	<div class="program-map">
-	    <h3>지도</h3>
-	
-	    <!-- 지도에 필요한 정보들 JSP에서 request에 전달 -->
-	    <!-- 지도 표시용 모듈(mapComponent.jsp)을 include 하기 전 필요한 정보들을 request에 담아야 함 -->
-	    <%
-		    request.setAttribute("programName", program.getProName());            // 프로그램 이름
-		    request.setAttribute("programLocation", program.getProLocation());    // 주소
-		    request.setAttribute("programLat", program.getProLatitude());         // 위도 (double)
-		    request.setAttribute("programLng", program.getProLongitude());        // 경도 (double)
-	    %>
-	
-	    <!-- 지도 모듈 (mapComponent.jsp) include 하여 지도 컴포넌트 삽입 -->
-	    <jsp:include page="/WEB-INF/views/program/mapComponent.jsp" />
-	</div>
-	
-	
-	<!-- 채팅방 영역 -->
-	<div class="program-chat">
-	    <h3>단체 채팅방</h3>
-		<jsp:include page="/WEB-INF/views/program/chat.jsp" />
-	    <div class="chat-placeholder">※ 프로그램 번호에 따른 채팅방 영역은 조만간 할 에정.. ※</div>
-	</div>
-	
-	<!-- Q&A 영역 -->
-	<div class="program-qna">
-	    <%
-	    	Company company = com.giljobe.company.model.service.CompanyService.companyService().searchCompanyByNo(program.getComNoRef());
-	    	List<QNA> qnaList = com.giljobe.qna.model.service.QNAService.qnaService().searchQNAByProNo(program.getProNo());
-		    request.setAttribute("qnaList", qnaList);
-		%>
-		<jsp:include page="/WEB-INF/views/program/qnaComponent.jsp" />
 
+	<!-- 지도 영역 -->
+
+	<div class="card mb-5 border-0 rounded-4 shadow-sm">
+		<div class="card-header fw-bold bg-white">지도</div>
+		<div class="card-body">
+			<%
+				request.setAttribute("programName", program.getProName());            // 프로그램 이름
+				request.setAttribute("programLocation", program.getProLocation());    // 주소
+				request.setAttribute("programLat", program.getProLatitude());         // 위도 (double)
+				request.setAttribute("programLng", program.getProLongitude());        // 경도 (double)
+			%>
+			<jsp:include page="/WEB-INF/views/program/mapComponent.jsp" />
+		</div>
 	</div>
-    
+
+
+
+	<!-- 채팅방 영역 -->
+<%--	<div class="card mb-5 border-0 rounded-4 shadow-sm">--%>
+<%--		<div class="card-header fw-bold bg-white">단체 채팅방</div>--%>
+<%--		<div class="card-body">--%>
+<%--			<jsp:include page="/WEB-INF/views/program/chat.jsp" />--%>
+<%--		</div>--%>
+<%--	</div>--%>
+	<jsp:include page="/WEB-INF/views/program/chat.jsp" />
+
+	<!-- Q&A 영역 -->
+	<%
+		Company company = com.giljobe.company.model.service.CompanyService.companyService().searchCompanyByNo(program.getComNoRef());
+		List<QNA> qnaList = com.giljobe.qna.model.service.QNAService.qnaService().searchQNAByProNo(program.getProNo());
+		request.setAttribute("qnaList", qnaList);
+	%>
+	<jsp:include page="/WEB-INF/views/program/qnaComponent.jsp" />
+<%--	<div class="card mb-5 border-0 rounded-4 shadow-sm">--%>
+<%--		<div class="card-header fw-bold bg-white">Q&A</div>--%>
+<%--		<div class="card-body">--%>
+<%--			<%--%>
+<%--				Company company = com.giljobe.company.model.service.CompanyService.companyService().searchCompanyByNo(program.getComNoRef());--%>
+<%--				List<QNA> qnaList = com.giljobe.qna.model.service.QNAService.qnaService().searchQNAByProNo(program.getProNo());--%>
+<%--				request.setAttribute("qnaList", qnaList);--%>
+<%--			%>--%>
+<%--			<jsp:include page="/WEB-INF/views/program/qnaComponent.jsp" />--%>
+<%--		</div>--%>
+<%--	</div>--%>
+
+
 </section>
 
 <script>
@@ -260,7 +240,7 @@ $(function() {
             url: "<%=request.getContextPath()%>/program/roundinfo",
             method: "GET",
             data: { proNo: proNo, roundCount: roundCount },
-            success: function(data) {            	
+            success: function(data) {
                 $("#selected-round-label").text(data.roundCount + "회차");
                 $("#round-dropdown-label").text(data.roundCount + "회차");
                 $("#program-descript1").html(`
@@ -276,7 +256,7 @@ $(function() {
                         <p><strong>유의사항:</strong> \${data.note!=null?data.note:'없음'}</p>
                         <p><strong>상세 내용:</strong></p>
                         <div class="border p-3 bg-light">\${data.detail}</div>`);
-                
+
 	         	 // 시간 리스트 갱신
                 let html = "";
                 if (data.proTimes.length > 0) {
@@ -284,7 +264,7 @@ $(function() {
                                 <div class="card-header fw-bold">체험 가능 시간</div>
                                 <div class="card-body">
                                     <div class="d-flex flex-wrap gap-2">`;
-         
+
                     data.proTimes.forEach(e => {
                         html += `<button class="btn btn-outline-secondary protime-btn"
                                          data-timeno="\${e.timeNo}">
@@ -312,7 +292,7 @@ $(document).on("click", ".protime-btn", function(e) {
         alert("현재 회차는 이미 날짜가 지나서 신청할 수 없습니다.");
         return;
     <% } %>
-	
+
 	const timeNo = $(this).data("timeno");
 
     <%-- Case 1: 로그인하지 않은 사용자 --%>
@@ -333,7 +313,7 @@ $(document).on("click", ".protime-btn", function(e) {
 	        const [startHour, startMin] = startText.split(":").map(Number);
 	        const startTime = new Date();
 	        startTime.setHours(startHour, startMin, 0, 0);
-	
+
 	        if (now > startTime) {
 	            alert("이미 시간이 지나서 신청이 불가합니다.");
 	            return;
@@ -341,7 +321,7 @@ $(document).on("click", ".protime-btn", function(e) {
 	            alert("※ 해당 체험은 당일에 이루어지는 것입니다. 참고바랍니다.");
 	        }
 	    }
-	
+
 	    // 2️ 현재 신청 인원 수 확인 후 최대인원 비교
 	    $.get(contextPath + "/ajax/app/count", { timeNo }, function(currentCount) {
 	        const maxPeople = <%= selectedRound.getRoundMaxPeople() %>;
@@ -349,7 +329,7 @@ $(document).on("click", ".protime-btn", function(e) {
 	            alert("신청 가능한 최대 인원이 이미 찼습니다.");
 	            return;
 	        }
-	
+
 	        // 3️ 실제 신청 로직
 	        $.get(contextPath + "/ajax/app/check", { timeNo }, function(hasApplied) {
 	            if (hasApplied) {
@@ -387,7 +367,7 @@ $(document).on("click", ".protime-btn", function(e) {
 	        alert("타기업의 신청 명단 확인은 불가합니다.");
 	    <% } %>
 	<% } %>
-    
+
 });
 </script>
 

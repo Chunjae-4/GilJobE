@@ -3,51 +3,61 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-<h2 class="my-4">새로운 프로그램 등록</h2>
-
-<form action="<%=request.getContextPath()%>/program/insert" method="post" enctype="multipart/form-data">
-    <!-- 프로그램명 -->
-    <div class="mb-3">
-        <label class="form-label">📌 프로그램명 *</label>
-        <input type="text" name="proName" class="form-control" required>
+<section class="container py-5">
+    <div class="mb-4 text-center">
+        <h2 class="fw-bold">새로운 프로그램 등록</h2>
+        <p class="text-muted">기본 정보를 입력하고, 다음 단계에서 회차를 추가해요.</p>
     </div>
 
-    <!-- 직업 유형 -->
-    <div class="mb-3">
-        <label class="form-label">👨‍💻 직업 유형 *</label>
-        <input type="text" name="proType" class="form-control" required>
-    </div>
+    <form action="<%=request.getContextPath()%>/program/insert" method="post" enctype="multipart/form-data"
+          class="bg-white p-4 rounded-4 shadow-sm">
 
-    <!-- 체험 지역 -->
-    <div class="mb-3">
-        <label class="form-label">📍 체험 지역 (도로명주소[+ 건물명]) *</label>
-        <input type="text" name="proLocation" class="form-control" required>
-    </div>
+        <!-- 프로그램명 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">📌 프로그램명 *</label>
+            <input type="text" name="proName" class="form-control" placeholder="예: 미래 요리사 체험" required>
+        </div>
 
-    <!-- 카테고리 선택 -->
-    <div class="mb-3">
-        <label class="form-label">🧭 직업 유형 분류 *</label>
-        <select name="proCategory" class="form-select" required>
-            <option disabled selected>-- 선택 --</option>
-            <%
-                for (ProCategory cat : ProCategory.values()) {
-            %>
+        <!-- 직업 유형 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">👨‍💻 직업 유형 *</label>
+            <input type="text" name="proType" class="form-control" placeholder="예: 요리사, 바리스타 등" required>
+        </div>
+
+        <!-- 체험 지역 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">📍 체험 지역 *</label>
+            <input type="text" name="proLocation" class="form-control" placeholder="주소 검색을 클릭하세요" required readonly>
+            <div class="form-text">주소는 도로명 주소 기준으로 입력됩니다.</div>
+        </div>
+
+        <!-- 직업 카테고리 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">🧭 직업 분류 *</label>
+            <select name="proCategory" class="form-select" required>
+                <option disabled selected>-- 선택 --</option>
+                <%
+                    for (ProCategory cat : ProCategory.values()) {
+                %>
                 <option value="<%=cat.name()%>"><%=cat.name().replace("_", " ")%></option>
-            <%
-                }
-            %>
-        </select>
-    </div>
+                <%
+                    }
+                %>
+            </select>
+        </div>
 
-    <!-- 대표 이미지 업로드 -->
-    <div class="mb-3">
-        <label class="form-label">🖼 대표 이미지 *</label>
-        <input type="file" name="programImage" class="form-control" accept="image/*" required>
-        <small class="text-muted">대표 이미지는 1개만 업로드 가능합니다.</small>
-    </div>
+        <!-- 대표 이미지 -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">🖼 대표 이미지 *</label>
+            <input type="file" name="programImage" class="form-control" accept="image/*" required>
+            <div class="form-text">대표 이미지는 1장만 업로드해주세요. (JPG, PNG 권장)</div>
+        </div>
 
-    <button type="submit" class="btn btn-success">회차 입력으로 이동 →</button>
-</form>
+        <div class="text-end">
+            <button type="submit" class="btn btn-success px-4">회차 입력으로 이동 →</button>
+        </div>
+    </form>
+</section>
 
 <script src="https://unpkg.com/@egjs/jquery-pa" defer></script>
 <!-- 네이버 주소 검색 API -->
