@@ -2,6 +2,7 @@ package com.giljobe.chatting.model.service;
 
 import com.giljobe.chatting.model.dao.ChatLogDao;
 import com.giljobe.chatting.model.dto.ChatLog;
+import com.giljobe.chatting.model.dto.Message;
 import com.giljobe.common.LoggerUtil;
 
 import java.sql.Connection;
@@ -29,12 +30,12 @@ public class ChatLogService {
         return result;
     }
 
-    public List<ChatLog> selectChatsByProgram(int proNo) {
+    public List<Message> selectChatsByProgramNo(int proNo) {
         Connection conn = getConnection();
-        List<ChatLog> chatLogList = dao.selectChatsByProgram(conn, proNo);
-        LoggerUtil.debug("ChatLogService selectChatsByProgram result: " + chatLogList);
+        List<Message> messageList = dao.selectChatsByProgramNo(conn, proNo);
+        LoggerUtil.debug("ChatLogService selectChatsByProgramNo messageList result: " + messageList);
         close(conn);
-        return chatLogList;
+        return messageList;
     }
 
 }

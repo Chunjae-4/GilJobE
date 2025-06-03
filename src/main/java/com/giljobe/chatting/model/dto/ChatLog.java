@@ -16,4 +16,6 @@ public class ChatLog {
     private int comNo;
     private String chatContent;
     private Date chatDateTime;
+    private String userNickName;
+    private String comName;
 }

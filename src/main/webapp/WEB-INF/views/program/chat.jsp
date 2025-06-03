@@ -61,10 +61,14 @@
 
 
 <script src="${pageContext.request.contextPath}/resources/js/chatting/model/Message.js"></script>
-<%--<script src="<%=request.getContextPath()%>/resources/js/jquery-3.7.1.min.js"></script>--%>
+
 <script>
+    //TODO: 첫 입장시 메세지가 보이지 않도록 세팅해서 onOpen에 데이터를 보낸다
     let contextPath = "<%=request.getContextPath()%>";
     let socket = new WebSocket("ws://" + location.host + contextPath + "/program/detail");
+    // let socket = new WebSocket("wss://" + "chunjaefullstack.r-e.kr" + contextPath + "/program/detail");
+
+
     let sender = "";
     let senderType = "";
     let isUser = false;
@@ -121,6 +125,10 @@
     //open 이벤트시
     socket.onopen = (e) => {
         console.log("client onopen");
+        <%LoggerUtil.debug("Client onOpen");%>
+        const initMessage = new Message("Init", -1, -1, "init", "", "", msgProgramNo);
+
+        socket.send(initMessage.msgToJson());
     }
 
     //onmessage 이벤트시
@@ -130,7 +138,6 @@
         msgPrint(message)
     }
     const sendMessage = (e) => {
-        console.log("sendMessage");
         console.log("senderType: " + senderType);
 
         if (senderType === "User" || senderType === "Admin") {
@@ -140,7 +147,7 @@
 
         } else if (senderType === "Company") {
             const msgCompanyNo = <%=chatLoginCompany != null ? chatLoginCompany.getComNo() : 0%>;
-            const chatMessage = new Message(senderType, -1, 0, sender, '', e, msgProgramNo);
+            const chatMessage = new Message(senderType, -1, msgCompanyNo, sender, '', e, msgProgramNo);
             socket.send(chatMessage.msgToJson());
         }
     }
