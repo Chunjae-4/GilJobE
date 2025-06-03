@@ -3,6 +3,9 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+
 <section class="bg-body-tertiary py-5">
   <div class="container">
     <div class="row justify-content-center g-4">
@@ -23,7 +26,7 @@
             <!-- 입력 필드 -->
             <div class="form-floating mb-3">
               <input type="text" class="form-control" name="userId" id="userId" placeholder="아이디"
-                     value="<%=savedUser != null ? savedUser : "" %>">
+                     <%-- value="<%=savedUser != null ? savedUser : "" %>" --%>>
               <label for="userId">아이디</label>
             </div>
 
@@ -34,7 +37,7 @@
 
             <div class="form-check mb-4 text-start">
               <input class="form-check-input" type="checkbox" name="userSave" id="userSave"
-                <%=savedUser != null ? "checked" : "" %>>
+             <%--  <%=savedUser != null ? "checked" : "" %> --%>>
               <label class="form-check-label" for="userSave">아이디 저장</label>
             </div>
 
@@ -67,7 +70,7 @@
             <!-- 입력 필드 -->
             <div class="form-floating mb-3">
               <input type="text" class="form-control" name="companyId" id="companyId" 
-               value="<%=savedCompany != null ? savedCompany : "" %>" placeholder="아이디">
+              <%--  value="<%=savedCompany != null ? savedCompany : "" %>" --%> placeholder="아이디">
               <label for="companyId">아이디</label>
             </div>
 
@@ -78,7 +81,7 @@
 
             <div class="form-check mb-4 text-start">
               <input class="form-check-input" type="checkbox" name="companySave" id="companySave"
-  						<%= savedCompany != null ? "checked" : "" %>>
+  						<%-- <%= savedCompany != null ? "checked" : "" %> --%>>
               <label class="form-check-label" for="companySave">아이디 저장</label>
             </div>
 
@@ -103,7 +106,47 @@
 <%@ include file="/WEB-INF/views/common/companyModal.jsp" %>
   
 </section>
-
+<script>
+	//박스 체크할때마다 체크값을 쿠키에 저장하고 풀리면 쿠키에서 값을 지움
+	$(document).ready(function() {
+	
+		  $("#userSave").on("change", function() {//체크박스가 바뀌었어
+		    if ($("#userSave").prop("checked") && $.trim($("#userId").val())) {
+		 //클라이언트가 체크박스를 체크했고 체크되어있으면서 공백 지운 값이 만약 있 다 면
+		      Cookies.set("savedUser", $.trim($("#userId").val()), { expires: 7 });
+		//쿠키 여기서 설정
+		    } else {
+		      Cookies.remove("savedUser");
+		      //체크가 풀리면 쿠키삭제
+		    }
+		  });
+	
+		  $("#companySave").on("change", function() {
+		    if ( $("#companySave").prop("checked") && $.trim($("#companyId").val())) {
+		      Cookies.set("savedCompany", $.trim($("#companyId").val()), { expires: 7 });
+		    } else {
+		      Cookies.remove("savedCompany");
+		    }
+		  });
+		});
+	
+	//그 값이 있다면 아이디 창에 넣고 체크박스도 풀어
+	$(document).ready(function() {
+	    const savedUser = Cookies.get("savedUser");
+	    if (savedUser) {
+		//쿠키가 존재한다면 아이디창에 쿠키의 키값으로 저장된 밸류값을 집어넣어
+	      $("#userId").val(savedUser);
+		//체크박스도 체크되게 바꿔야해
+	      $("#userSave").prop("checked", true);
+	    }
+	
+	    const savedCompany = Cookies.get("savedCompany");
+	    if (savedCompany) {
+	      $("#companyId").val(savedCompany);
+	      $("#companySave").prop("checked", true);
+	    }
+	  });
+</script>
 
 <style>
   body {

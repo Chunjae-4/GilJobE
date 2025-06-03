@@ -31,24 +31,22 @@ public class LoginCompanyServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		String companySave = request.getParameter("companySave");//value값을 지정하지 않으면 체크됏을때  on값을 넘겨줌
-		System.out.println(companySave);
 		String id = request.getParameter("companyId");
 		String pw = request.getParameter("companyPw");
-		if(companySave!=null) {
-			System.out.println(request.getParameter("companyId"));
-			//체크되면 value가 담기지만 없으면 null이 담김
-			
-			Cookie cookie = new Cookie("companySave",request.getParameter("companyId"));
-			cookie.setMaxAge(60*60*24);//생명주기
-			cookie.setPath("/");//이거 꼭 전체로 해야하나?
-			response.addCookie(cookie);//response에 쿠키담기
-		
-		}else {
-			Cookie cookie = new Cookie("companySave",request.getParameter("companyId"));
-			cookie.setMaxAge(0);//생명주기
-			cookie.setPath("/");//경로설정
-			response.addCookie(cookie);//response에 쿠키담기
-		}
+//		if(companySave!=null) {
+//			//체크되면 value가 담기지만 없으면 null이 담김
+//			
+//			Cookie cookie = new Cookie("companySave",request.getParameter("companyId"));
+//			cookie.setMaxAge(60*60*24);//생명주기
+//			cookie.setPath("/");//이거 꼭 전체로 해야하나?
+//			response.addCookie(cookie);//response에 쿠키담기
+//		
+//		}else {
+//			Cookie cookie = new Cookie("companySave",request.getParameter("companyId"));
+//			cookie.setMaxAge(0);//생명주기
+//			cookie.setPath("/");//경로설정
+//			response.addCookie(cookie);//response에 쿠키담기
+//		}
 		
 		//아이디와 비밀번호를 받아서 
 		Company company=CompanyService.companyService().loginCompany(id,pw);

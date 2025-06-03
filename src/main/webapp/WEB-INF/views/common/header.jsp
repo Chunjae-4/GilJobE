@@ -7,7 +7,7 @@
 	Company loginCompany = (Company)session.getAttribute("company");
 	
 	
-	Cookie[] cookies = request.getCookies();//쿠키 싹다 가져오기
+	/* Cookie[] cookies = request.getCookies();//쿠키 싹다 가져오기
 	String savedUser = null;
 	String savedCompany = null;
 	if(cookies!=null){
@@ -21,7 +21,7 @@
 				break;
 			}
 		}
-	}
+	} */
 %>
 <!DOCTYPE html>
 <html>
