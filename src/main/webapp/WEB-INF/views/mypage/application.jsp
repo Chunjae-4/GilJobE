@@ -3,33 +3,49 @@
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
 
-<%
-	List<ApplicationProgram> apppro =(List<ApplicationProgram>)request.getAttribute("applicationProgram");
-	User user = (User)session.getAttribute("user");
 
-%>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<table class="table table-bordered table-hover table-striped align-middle">
-  <thead class="table-light">
-    <tr>
-      <th scope="col">프로그램 이름</th>
+<%
+  List<ApplicationProgram> apppro = (List<ApplicationProgram>) request.getAttribute("applicationProgram");
+%>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle shadow-sm border rounded-3 overflow-hidden">
+    <thead class="table-light">
+    <tr class="text-center">
+      <th scope="col">📌 프로그램 이름</th>
       <th scope="col">회차</th>
       <th scope="col">시작 날짜</th>
       <th scope="col">종료 날짜</th>
     </tr>
-  </thead>
-  <tbody>
-    <% for(ApplicationProgram a : apppro) { %>
+    </thead>
+    <tbody>
+    <% if (apppro != null && !apppro.isEmpty()) {
+      for (ApplicationProgram a : apppro) { %>
     <tr>
-      <td><a href="<%=request.getContextPath()%>/program/detail?proNo=<%=a.getProNo()%>"><%= a.getProName() %></a></td>
-      <td><%= a.getRoundCount() %></td>
-      <td><%= a.getStartTime() %></td>
-      <td><%= a.getEndTime() %></td>
+      <td>
+        <a href="<%=request.getContextPath()%>/program/detail?proNo=<%=a.getProNo()%>"
+           class="text-decoration-none text-primary fw-semibold">
+          <%= a.getProName() %>
+        </a>
+      </td>
+      <td class="text-center"><%= a.getRoundCount() %></td>
+      <td class="text-center"><%= a.getStartTime() %></td>
+      <td class="text-center"><%= a.getEndTime() %></td>
+    </tr>
+    <% }
+    } else { %>
+    <tr>
+      <td colspan="4" class="text-center text-muted py-4">
+        현재 신청한 프로그램이 없습니다.
+      </td>
     </tr>
     <% } %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
+
 
 <%-- <script>
 

@@ -53,7 +53,7 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
 				<!-- 프로그램 수정 후에 이미지 캐시 무력화용 -->
 				<img src="<%=request.getContextPath() + imageUrl %>?v=<%=System.currentTimeMillis()%>"
 					 class="w-100 object-fit-cover rounded-start"
-					 style="height: 450px;"
+					 style="height: 480px;"
 					 alt="프로그램 이미지">
             </div>
             <!-- 텍스트 정보 -->
@@ -198,12 +198,6 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
 
 
 	<!-- 채팅방 영역 -->
-<%--	<div class="card mb-5 border-0 rounded-4 shadow-sm">--%>
-<%--		<div class="card-header fw-bold bg-white">단체 채팅방</div>--%>
-<%--		<div class="card-body">--%>
-<%--			<jsp:include page="/WEB-INF/views/program/chat.jsp" />--%>
-<%--		</div>--%>
-<%--	</div>--%>
 	<jsp:include page="/WEB-INF/views/program/chat.jsp" />
 
 	<!-- Q&A 영역 -->
@@ -213,17 +207,6 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
 		request.setAttribute("qnaList", qnaList);
 	%>
 	<jsp:include page="/WEB-INF/views/program/qnaComponent.jsp" />
-<%--	<div class="card mb-5 border-0 rounded-4 shadow-sm">--%>
-<%--		<div class="card-header fw-bold bg-white">Q&A</div>--%>
-<%--		<div class="card-body">--%>
-<%--			<%--%>
-<%--				Company company = com.giljobe.company.model.service.CompanyService.companyService().searchCompanyByNo(program.getComNoRef());--%>
-<%--				List<QNA> qnaList = com.giljobe.qna.model.service.QNAService.qnaService().searchQNAByProNo(program.getProNo());--%>
-<%--				request.setAttribute("qnaList", qnaList);--%>
-<%--			%>--%>
-<%--			<jsp:include page="/WEB-INF/views/program/qnaComponent.jsp" />--%>
-<%--		</div>--%>
-<%--	</div>--%>
 
 
 </section>

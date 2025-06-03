@@ -2,47 +2,46 @@
 <%@page import="com.giljobe.program.model.dto.Program"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" import="com.giljobe.common.Constants"%>
+
 <%
-	List<Program> programs=(List<Program>)request.getAttribute("programs");
-	User user = (User)session.getAttribute("user");
+	List<Program> programs = (List<Program>) request.getAttribute("programs");
+	User user = (User) session.getAttribute("user");
 %>
-<ul>
-<%for(Program p : programs){%>
-	<li id="proNo-<%=p.getProNo()%>"><%=p.getProName() %><button onclick="cancelLove(<%=p.getProNo()%>,'<%=user.getUserNo()%>')">좋지 않아요</button></li>
-<%}%>
+
+<ul class="list-group mb-4">
+	<% for (Program p : programs) { %>
+	<li class="list-group-item d-flex justify-content-between align-items-center"
+		id="proNo-<%=p.getProNo()%>">
+		<span><%= p.getProName() %></span>
+		<button class="btn btn-outline-danger btn-sm"
+				onclick="cancelLove(<%=p.getProNo()%>, <%=user.getUserNo()%>)">
+			❤️ 취소
+		</button>
+	</li>
+	<% } %>
 </ul>
+
+
 <script>
+	const cancelLove = (proNo, userNo) => {
+		if (!confirm("정말 좋아요를 취소하시겠습니까?")) return;
 
-	const cancelLove=(proNo,userNo)=>{
-
-		if(confirm("정말 취소하시겠습니까?")){
-			//취소하겠다
-			
-			$.ajax({
-				url : "<%=request.getContextPath()%>/love/cancellove",
-				type : "post",
-				dataType: "json",
-				data : {"proNo" : proNo ,"userNo":userNo},
-				success : function (response){
-					//url타고 값이 넘어온다면 실행될 로직
-					
-					 if(response.result === 1) {
-					      alert("좋아요 취소 성공");
-					      $("#proNo-"+proNo).remove();
-					    } else {
-					      alert("좋아요 취소 실패");
-					    }
-				},
-				error : function(){
-					alert("프로그램이 당신을 안놓아줍니다")
+		$.ajax({
+			url: "<%=request.getContextPath()%>/love/cancellove",
+			type: "POST",
+			dataType: "json",
+			data: { proNo: proNo, userNo: userNo },
+			success: function(response) {
+				if (response.result === 1) {
+					alert("좋아요가 취소되었습니다.");
+					document.getElementById("proNo-" + proNo)?.remove();
+				} else {
+					alert("취소 처리에 실패했습니다.");
 				}
-			})
-
-			
-		}else{
-			//취소 안하겠단
-			return;
-		}
-	}
-
+			},
+			error: function() {
+				alert("서버 오류: 취소 요청이 실패했습니다.");
+			}
+		});
+	};
 </script>

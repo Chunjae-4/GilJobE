@@ -13,7 +13,7 @@
 					<h4 class="fw-bold mb-2">마이페이지</h4>
 					<hr class="my-4">
 					<div class="nav flex-column nav-pills gap-2" id="mypageMenu">
-						<button class="nav-link text-start active" data-menu="userinfo" onclick="sideMenu('userinfo')">내 정보 관리</button>
+						<button class="nav-link text-start" data-menu="userinfo" onclick="sideMenu('userinfo')">내 정보 관리</button>
 						<button class="nav-link text-start" data-menu="applist" onclick="sideMenu('applist')">신청 프로그램</button>
 						<button class="nav-link text-start" data-menu="lovelist" onclick="sideMenu('lovelist')">좋아요</button>
 						<button class="nav-link text-start" data-menu="qnalist" onclick="sideMenu('qnalist')">문의 내역</button>

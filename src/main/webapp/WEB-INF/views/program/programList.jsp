@@ -42,6 +42,20 @@ String pageUri = (String) request.getAttribute("pageUri");
     </form>
 </section>
 
+<% if(loginCompany != null) { %>
+<section class="container mb-5">
+    <div class="p-4 p-md-5 bg-light rounded-4 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h4 class="fw-bold mb-1">진로 체험 프로그램 등록</h4>
+            <p class="mb-0 text-muted">새로운 프로그램을 등록하여 청소년에게 새로운 꿈을 심어주세요.</p>
+        </div>
+        <a href="<%=request.getContextPath()%>/program/selectform" class="btn btn-primary btn-lg rounded-pill">
+            ✏️ 프로그램 등록
+        </a>
+    </div>
+</section>
+<% } %>
+
 <form method="get" action="<%=request.getContextPath()%>/program/programlist" id="filterForm" class="mb-5">
     <div class="container d-flex justify-content-end flex-wrap gap-3 align-items-center">
         <label for="categorySelect" class="form-label mb-0 fw-semibold text-secondary">카테고리 선택</label>
@@ -60,19 +74,6 @@ String pageUri = (String) request.getAttribute("pageUri");
     </div>
 </form>
 
-<% if(loginCompany != null) { %>
-<section class="container mb-5">
-    <div class="p-4 p-md-5 bg-light rounded-4 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
-        <div>
-            <h4 class="fw-bold mb-1">진로 체험 프로그램 등록</h4>
-            <p class="mb-0 text-muted">새로운 프로그램을 등록하여 청소년에게 새로운 꿈을 심어주세요.</p>
-        </div>
-        <a href="<%=request.getContextPath()%>/program/selectform" class="btn btn-primary btn-lg rounded-pill">
-            ✏️ 프로그램 등록
-        </a>
-    </div>
-</section>
-<% } %>
 
 <section class="bg-body-tertiary py-5">
     <div class="container">
