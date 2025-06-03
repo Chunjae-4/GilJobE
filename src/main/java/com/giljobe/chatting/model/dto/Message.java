@@ -3,6 +3,9 @@ package com.giljobe.chatting.model.dto;
 import com.google.gson.Gson;
 import lombok.*;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -23,7 +26,7 @@ public class Message {
 
     //이건 프로그램 넘버
     private int proNo;
-
+    private Timestamp dateTime;
     public String toJson() {
         return new Gson().toJson(this);
     }

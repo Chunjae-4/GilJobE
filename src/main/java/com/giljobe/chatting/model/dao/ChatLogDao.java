@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -97,7 +98,6 @@ public class ChatLogDao {
             senderType = "Unknown";
             nickName = "알 수 없음";
         }
-
         return Message.builder()
                 .senderType(senderType)
                 .sender(nickName)
@@ -105,6 +105,7 @@ public class ChatLogDao {
                 .comNo(c.getComNo())
                 .data(c.getChatContent())
                 .proNo(c.getProNo())
+                .dateTime(c.getChatDateTime())
                 .build();
     }
 
@@ -117,6 +118,7 @@ public class ChatLogDao {
                 .chatContent(rs.getString("chat_content"))
                 .userNickName(rs.getString("sender_nick"))
                 .comName(rs.getString("sender_com"))
+                .chatDateTime(rs.getTimestamp("chat_datetime"))
                 .build();
     }
 

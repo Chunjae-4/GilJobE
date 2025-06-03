@@ -3,6 +3,7 @@ package com.giljobe.chatting.model.dto;
 import lombok.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Builder
 @Data
@@ -15,7 +16,7 @@ public class ChatLog {
     private int proNo;
     private int comNo;
     private String chatContent;
-    private Date chatDateTime;
+    private Timestamp chatDateTime;
     private String userNickName;
     private String comName;
 }

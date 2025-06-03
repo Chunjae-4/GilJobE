@@ -191,10 +191,14 @@
         const align = isMine ? "text-end" : "text-start";
         const bgClass = isMine ? "bg-primary text-white" : "bg-white";
 
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        data.sender
-        sender
+        const date = new Date(data.dateTime); // "2025-05-27T16:32:00"
+        let timeStr;
+        if (!isNaN(date)) {
+           timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        } else {
+            console.warn("Invalid dateTime:", data.dateTime);
+        }
+
         const html =
             "<div class='message-row " + align + "'>" +
                 "<div class= 'message-bubble " + bgClass +"'>" +
