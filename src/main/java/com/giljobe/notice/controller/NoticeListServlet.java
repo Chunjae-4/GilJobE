@@ -29,7 +29,7 @@ public class NoticeListServlet extends HttpServlet {
 		} catch (NumberFormatException e) {
 			cPage = 1;
 		}
-		int numPerPage = 5;
+		int numPerPage = 10;
 
 		//1. 전체 데이터 수 가져오기
 		int totalCount = NoticeService.getInstance().noticeCount();
