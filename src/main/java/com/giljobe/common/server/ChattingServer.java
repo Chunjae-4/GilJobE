@@ -39,11 +39,16 @@ public class ChattingServer {
         Message msg = new Gson().fromJson(data, Message.class);
         LoggerUtil.debug("Chat Server onMessage: " + msg);
         ChatLog chatLog = null;
+
         //getSenderType == Init -> (proNo를 받아서 쏴줌? )Data load, send
         if (msg.getSenderType().equals("Init")){
+            LoggerUtil.debug("msg.getSenderType().equals(init) " + clients);
+//            session.getUserProperties().put("proNo", msg.getProNo());
+//            List<Message> messageList = loadMessages(msg.getProNo());
+//            sendMessages(session.getOpenSessions(), messageList, msg.getProNo());
             session.getUserProperties().put("proNo", msg.getProNo());
             List<Message> messageList = loadMessages(msg.getProNo());
-            sendMessages(session.getOpenSessions(), messageList, msg.getProNo());
+            sendMessages(session, messageList);
         //else getSenderType == Admin Member Company 등등등 Data insert
         }else if (msg.getSenderType().equals("Admin")
                 || msg.getSenderType().equals("User")
@@ -86,20 +91,30 @@ public class ChattingServer {
         }
     }
 
-    private void sendMessages(Set<Session> clients, List<Message> messageList, int targetProNo) {
-        for (Session client : clients) {
-            Object roomAttr = client.getUserProperties().get("proNo");
-
-            // 유효한 proNo 세션 속성이 있고, 일치하는 경우에만 메시지 전송
-            if (roomAttr instanceof Integer && (int) roomAttr == targetProNo) {
-                for (Message message : messageList) {
-                    try {
-                        client.getBasicRemote().sendText(message.toJson());
-                    } catch (IOException e) {
-                        e.printStackTrace(); // 또는 로깅
-                    }
-                }
+    private void sendMessages(Session client, List<Message> messageList) {
+        for (Message message : messageList) {
+            try {
+                client.getBasicRemote().sendText(message.toJson());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
+
+//    private void sendMessages(Set<Session> clients, List<Message> messageList, int targetProNo) {
+//        for (Session client : clients) {
+//            Object roomAttr = client.getUserProperties().get("proNo");
+//            LoggerUtil.debug("roomAttr: " + roomAttr);
+//            // 유효한 proNo 세션 속성이 있고, 일치하는 경우에만 메시지 전송
+//            if (roomAttr instanceof Integer && (int) roomAttr == targetProNo) {
+//                for (Message message : messageList) {
+//                    try {
+//                        client.getBasicRemote().sendText(message.toJson());
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
