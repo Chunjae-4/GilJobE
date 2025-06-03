@@ -89,6 +89,23 @@ public class QNADao {
 	    }
 	    return list;
 	}
+	public List<QNA> searchQnaByComNo(Connection conn, int comNo) {
+		List<QNA> list = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("searchQnaByComNo"));
+			pstmt.setInt(1, comNo);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(getQNA(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return list;
+	}
 
 	public int insertQna(Connection conn, QNA qna) {
 	    int result = 0;

@@ -32,6 +32,7 @@ public class QnaServlet extends HttpServlet {
 		User user = (User)session.getAttribute("user");
 		List<QNA> qnas = QNAService.qnaService().searchQNAByUserNo(user.getUserNo());
 		user.setQnas(qnas);
+
 		request.setAttribute("user", user);
 		request.getRequestDispatcher(Constants.WEB_VIEWS+"/mypage/qna.jsp").forward(request, response);
 	}

@@ -31,6 +31,12 @@ public class QNAService {
         close(conn);
         return result;
     }
+    public List<QNA> searchQnaByComNo(int comNo) {
+        Connection conn = getConnection();
+        List<QNA> result = qnadao.searchQnaByComNo(conn, comNo);
+        close(conn);
+        return result;
+    }
 
     public int insertQna(QNA qna) {
         Connection conn = getConnection();
