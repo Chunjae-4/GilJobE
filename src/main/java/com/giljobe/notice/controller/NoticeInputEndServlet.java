@@ -22,10 +22,8 @@ public class NoticeInputEndServlet extends HttpServlet {
                 .noticeContent(content)
                 .noticeTitle(title)
                 .build();
-        LoggerUtil.debug("InputEndServlet notice: " + n);
         int result = NoticeService.getInstance().insertNotice(n);
         String msg, loc;
-        LoggerUtil.debug("InputEndServlet result: " + result);
         //등록 성공
         if (result > 0) {
             msg = "공지사항 등록이 완료되었습니다.";
@@ -38,7 +36,7 @@ public class NoticeInputEndServlet extends HttpServlet {
         }
         request.setAttribute("msg", msg);
         request.setAttribute("loc", loc);
-       request.getRequestDispatcher(Constants.MSG).forward(request, response);
+        request.getRequestDispatcher(Constants.MSG).forward(request, response);
     }
 
     @Override
