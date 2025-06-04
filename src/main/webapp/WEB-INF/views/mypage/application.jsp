@@ -42,7 +42,7 @@
     <% }
     } else { %>
     <tr>
-      <td colspan="4" class="text-center text-muted py-4">
+      <td colspan="5" class="text-center text-muted py-4">
         현재 신청한 프로그램이 없습니다.
       </td>
     </tr>
