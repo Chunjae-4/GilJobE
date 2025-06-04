@@ -61,17 +61,23 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
                 <div class="card-body">
 					<h3 class="card-title fw-bold mb-3">
 					    <%= program.getProName() %>
-						<small class="text-muted fs-6">( <%= selectedRound.getRoundCount() %>회차 )</small>
+						<small class="text-muted fs-6" id="selected-round-label">
+							( <%= selectedRound.getRoundCount() %>회차 )
+						</small>
 					</h3>
 					<p class="mb-2">
 						<strong>주소:</strong> <%= program.getProLocation() %> <br>
-						<%= selectedRound.getDetailLocation() %><br>
-						<strong>체험일:</strong> <%= selectedRound.getRoundDate() %><br>
-						<strong>최대모집인원:</strong> <%= selectedRound.getRoundMaxPeople() %>
+						<span id="program-descript1">	
+							<%= selectedRound.getDetailLocation() %><br>
+							<strong>체험일:</strong> <%= selectedRound.getRoundDate() %><br>
+							<strong>최대모집인원:</strong> <%= selectedRound.getRoundMaxPeople() %><br>
+						</span>
 						<strong>직업 유형:</strong> <%= program.getProType() %><br>
 						<strong>분류:</strong> <%= program.getProCategory() %><br>
-						<strong>참가비:</strong>
-						<%= selectedRound.getRoundPrice()!=0 ? selectedRound.getRoundPrice() +"원":"무료"  %>
+						<span id="program-descript2">
+							<strong>참가비:</strong>
+							<%= selectedRound.getRoundPrice()!=0 ? selectedRound.getRoundPrice() +"원":"무료"  %>
+						</span>
 					</p>
 
 					<div class="d-flex flex-wrap gap-2 mt-4">
