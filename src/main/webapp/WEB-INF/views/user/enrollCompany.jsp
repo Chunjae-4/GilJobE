@@ -4,50 +4,69 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 
-<div class="form-wrapper">
-	<form action="<%=request.getContextPath()%>/company/enrollendcompany"
-		method="post" onsubmit="return validateForm()">
-		<div class="mb-3">
-			<label for="name" class="form-label">기업명<span 
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyName" maxlength="50" placeholder="기업명을 입력해주세요" required>
-		</div>
-		<div class="mb-3">
-			<label for="binNo" class="form-label">사업자 등록번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyBinNo" id="companyBinNo" maxlength="10"
-				placeholder="-제외 입력" required>
-		</div>
-		<div class="mb-3">
-			<label for="email" class="form-label">이메일<span
-				style="color: red">*</span></label> <input type="email" class="form-control"
-				name="companyEmail" maxlength="100" placeholder="company@email.com" required>
-		</div>
-		<div class="mb-3">
-			<label for="id" class="form-label">아이디<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyId" id="companyId" maxlength="16"
-				placeholder="4~16자 사이의 영문 대소문자, 숫자 (특수문자 입력불가)" required>
-		</div>
-		<div class="mb-3">
-			<label for="password" class="form-label">비밀번호<span
-				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="companyPw" id="companyPw"
-				placeholder="8자리 이상 영문 대소문자, 숫자, 특수문자" required>
-		</div>
-		<div class="mb-3">
-			<label for="checkPassword" class="form-label">비밀번호 확인<span
-				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="checkPw" id="checkPw" placeholder="비밀번호 재입력" required>
-		</div>
-		<div class="mb-3">
-			<label for="phone" class="form-label">전화번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="companyPhone" id="companyPhone" maxlength="11" placeholder="'-'제외하고 입력"  required>
-		</div>
-		<input type="submit" class="btn btn-primary" value="가입" id="submitBtn" disabled>
-	</form>
-</div>
+<section class="container py-5" style="max-width: 600px;">
+	<div class="mb-4 text-center">
+		<h2 class="fw-bold">🏢 기업 회원 가입</h2>
+		<p class="text-muted">기업 정보를 입력하고 회원가입을 완료하세요.</p>
+	</div>
+
+	<div class="bg-white p-4 rounded-4 shadow-sm">
+		<form action="<%=request.getContextPath()%>/company/enrollendcompany"
+			  method="post" onsubmit="return validateCompanyForm()">
+
+			<!-- 기업명 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">기업명 <span class="text-danger">*</span></label>
+				<input type="text" name="companyName" class="form-control" maxlength="50" placeholder="기업명을 입력해주세요" required>
+			</div>
+
+			<!-- 사업자 등록번호 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">사업자 등록번호 <span class="text-danger">*</span></label>
+				<input type="text" name="companyBinNo" id="companyBinNo" class="form-control" maxlength="10"
+					   placeholder="'-' 제외 숫자만 입력" required>
+			</div>
+
+			<!-- 이메일 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">이메일 <span class="text-danger">*</span></label>
+				<input type="email" name="companyEmail" class="form-control" maxlength="100" placeholder="company@email.com" required>
+			</div>
+
+			<!-- 아이디 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">아이디 <span class="text-danger">*</span></label>
+				<input type="text" name="companyId" id="companyId" class="form-control" maxlength="16"
+					   placeholder="4~16자 영문/숫자 조합" required>
+			</div>
+
+			<!-- 비밀번호 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">비밀번호 <span class="text-danger">*</span></label>
+				<input type="password" name="companyPw" id="companyPw" class="form-control"
+					   placeholder="8자 이상, 대소문자/숫자/특수문자 포함" required>
+			</div>
+
+			<!-- 비밀번호 확인 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">비밀번호 확인 <span class="text-danger">*</span></label>
+				<input type="password" name="checkPw" id="checkPw" class="form-control"
+					   placeholder="비밀번호 재입력" required>
+			</div>
+
+			<!-- 전화번호 -->
+			<div class="mb-4">
+				<label class="form-label fw-semibold">전화번호 <span class="text-danger">*</span></label>
+				<input type="text" name="companyPhone" id="companyPhone" class="form-control" maxlength="11"
+					   placeholder="숫자만 입력 (예: 0212345678)" required>
+			</div>
+
+			<div class="d-grid">
+				<button type="submit" class="btn btn-primary" id="submitBtn" disabled>가입 완료</button>
+			</div>
+		</form>
+	</div>
+</section>
 
 
 <script>
