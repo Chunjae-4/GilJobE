@@ -4,56 +4,76 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 
-<div class="form-wrapper">
-	<form action="<%=request.getContextPath()%>/user/enrolluserend"
-		method="post" onsubmit="return validateForm()">
-		<div class="mb-3">
-			<label for="name" class="form-label">이름<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userName" maxlength="5" placeholder="성함을 입력해주세요" required>
-		</div>
-		<div class="mb-3">
-			<label for="id" class="form-label">아이디<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userId" id="userId" maxlength="16"
-				placeholder="4~16자 사이의 영문 대소문자, 숫자 (특수문자 입력불가)" required>
-		</div>
-		<div class="mb-3">
-			<label for="password" class="form-label">비밀번호<span
-				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="userPw" id="userPw" 
-				placeholder="8자리 이상 영문 대소문자, 숫자, 특수문자" required>
-		</div>
-		<div class="mb-3">
-			<label for="checkPassword" class="form-label">비밀번호 확인<span
-				style="color: red">*</span></label> <input type="password"
-				class="form-control" name="checkPw" id="checkPw" placeholder="비밀번호 재입력" required>
-		</div>
-		<div class="mb-3">
-			<label for="phone" class="form-label">전화번호<span
-				style="color: red">*</span></label> <input type="text" class="form-control"
-				name="userPhone" maxlength="11" placeholder="'-'제외하고 입력" id="userPhone" required>
-		</div>
-		<div class="mb-3">
-			<label for="nickname" class="form-label">닉네임<span
-				style="color: red">*</span></label> <input
-				type="text" class="form-control" name="userNickName" id="userNickName" maxlength="10"
-				placeholder="최대 10자 까지 입력(특수문자 입력불가)" required>
-		</div>
-		<div class="mb-3">
-			<label for="email" class="form-label">이메일<span
-				style="color: red">*</span></label> <input type="email" class="form-control"
-				name="userEmail" maxlength="100" placeholder="user@email.com" required>
-		</div>
-		<div class="mb-3">
-			<label for="birth" class="form-label">생년월일<span
-				style="color: red">*</span></label> <input type="date" class="form-control"
-				name="userBirth" required>
-		</div>
+<section class="container py-5" style="max-width: 600px;">
+	<div class="mb-4 text-center">
+		<h2 class="fw-bold">📝 개인 회원 가입</h2>
+		<p class="text-muted">필수 정보를 입력하고 회원가입을 완료하세요.</p>
+	</div>
 
-		<input type="submit" class="btn btn-primary" value="가입" id="submitBtn" disabled>
-	</form>
-</div>
+	<div class="bg-white p-4 rounded-4 shadow-sm">
+		<form action="<%=request.getContextPath()%>/user/enrolluserend"
+			  method="post" onsubmit="return validateForm()">
+
+			<!-- 이름 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">이름 <span class="text-danger">*</span></label>
+				<input type="text" name="userName" class="form-control" maxlength="5" placeholder="성함을 입력해주세요" required>
+			</div>
+
+			<!-- 아이디 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">아이디 <span class="text-danger">*</span></label>
+				<input type="text" name="userId" id="userId" class="form-control" maxlength="16"
+					   placeholder="4~16자 영문/숫자 조합" required>
+			</div>
+
+			<!-- 비밀번호 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">비밀번호 <span class="text-danger">*</span></label>
+				<input type="password" name="userPw" id="userPw" class="form-control"
+					   placeholder="8자 이상, 대소문자/숫자/특수문자 포함" required>
+			</div>
+
+			<!-- 비밀번호 확인 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">비밀번호 확인 <span class="text-danger">*</span></label>
+				<input type="password" name="checkPw" id="checkPw" class="form-control"
+					   placeholder="비밀번호 재입력" required>
+			</div>
+
+			<!-- 전화번호 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">전화번호 <span class="text-danger">*</span></label>
+				<input type="text" name="userPhone" id="userPhone" class="form-control" maxlength="11"
+					   placeholder="숫자만 입력 (예: 01012345678)" required>
+			</div>
+
+			<!-- 닉네임 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">닉네임 <span class="text-danger">*</span></label>
+				<input type="text" name="userNickName" id="userNickName" class="form-control" maxlength="10"
+					   placeholder="최대 10자, 특수문자 제외" required>
+			</div>
+
+			<!-- 이메일 -->
+			<div class="mb-3">
+				<label class="form-label fw-semibold">이메일 <span class="text-danger">*</span></label>
+				<input type="email" name="userEmail" class="form-control"
+					   maxlength="100" placeholder="example@email.com" required>
+			</div>
+
+			<!-- 생년월일 -->
+			<div class="mb-4">
+				<label class="form-label fw-semibold">생년월일 <span class="text-danger">*</span></label>
+				<input type="date" name="userBirth" class="form-control" required>
+			</div>
+
+			<div class="d-grid">
+				<button type="submit" class="btn btn-primary" id="submitBtn" disabled>가입 완료</button>
+			</div>
+		</form>
+	</div>
+</section>
 <script>
 	const idReg = /^[a-zA-Z0-9]{4,16}$/;
 	const pwReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]).{8,}$/;

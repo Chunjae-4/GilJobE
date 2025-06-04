@@ -74,10 +74,11 @@ public class ApplicationProgramDao {
 	public ApplicationProgram getApplicationProgramDao(ResultSet rs) throws SQLException {
 		
 		return ApplicationProgram.builder()
-								.proName(rs.getString("pro_name"))	
+								.proName(rs.getString("pro_name"))
+								.roundDate(rs.getDate("round_date"))
 								.roundCount(rs.getInt("round_count"))
-								.startTime(rs.getDate("start_time"))
-								.endTime(rs.getDate("end_time"))
+								.startTime(rs.getTimestamp("start_time"))
+								.endTime(rs.getTimestamp("end_time"))
 								.proNo(rs.getInt("pro_no"))
 								.timeNo(rs.getInt("time_no"))
 								.build();
