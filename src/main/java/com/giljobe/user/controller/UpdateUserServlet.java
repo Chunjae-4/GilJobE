@@ -30,6 +30,12 @@ public class UpdateUserServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		
+		
+//		int userNo= Integer.parseInt(request.getParameter("userNo"));
+		
+		User user = (User)session.getAttribute("user");
+		
+		int userNo = user.getUserNo();
 		String userId=request.getParameter("userId");
 		String newname=request.getParameter("userName");
 		String newphone=request.getParameter("userPhone");
@@ -40,6 +46,7 @@ public class UpdateUserServlet extends HttpServlet {
 //		User loginUser = (User)session.getAttribute("user");
 		
 		User u = User.builder()
+				.userNo(userNo)
 				.userId(userId)
 //				.userPw(loginUser.getUserPw())
 				.userName(newname)
