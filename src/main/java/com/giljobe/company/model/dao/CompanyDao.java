@@ -43,7 +43,7 @@ public class CompanyDao {
 						.comPw(rs.getString("com_pw"))
 						.comPhone(rs.getString("com_phone"))
 						.comEmail(rs.getString("com_email"))
-						.comBinNo(rs.getInt("com_bin_no"))
+						.comBinNo(rs.getString("com_bin_no"))
 						.build();
 	}
 	public Company searchUserById(Connection conn, String companyId) {
@@ -77,7 +77,7 @@ public class CompanyDao {
 			pstmt.setString(3, c.getComPw());
 			pstmt.setString(4, c.getComPhone());
 			pstmt.setString(5, c.getComEmail());
-			pstmt.setInt(6, c.getComBinNo());
+			pstmt.setString(6, c.getComBinNo());
 			result=pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -114,7 +114,7 @@ public class CompanyDao {
 			pstmt=conn.prepareStatement(sql.getProperty("updateCompanyInfo"));
 			pstmt.setString(1, c.getComName());
 			pstmt.setString(2, c.getComPhone());
-			pstmt.setInt(3, c.getComBinNo());
+			pstmt.setString(3, c.getComBinNo());
 			pstmt.setString(4, c.getComEmail());
 			pstmt.setString(5, c.getComId());
 			result = pstmt.executeUpdate();

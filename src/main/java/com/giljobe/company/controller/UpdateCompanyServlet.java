@@ -36,7 +36,7 @@ public class UpdateCompanyServlet extends HttpServlet {
 		String comId=request.getParameter("companyId");
 		String newname=request.getParameter("companyName");
 		String newphone=request.getParameter("companyPhone");
-		int newBinNo =Integer.parseInt(request.getParameter("companyBinNo"));
+		String newBinNo =request.getParameter("companyBinNo");
 		String newemail=request.getParameter("companyEmail");
 		
 		Company c = Company.builder()
