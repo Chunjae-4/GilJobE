@@ -218,8 +218,8 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
 </section>
 
 <script>
-let selectedRoundDate = null;
-let selectedRoundMaxPeople = null;
+let selectedRoundDate = "<%=selectedRound.getRoundDate()%>";
+let selectedRoundMaxPeople = <%= selectedRound.getRoundMaxPeople() %>;
 
 /* 회차 변경 시 ajax */
 $(function() {
@@ -237,7 +237,7 @@ $(function() {
             	selectedRoundDate = data.roundDate;
                 selectedRoundMaxPeople = data.roundMaxPeople;
                 
-                $("#selected-round-label").text(data.roundCount + "회차");
+                $("#selected-round-label").text("( "+data.roundCount + "회차"+" )");
                 $("#round-dropdown-label").text(data.roundCount + "회차");
                 $("#program-descript1").html(`
                         \${data.detailLocation}<br>
