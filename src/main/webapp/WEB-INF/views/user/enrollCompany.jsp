@@ -74,7 +74,7 @@
 	const pwReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]).{8,}$/;
 	const numonly = /[^0-9]/g; //문자가 있니 없니
 	
-	const validateForm=()=>{
+	const validateCompanyForm=()=>{
 				//const companyId = $("#companyId").val().trim();
 				const companyPw = $("#companyPw").val().trim();
 				const binNo = $("#companyBinNo").val().trim();
