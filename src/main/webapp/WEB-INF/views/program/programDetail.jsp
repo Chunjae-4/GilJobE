@@ -270,21 +270,28 @@ $(function() {
 <!-- 프로그램 신청과 관련하여 -->
 <script>
 $(document).on("click", ".protime-btn", function(e) {
-	<%-- Case 0: 유효한 회차가 하나도 없으면 신청 불가 --%>
-    <% if (noAvailableRounds) { %>
-        alert("현재 회차는 이미 날짜가 지나서 신청할 수 없습니다.");
-        return;
-    <% } %>
-
 	const timeNo = $(this).data("timeno");
-
+	<%-- Case 0: 기업회원 && 자기 프로그램일 경우 (항상 신청자 수 보여주기) --%>
+	<% if (loginCompany != null && isMyProgram) { %>
+		$.get(contextPath + "/ajax/app/count", { timeNo }, function(count) {
+			alert("현재까지 신청한 인원: " + count + "명");
+		});
+		return; // ✅ 아래 로직은 실행하지 않음
+	<% } %>
+	
     <%-- Case 1: 로그인하지 않은 사용자 --%>
     <% if (loginUser == null && loginCompany == null) { %>
         alert("로그인이 필요합니다.");
         return;
     <% } %>
+    
+    <%-- Case 2: 유효한 회차가 하나도 없으면 신청 불가 --%>
+    <% if (noAvailableRounds) { %>
+        alert("현재 회차는 이미 날짜가 지나서 신청할 수 없습니다.");
+        return;
+    <% } %>
 
-    <%-- Case 2: 일반 사용자 --%>
+    <%-- Case 3: 일반 사용자 --%>
     <% if (loginUser != null) { %>
 	    // 1️ 현재 시간과 프로그램 타임 시작 시간 비교
 	    const today = new Date().toISOString().split('T')[0];
@@ -338,7 +345,7 @@ $(document).on("click", ".protime-btn", function(e) {
 	    });
 	<% } %>
 
-    <%-- Case 3: 기업회원 (본인 프로그램일 때) --%>
+    <%-- Case 4: 기업회원 (본인 프로그램일 때) --%>
     <% if (loginCompany != null) { %>
 	    <% if (isMyProgram) { %>
 	        // ✅ 자기 회사 프로그램이면 신청자 수 조회

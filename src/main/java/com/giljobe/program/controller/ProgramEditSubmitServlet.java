@@ -2,6 +2,7 @@ package com.giljobe.program.controller;
 
 import static com.giljobe.common.NaverGeoUtils.getCoordinatesFromAddress;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -55,6 +56,13 @@ public class ProgramEditSubmitServlet extends HttpServlet {
             String ext = fileName.substring(fileName.lastIndexOf("."));
             int companyNo = original.getComNoRef(); // ✅ 회사 번호 가져오기
             newImagePath = String.format("%d/%d/1%s", companyNo, proNo, ext); // 회사번호/프로그램번호/1.jpg 형식
+            
+            // 디렉토리 생성
+            File dir = new File(savePath + companyNo + "/" + proNo);
+            if (!dir.exists()) {
+                dir.mkdirs(); // 경로에 필요한 모든 디렉토리 생성
+            }
+            
             imagePart.write(savePath + "/" + newImagePath);
         }
 
