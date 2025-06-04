@@ -27,7 +27,7 @@ public class EnrollCompanyEndServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		String comName = request.getParameter("companyName");
-		int comBinNo = Integer.parseInt(request.getParameter("companyBinNo"));
+		String comBinNo = request.getParameter("companyBinNo");
 		String comEmail = request.getParameter("companyEmail");
 		String comId = request.getParameter("companyId");
 		String password = request.getParameter("companyPw");

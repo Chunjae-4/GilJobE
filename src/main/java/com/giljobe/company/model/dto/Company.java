@@ -21,7 +21,7 @@ public class Company {
 	private String comPw;
 	private String comPhone;
 	private String comEmail;
-	private int comBinNo;
+	private String comBinNo;
 	
 	private List<Chat> chats;
 	private List<Program> programs;
