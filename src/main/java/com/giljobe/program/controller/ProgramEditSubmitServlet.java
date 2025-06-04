@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.giljobe.common.Constants;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.service.ProgramService;
 
@@ -46,13 +47,14 @@ public class ProgramEditSubmitServlet extends HttpServlet {
 
         // 3. 이미지 업로드 처리
         Part imagePart = request.getPart("proImage");
-        String savePath = request.getServletContext().getRealPath("/resources/upload/");
+        String savePath = request.getServletContext().getRealPath(Constants.DEFAULT_UPLOAD_PATH);
         String fileName = imagePart.getSubmittedFileName();
 
         String newImagePath = existingImagePath; // 기본은 기존 이미지 유지
         if (fileName != null && !fileName.isEmpty()) {
             String ext = fileName.substring(fileName.lastIndexOf("."));
-            newImagePath = String.format("1/%d/1%s", proNo, ext);
+            int companyNo = original.getComNoRef(); // ✅ 회사 번호 가져오기
+            newImagePath = String.format("%d/%d/1%s", companyNo, proNo, ext); // 회사번호/프로그램번호/1.jpg 형식
             imagePart.write(savePath + "/" + newImagePath);
         }
 

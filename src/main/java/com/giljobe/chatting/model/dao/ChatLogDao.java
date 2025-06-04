@@ -122,5 +122,20 @@ public class ChatLogDao {
                 .build();
     }
 
+    public int deleteByProgramNo(Connection conn, int proNo) {
+    	int result = 0;
+        try {
+        	pstmt = conn.prepareStatement(sql.getProperty("deleteByProgramNo"));
+            pstmt.setInt(1, proNo);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+
 
 }

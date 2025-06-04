@@ -5,17 +5,24 @@ import static com.giljobe.common.JDBCTemplate.commit;
 import static com.giljobe.common.JDBCTemplate.getConnection;
 import static com.giljobe.common.JDBCTemplate.rollback;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import com.giljobe.application.model.dao.ApplicationDao;
+import com.giljobe.chatting.model.dao.ChatLogDao;
+import com.giljobe.common.Constants;
+import com.giljobe.love.model.dao.LoveDao;
 import com.giljobe.program.model.dao.ProTimeDao;
 import com.giljobe.program.model.dao.ProgramDao;
 import com.giljobe.program.model.dao.RoundDao;
 import com.giljobe.program.model.dto.ProTime;
 import com.giljobe.program.model.dto.Program;
 import com.giljobe.program.model.dto.Round;
+import com.giljobe.qna.model.dao.QNADao;
 
 public class ProgramService {
     //싱글톤
@@ -167,7 +174,7 @@ public class ProgramService {
         return programs;
     }
     
-    public boolean deleteProgramWithAllData(int proNo) {
+    public boolean deleteProgramWithAllData(int proNo, ServletContext context) {
         Connection conn = getConnection();
         boolean result = false;
 
@@ -190,8 +197,20 @@ public class ProgramService {
                 // 5. Round 삭제
                 RoundDao.getInstance().deleteRound(conn, roundNo);
             }
+            
+            // 6. 좋아요 삭제
+            LoveDao.getInstance().deleteByProgramNo(conn, proNo);
 
-            // 6. Program 삭제
+            // 7. QNA 삭제
+            QNADao.qnaDao().deleteByProgramNo(conn, proNo);
+
+            // 8. Chat 삭제
+            ChatLogDao.getInstance().deleteByProgramNo(conn, proNo);
+
+            // 9. 이미지 및 폴더 삭제
+            deleteProgramImageAndFolder(proNo, context); // 아래에 정의한 메소드 사용
+            
+            // 10. Program 삭제
             int deleted = ProgramDao.getInstance().deleteProgram(conn, proNo);
 
             if (deleted > 0) {
@@ -224,5 +243,32 @@ public class ProgramService {
         }
     }
 
+    private void deleteProgramImageAndFolder(int proNo, ServletContext context) {
+        // 회사 번호는 프로그램 번호만으로 알 수 없으므로 Program 객체에서 가져와야 함
+    	Program program = selectProgramByNo(proNo);
+        int companyNo = program.getComNoRef();
+    	// basePath는 실제 프로젝트에서 사용하는 이미지 저장 경로
+        // Constants 사용 + 실제 절대 경로 획득
+        String basePath = context.getRealPath(Constants.DEFAULT_UPLOAD_PATH);
+        File programFolder = new File(basePath + companyNo  + "/" + proNo);
+
+        deleteDirectory(programFolder); // 하위 파일 및 폴더 모두 삭제
+    }
+
+    private void deleteDirectory(File folder) {
+        if (folder.exists()) {
+            File[] files = folder.listFiles(); // 폴더 안의 모든 파일/폴더 가져오기
+            if (files != null) {
+                for (File f : files) {
+                    if (f.isDirectory()) {
+                        deleteDirectory(f); // 폴더면 재귀 호출로 내부 먼저 삭제
+                    } else {
+                        f.delete(); // 파일이면 바로 삭제 (이미지 포함)
+                    }
+                }
+            }
+            folder.delete(); // 하위 다 삭제한 후 최종 폴더 삭제
+        }
+    }
 
 }

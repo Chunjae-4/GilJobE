@@ -21,7 +21,7 @@ public class ProgramDeleteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int proNo = Integer.parseInt(request.getParameter("proNo"));
 
-        boolean success = ProgramService.getInstance().deleteProgramWithAllData(proNo);
+        boolean success = ProgramService.getInstance().deleteProgramWithAllData(proNo, request.getServletContext());
 
         if (success) {
             response.sendRedirect(request.getContextPath() + "/program/programlist"); // 목록으로 이동

@@ -101,6 +101,20 @@ public class LoveDao {
 	    return result;
 	}
 
+	public int deleteByProgramNo(Connection conn, int proNo) {
+	    int result = 0;
+		try {
+	    	pstmt = conn.prepareStatement(sql.getProperty("deleteByProgramNo"));
+		    pstmt.setInt(1, proNo);
+		    result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        LoggerUtil.error("LoveDao.deleteByProgramNo Error: "  + e.getMessage(), e);
+	    }finally {
+	        close(rs);
+	        close(pstmt);
+	    }
+		return result;
+	}
 
 
 }
