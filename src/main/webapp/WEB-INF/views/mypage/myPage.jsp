@@ -64,7 +64,36 @@
 	$(document).ready(function () {
 	    sideMenu('userinfo');
 	});
-
+	
+	const validateForm=()=>{
+		const numonly = /[^0-9]/g; //문자가 있니 없니
+				const userPhone = $("#userPhone").val().trim();
+				
+				if(numonly.test(userPhone)){ // 문자 없으면 false 잘썻으면 false !때문에 true
+					alert("전화번호 형식에 맞지 않습니다. -를 제외한 숫자만 입력해주세요.");
+					$("#userPhone").focus();
+					return false;
+				}
+				
+				return true;
+		}
+	const PwvalidationForm=()=>{
+		const pwReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]).{8,}$/;
+		const newPw = $("#newPw").val().trim();
+		const checkPw = $("#checkPw").val().trim();
+		if(!pwReg.test(newPw)){
+			 alert("비밀번호는 영문, 숫자, 특수문자를 하나씩 포함한 8자 이상이어야 합니다.");
+			 $("#newPw").focus();
+			 return false;
+		}
+		if(newPw !== checkPw){
+			 alert("비밀번호 확인이 일치하지 않습니다.");
+			 $("#checkPw").focus();		
+			 return false;
+		}
+		return true;
+	}
+		
 </script>
 
 
