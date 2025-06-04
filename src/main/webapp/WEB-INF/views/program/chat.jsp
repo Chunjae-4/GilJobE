@@ -5,6 +5,9 @@
 <%@ page import="com.giljobe.company.model.dto.Company" %>
 <%@ page import="com.giljobe.common.LoggerUtil" %>
 <%@ page import="com.giljobe.program.model.dto.Program" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 
 
 <div id="chat-section" class="card mb-5 border-0 rounded-4 shadow-sm">
@@ -166,19 +169,43 @@
         msgPrint(message)
     }
     const sendMessage = (e) => {
+        <%
+       // 현재 시간 Timestamp
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+
+        // Timestamp → LocalDateTime
+        LocalDateTime ldt = ts.toLocalDateTime();
+
+        // 원하는 포맷으로 변환 (ISO 8601 스타일)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String isoFormatted = ldt.format(formatter);
+
+        System.out.println(isoFormatted);
+        %>
         console.log("senderType: " + senderType);
+        const msgTimeStamp = "<%=isoFormatted%>";
+        const msgDate = new Date(msgTimeStamp); // "2025-05-27T16:32:00"
+        console.log(msgDate);
+
+        // let msgTimeStr;
+        // if (!isNaN(msgDate)) {
+        //     msgTimeStr = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        // } else {
+        //     console.warn("Invalid dateTime:", data.dateTime);
+        // }
+        // console.log(msgTimeStr);
 
         if (senderType === "User") {
             const msgUserNo = <%=(chatLoginUser != null ? chatLoginUser.getUserNo() : -1)%>;
-            const chatMessage = new Message(senderType, msgUserNo, -1, sender, '', e, msgProgramNo);
+            const chatMessage = new Message(senderType, msgUserNo, -1, sender, '', e, msgProgramNo, msgDate);
             socket.send(chatMessage.msgToJson());
         } else if (senderType === "Admin") {
             const msgUserNo = <%=(chatLoginUser != null ? chatLoginUser.getUserNo() : -1)%>;
-            const chatMessage = new Message(senderType, msgUserNo, -1, sender, '', e, msgProgramNo);
+            const chatMessage = new Message(senderType, msgUserNo, -1, sender, '', e, msgProgramNo, msgDate);
             socket.send(chatMessage.msgToJson());
         } else if (senderType === "Company") {
             const msgCompanyNo = <%=chatLoginCompany != null ? chatLoginCompany.getComNo() : 0%>;
-            const chatMessage = new Message(senderType, -1, msgCompanyNo, sender, '', e, msgProgramNo);
+            const chatMessage = new Message(senderType, -1, msgCompanyNo, sender, '', e, msgProgramNo, msgDate);
             socket.send(chatMessage.msgToJson());
         }
     }
