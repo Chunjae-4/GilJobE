@@ -22,7 +22,6 @@ public class NaverGeoUtils {
         try {
             // ✅ properties 경로가 실제로 잘 불러와지는지 확인
             URL propUrl = NaverGeoUtils.class.getClassLoader().getResource("api/naver.properties");
-            System.out.println("📁 properties 경로 확인: " + propUrl);
 
             InputStream input = propUrl.openStream(); // 이렇게 바꾸면 명확하게 확인 가능
             Properties props = new Properties();
@@ -42,9 +41,7 @@ public class NaverGeoUtils {
             String query = URLEncoder.encode(address, "UTF-8");
             //String apiURL = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + query;
             String apiURL = "https://maps.apigw.ntruss.com/map-geocode/v2/geocode?query=" + query;
-            System.out.println("🔍 요청 URL: " + apiURL);
-            System.out.println("🔍 CLIENT_ID: " + CLIENT_ID);
-            System.out.println("🔍 CLIENT_SECRET: " + CLIENT_SECRET);
+
 
             URL url = new URL(apiURL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -76,7 +73,7 @@ public class NaverGeoUtils {
 
             } else {
                 // ❗ 실패한 경우 (401 등), 에러 메시지를 따로 읽어 출력
-                System.out.println("❌ 응답 코드: " + responseCode);
+                LoggerUtil.debug("❌ 응답 코드: " + responseCode);
                 BufferedReader errReader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
                 StringBuilder errMsg = new StringBuilder();
                 String line;
@@ -84,7 +81,7 @@ public class NaverGeoUtils {
                     errMsg.append(line);
                 }
                 errReader.close();
-                System.out.println("❌ 에러 메시지: " + errMsg.toString());
+                LoggerUtil.debug("❌ 에러 메시지: " + errMsg.toString());
             }
 
         } catch (Exception e) {
