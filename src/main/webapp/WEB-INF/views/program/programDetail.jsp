@@ -218,6 +218,10 @@ if (loginCompany != null && loginCompany.getComNo() == program.getComNoRef()) {
 </section>
 
 <script>
+let selectedRoundDate = null;
+let selectedRoundMaxPeople = null;
+
+/* 회차 변경 시 ajax */
 $(function() {
     $(".round-option").click(function(e) {
         e.preventDefault();
@@ -230,6 +234,9 @@ $(function() {
             method: "GET",
             data: { proNo: proNo, roundCount: roundCount },
             success: function(data) {
+            	selectedRoundDate = data.roundDate;
+                selectedRoundMaxPeople = data.roundMaxPeople;
+                
                 $("#selected-round-label").text(data.roundCount + "회차");
                 $("#round-dropdown-label").text(data.roundCount + "회차");
                 $("#program-descript1").html(`
@@ -254,12 +261,22 @@ $(function() {
                                 <div class="card-body">
                                     <div class="d-flex flex-wrap gap-2">`;
 
-                    data.proTimes.forEach(e => {
+                    /* data.proTimes.forEach(e => {
                         html += `<button class="btn btn-outline-secondary protime-btn"
                                          data-timeno="\${e.timeNo}">
                                      \${e.start} ~ \${e.end}
                                  </button>`;
+                    }); */
+                    
+                    data.proTimes.forEach(e => {
+                        const appliedClass = e.userApplied ? "btn-success" : "btn-outline-secondary";
+                        html += `<button class="btn \${appliedClass} protime-btn"
+		                            data-timeno="\${e.timeNo}">
+		                            \${e.start} ~ \${e.end}
+		                        </button>`;
                     });
+
+                    
 
                     html += `</div></div></div>`;
                 } else {
@@ -271,10 +288,9 @@ $(function() {
         });
     });
 });
-</script>
+
 
 <!-- 프로그램 신청과 관련하여 -->
-<script>
 $(document).on("click", ".protime-btn", function(e) {
 	const timeNo = $(this).data("timeno");
 	<%-- Case 0: 기업회원 && 자기 프로그램일 경우 (항상 신청자 수 보여주기) --%>
@@ -301,7 +317,7 @@ $(document).on("click", ".protime-btn", function(e) {
     <% if (loginUser != null) { %>
 	    // 1️ 현재 시간과 프로그램 타임 시작 시간 비교
 	    const today = new Date().toISOString().split('T')[0];
-	    const roundDate = "<%= selectedRound.getRoundDate() %>";
+	    const roundDate = selectedRoundDate;
 	    if (today === roundDate) {
 	        const now = new Date();
 	        const targetBtn = $(this);
@@ -320,7 +336,7 @@ $(document).on("click", ".protime-btn", function(e) {
 
 	    // 2️ 현재 신청 인원 수 확인 후 최대인원 비교
 	    $.get(contextPath + "/ajax/app/count", { timeNo }, function(currentCount) {
-	        const maxPeople = <%= selectedRound.getRoundMaxPeople() %>;
+	        const maxPeople = selectedRoundMaxPeople;
 	        if (currentCount >= maxPeople) {
 	            alert("신청 가능한 최대 인원이 이미 찼습니다.");
 	            return;

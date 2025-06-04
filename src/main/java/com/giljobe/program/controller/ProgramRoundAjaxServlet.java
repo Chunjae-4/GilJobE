@@ -7,18 +7,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.giljobe.application.model.service.ApplicationService;
 import com.giljobe.program.model.dto.ProTime;
 import com.giljobe.program.model.dto.Round;
 import com.giljobe.program.model.service.ProTimeService;
 import com.giljobe.program.model.service.RoundService;
+import com.giljobe.user.model.dto.User;
 import com.google.gson.Gson;
 
 @WebServlet("/program/roundinfo")
@@ -52,13 +54,27 @@ public class ProgramRoundAjaxServlet extends HttpServlet {
 
         // Date - HH:mm 문자열로 변환
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-		List<Map<String, String>> timeList = new ArrayList<>();
-		for (ProTime pt : proTimes) {
-			Map<String, String> timeMap = new HashMap<>();
-			timeMap.put("start", sdf.format(pt.getStartTime()));
-			timeMap.put("end", sdf.format(pt.getEndTime()));
-			timeList.add(timeMap);
-		}
+
+        HttpSession session = request.getSession(false);
+        User loginUser = (session != null) ? (User) session.getAttribute("user") : null;
+        int userNo = (loginUser != null) ? loginUser.getUserNo() : -1;
+
+        List<Map<String, Object>> timeList = new ArrayList<>();
+        for (ProTime pt : proTimes) {
+            Map<String, Object> timeMap = new HashMap<>();
+            timeMap.put("timeNo", pt.getTimeNo());
+            timeMap.put("start", sdf.format(pt.getStartTime()));
+            timeMap.put("end", sdf.format(pt.getEndTime()));
+
+            boolean userApplied = false;
+            if (userNo != -1) {
+                userApplied = ApplicationService.applicationService().existsAppForTimeAndUser(pt.getTimeNo(), userNo);
+            }
+            timeMap.put("userApplied", userApplied);
+
+            timeList.add(timeMap);
+        }
+
 
 		Map<String, Object> responseMap = new HashMap<>();
 		responseMap.put("roundCount", selectedRound.getRoundCount());
