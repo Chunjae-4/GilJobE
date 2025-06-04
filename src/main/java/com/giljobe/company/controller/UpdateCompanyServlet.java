@@ -28,8 +28,11 @@ public class UpdateCompanyServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		
+		Company company = (Company)session.getAttribute("company");
+		
+		int ComNo = company.getComNo();
 		String comId=request.getParameter("companyId");
 		String newname=request.getParameter("companyName");
 		String newphone=request.getParameter("companyPhone");
@@ -37,6 +40,7 @@ HttpSession session = request.getSession();
 		String newemail=request.getParameter("companyEmail");
 		
 		Company c = Company.builder()
+							.comNo(ComNo)
 							.comName(newname)
 							.comPhone(newphone)
 							.comBinNo(newBinNo)
