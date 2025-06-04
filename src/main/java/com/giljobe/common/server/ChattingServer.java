@@ -43,16 +43,14 @@ public class ChattingServer {
         //getSenderType == Init -> (proNo를 받아서 쏴줌? )Data load, send
         if (msg.getSenderType().equals("Init")){
             LoggerUtil.debug("msg.getSenderType().equals(init) " + clients);
-//            session.getUserProperties().put("proNo", msg.getProNo());
-//            List<Message> messageList = loadMessages(msg.getProNo());
-//            sendMessages(session.getOpenSessions(), messageList, msg.getProNo());
             session.getUserProperties().put("proNo", msg.getProNo());
             List<Message> messageList = loadMessages(msg.getProNo());
             sendMessages(session, messageList);
         //else getSenderType == Admin Member Company 등등등 Data insert
         }else if (msg.getSenderType().equals("Admin")
                 || msg.getSenderType().equals("User")
-                || msg.getSenderType().equals("Company")){
+                || msg.getSenderType().equals("Company")
+                || msg.getSenderType().equals("Unknown")){
             chatLog = ChatLog.builder()
                     .userNo(msg.getUserNo())
                     .proNo(msg.getProNo())

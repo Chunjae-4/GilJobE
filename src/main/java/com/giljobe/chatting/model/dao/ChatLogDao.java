@@ -88,7 +88,7 @@ public class ChatLogDao {
         if (c.getUserNo() == 1) {
             senderType = "Admin";
             nickName = c.getUserNickName();
-        } else if (c.getUserNo() > 0) {
+        } else if (c.getUserNo() > 1) {
             senderType = "User";
             nickName = c.getUserNickName();
         } else if (c.getComNo() > 0) {
