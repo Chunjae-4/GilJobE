@@ -94,8 +94,8 @@
 <script>
     //TODO: 첫 입장시 메세지가 보이지 않도록 세팅해서 onOpen에 데이터를 보낸다
     let contextPath = "<%=request.getContextPath()%>";
-    let socket = new WebSocket("ws://" + location.host + contextPath + "/program/detail");
-    // let socket = new WebSocket("wss://" + "chunjaefullstack.r-e.kr" + contextPath + "/program/detail");
+    // let socket = new WebSocket("ws://" + location.host + contextPath + "/program/detail");
+    let socket = new WebSocket("wss://" + "chunjaefullstack.r-e.kr" + contextPath + "/program/detail");
 
 
     let sender = "";

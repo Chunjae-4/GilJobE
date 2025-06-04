@@ -327,6 +327,14 @@ public class ProgramDao {
                 .likeCount(likeCount)
                 .build();
     }
+    public Program getProgramAppLikeDetail(ResultSet rs) throws SQLException {
+        return Program.builder()
+                .proNo(rs.getInt("pro_no"))
+                .proName(rs.getString("pro_name"))
+                .likeCount(rs.getInt("love_count"))
+                .build();
+    }
+
 	public List<Program> lovedProgramByUserNo(Connection conn, int userNo) {
 		// TODO Auto-generated method stub
 		List<Program> programs = new ArrayList<Program>();
@@ -344,7 +352,23 @@ public class ProgramDao {
 		}
 		return programs;
 	}
-	
+
+    public List<Program> selectProgramsWithApplicantsAndLikesByCompany(Connection conn, int comNo) {
+        List<Program> programs = new ArrayList<Program>();
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("selectProgramsWithApplicantsAndLikesByCompany"));
+            pstmt.setInt(1, comNo);
+            rs=pstmt.executeQuery();
+            while (rs.next()) {
+                Program p = getProgramAppLikeDetail(rs);
+                programs.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return programs;
+    }
+
 	public List<Program> selectProgramsByCompany(Connection conn, int comNo) {
 		List<Program> programs = new ArrayList<Program>();
 		try {
