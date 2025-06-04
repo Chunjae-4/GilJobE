@@ -9,30 +9,40 @@
     int proNo = Integer.parseInt(request.getParameter("proNo"));
 %>
 <section class="container py-5">
-    <h2>회차 수정 및 삭제</h2>
-    <form action="<%=request.getContextPath()%>/round/edit-form" method="get">
-        <input type="hidden" name="proNo" value="<%=proNo%>">
-        <% if (rounds == null || rounds.isEmpty()) { %>
-		    <p class="text-muted">등록된 회차가 없습니다.</p>
+	<div class="mb-4 text-center">
+		<h2 class="fw-bold">회차 수정 및 삭제</h2>
+		<p class="text-muted">수정 또는 삭제할 회차를 선택하세요.</p>
+	</div>
+
+	<form action="<%=request.getContextPath()%>/round/edit-form" method="get"
+		  class="bg-white p-4 rounded-4 shadow-sm">
+		<input type="hidden" name="proNo" value="<%=proNo%>">
+
+		<% if (rounds == null || rounds.isEmpty()) { %>
+		<p class="text-muted text-center">등록된 회차가 없습니다.</p>
 		<% } else { %>
-		    <% for (Round r : rounds) { %>
-		        <div class="form-check mb-2">
-		            <input type="radio" name="roundNo" class="form-check-input" value="<%=r.getRoundNo()%>" required>
-		            <label class="form-check-label"><%=r.getRoundCount()%>회차 - <%=r.getRoundDate()%></label>
-		        </div>
-		    <% } %>
+		<div class="mb-4">
+			<% for (Round r : rounds) { %>
+			<div class="form-check mb-2">
+				<input type="radio" name="roundNo" class="form-check-input" value="<%=r.getRoundNo()%>" required id="round-<%=r.getRoundNo()%>">
+				<label class="form-check-label" for="round-<%=r.getRoundNo()%>">
+					<strong><%=r.getRoundCount()%>회차</strong> - <%=r.getRoundDate()%>
+				</label>
+			</div>
+			<% } %>
+		</div>
 		<% } %>
 
-        <div class="mt-3 d-flex gap-2">
-            <button type="submit" class="btn btn-warning">수정</button>
-            <button type="submit" 
-            		formaction="<%=request.getContextPath()%>/round/delete" 
-            		formmethod="post" 
-            		class="btn btn-danger" 
-            		id="deleteBtn">삭제</button>
-            <a href="<%=request.getContextPath()%>/program/detail?proNo=<%=proNo%>" class="btn btn-secondary">취소</a>
-        </div>
-    </form>
+		<div class="d-flex justify-content-end gap-2">
+			<button type="submit" class="btn btn-warning px-4">수정</button>
+			<button type="submit"
+					formaction="<%=request.getContextPath()%>/round/delete"
+					formmethod="post"
+					class="btn btn-danger px-4"
+					id="deleteBtn">삭제</button>
+			<a href="<%=request.getContextPath()%>/program/detail?proNo=<%=proNo%>" class="btn btn-outline-secondary px-4">취소</a>
+		</div>
+	</form>
 </section>
 <script>
     const roundCount = <%= roundCount %>;
