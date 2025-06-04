@@ -68,6 +68,38 @@ public class RoundDao {
         return round;
     }
 
+    public List<Round> selectRoundsByProgramNoOrderedByDate(Connection conn, int proNo) {
+        List<Round> rounds = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("selectRoundsByProgramNoOrderedByDate"));
+            pstmt.setInt(1, proNo);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                rounds.add(getRound(rs));
+            }
+        } catch (SQLException e) {
+            LoggerUtil.error("selectRoundsByProgramNoOrderedByDate 오류: " + e.getMessage(), e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return rounds;
+    }
+
+    public int updateRoundCount(Connection conn, int roundNo, int newCount) {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("updateRoundCount"));
+            pstmt.setInt(1, newCount);
+            pstmt.setInt(2, roundNo);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            LoggerUtil.error("updateRoundCount 오류: " + e.getMessage(), e);
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
 
 	
 	public List<Round> selectRoundsByProgramNo(Connection conn, int proNo) {

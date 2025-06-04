@@ -44,7 +44,10 @@ public class RoundService {
     public int insertRound(Round round) {
         Connection conn = getConnection();
         int result = dao.insertRound(conn, round);
-        if (result > 0) commit(conn);
+        if (result > 0) {
+        	recalculateRoundCounts(conn, round.getProNoRef());
+        	commit(conn);
+        }
         else rollback(conn);
         close(conn);
         return result;
@@ -83,7 +86,7 @@ public class RoundService {
             // 3. ProTime 삽입
             int resultPT = ProTimeDao.getInstance().insertProTimes(conn, proTimes);
             if (resultPT == 0) throw new SQLException("ProTime 삽입 실패");
-
+            recalculateRoundCounts(conn, round.getProNoRef());
             commit(conn);
             result = true;
         } catch (Exception e) {
@@ -111,11 +114,14 @@ public class RoundService {
             // 2. ProTime 삭제
             ProTimeDao.getInstance().deleteByRoundNo(conn, roundNo);
 
+            Round round = dao.selectRoundByNo(conn, roundNo);
+            int proNo = round.getProNoRef();
             // 3. Round 삭제
             int deleted = dao.deleteRound(conn, roundNo);
 
             if (deleted > 0) {
-                commit(conn);
+            	recalculateRoundCounts(conn, proNo);
+            	commit(conn);
                 result = true;
             } else {
                 rollback(conn);
@@ -144,6 +150,15 @@ public class RoundService {
         Round result = dao.selectRoundByNo(conn, roundNo);
         close(conn);
         return result;
+    }
+    
+    // 내부 트랜잭션용 (기존 conn 사용)
+    public void recalculateRoundCounts(Connection conn, int proNo) {
+            List<Round> rounds = dao.selectRoundsByProgramNoOrderedByDate(conn, proNo);
+            int count = 1;
+            for (Round r : rounds) {
+                dao.updateRoundCount(conn, r.getRoundNo(), count++);
+            }
     }
 
 }
